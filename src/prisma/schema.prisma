@@ -1,0 +1,160 @@
+datasource db {
+  provider = "mysql"
+  // url      = env("DB_PROVIDER_URL") // Para commit
+  url = "mysql://root@localhost:3306/rpg" 
+  //Banco ONLINE -----------
+  // url = "mysql://qjnl04k7l5sgcf4r:dyukg2xvzswncqvf@l6glqt8gsx37y4hs.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/z3r866ualzkfaexx"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Character {
+  id Int @id @default(autoincrement())
+  name String
+  age Int? 
+  gender String?
+  player_name String?
+  weight String?
+  occupation String?
+  birth String?
+  birthplace String?
+  fear String?
+  current_hit_points Int @default(0)
+  max_hit_points Int @default(0)
+  current_sanity_points Int @default(0)
+  max_sanity_points Int @default(0)
+  current_picture Int @default(1)
+  is_dead Boolean @default(false)
+  is_creazy Boolean @default(false)
+  standard_character_picture_url String?
+  injured_character_picture_url String?
+  specialItem String?
+
+  created_at DateTime @default(now())
+
+  attributes CharacterAttributes[]
+  inventory CharacterInventory[]
+  combat CharacterCombat[]
+  skills CharacterSkills[]
+  rolls Roll[]
+  
+  @@map("character")
+}
+
+model CharacterInventory {
+  character Character @relation(fields: [character_id], references: [id])
+  character_id Int
+  inventory Inventory @relation(fields: [inventory_id], references: [id])
+  inventory_id Int
+
+  value String?
+
+  @@id([character_id, inventory_id])
+  @@map("character_inventory")
+} 
+
+model Inventory {
+  id Int @id @default(autoincrement())
+  description String?
+  weight Float? @default(0.00)
+  character_id Int
+
+  characters CharacterInventory[]
+  
+  @@map("inventory")
+}
+
+model CharacterAttributes {
+  character Character @relation(fields: [character_id], references: [id])
+  character_id Int
+  attribute Attribute @relation(fields: [attribute_id], references: [id])
+  attribute_id Int
+
+  value String?
+
+  @@id([character_id, attribute_id])
+  @@map("character_attributes")
+}
+
+model Attribute {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  skill_id Int?
+
+  characters CharacterAttributes[]
+  
+  @@map("attribute")
+}
+
+model CharacterCombat {
+  character Character @relation(fields: [character_id], references: [id])
+  character_id Int
+  combat Combat @relation(fields: [combat_id], references: [id])
+  combat_id Int
+
+  value String?
+
+  @@id([character_id, combat_id])
+  @@map("character_combat")
+}
+
+model Combat {
+  id Int @id @default(autoincrement())
+  weapon String
+  type String?
+  damage String?
+  current_load String?
+  total_load String?
+  character_id Int
+
+  characters CharacterCombat[]
+  
+  @@map("combat")
+}
+
+model CharacterSkills {
+  character Character @relation(fields: [character_id], references: [id])
+  character_id Int
+  skill Skill @relation(fields: [skill_id], references: [id])
+  skill_id Int
+
+  value String?
+
+  @@id([character_id, skill_id])
+  @@map("character_skills")
+}
+
+model Skill {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+
+  characters CharacterSkills[]
+
+  @@map("skills")
+}
+
+model Roll {
+  id Int @id @default(autoincrement())
+
+  max_number Int
+  rolled_number Int
+
+  character   Character @relation(fields: [character_id], references: [id])
+  character_id Int
+
+  rolled_at DateTime @default(now())
+  
+  @@map("roll")
+}
+
+model Config {
+  id Int @id @default(autoincrement())
+  name String @unique
+  value String?
+  
+  @@map("config")
+}
