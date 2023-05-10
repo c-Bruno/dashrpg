@@ -293,20 +293,28 @@ function Sheet({ classes, rawCharacter }) {
       character={character}
     />
   ));
-
+  
   // Aciona o modal de inventario
-  const inventoryModal = useModal(({ close, custom }) => (
-    <InventoryModal
-      handleClose={close}
-      data={custom.data || null}
-      character={custom.character || custom.data.character_id}
-      totalSpace={custom.space}
-      onSubmit={() => {
-        window.location.reload(false);
-      }}
-      operation={custom.operation}
-    />
-  ));
+  const inventoryModal = useModal(({ close, custom }) => {
+    const { data, character: inventoryCharacter, space, operation } = custom;
+    
+    const onSubmit = (newCharacter) => {
+      setCharacter(newCharacter);
+      close();
+    };
+    
+    return (
+      <InventoryModal
+        handleClose={close}
+        data={data || null}
+        character={inventoryCharacter || character.id}
+        totalSpace={space}
+        onSubmit={onSubmit}
+        operation={operation}
+        fullCharacter={character}
+      />
+    );
+  });
 
   // Aciona o modal de combate
   const combatModal = useModal(({ close, custom }) => (

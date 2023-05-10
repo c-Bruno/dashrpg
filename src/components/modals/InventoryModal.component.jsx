@@ -25,7 +25,10 @@ function InventoryModal({
   character,
   totalSpace,
   handleClose,
+  fullCharacter
 }) {
+  const [updatedCharacter, setUpdatedCharacter] = useState(fullCharacter);
+
   const [inventory, setInventory] = useState({
     description: "",
     weight: null,
@@ -68,27 +71,37 @@ function InventoryModal({
     // Se a operação for criar
     if (operation === "create") {
       api
-        .post("/inventory", inventory)
-        .then(() => {
-          // Callback
-          onSubmit();
+      .post("/inventory", inventory)
+      .then(() => {
+        // Atualiza o personagem com os novos valores do inventário
+        updatedCharacter.inventory.push({inventory})
+        setUpdatedCharacter(updatedCharacter);
 
-          // Close modal
-          handleClose();
+        // Callback para atualizar o personagem no componente pai
+        onSubmit(updatedCharacter);
 
-          // Limpa aa informações
-          resetState();
-        })
-        .catch(() => {
-          toast.error("Erro ao criar o item!");
-        });
+        // Close modal
+        handleClose();
+
+        // Limpa as informações do formulário
+        resetState();
+      })
+      .catch(() => {
+        toast.error("Erro ao criar o item!");
+      });
+
     } else if (operation === "edit") {
       // Se a operação for editar
       api
         .put(`/inventory/${data.inventory.id}`, inventory)
         .then(() => {
-          // Callback
-          onSubmit();
+          // Descobre o ID no inventario que vai ser atualizado e modifica essa posição na lista
+          const index = updatedCharacter.inventory.findIndex((obj) => obj.inventory_id === data.inventory.id);
+          updatedCharacter.inventory[index].inventory = inventory
+          setUpdatedCharacter(updatedCharacter);
+
+          // Callback para atualizar o personagem no componente pai
+          onSubmit(updatedCharacter);
 
           // Close modal
           handleClose();
