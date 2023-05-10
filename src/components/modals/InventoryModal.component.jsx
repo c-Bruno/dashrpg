@@ -72,9 +72,17 @@ function InventoryModal({
     if (operation === "create") {
       api
       .post("/inventory", inventory)
-      .then(() => {
+      .then(async () => {
+        // 
+        const responseID = await api.get(`/inventory/`);
+
+        let newIds = [];
+        responseID.data.forEach((val) => {
+          newIds.push(val.id)
+        });
+
         // Atualiza o personagem com os novos valores do inventário
-        updatedCharacter.inventory.push({inventory})
+        updatedCharacter.inventory.push({inventory_id: Math.max.apply(null, newIds), inventory})
         setUpdatedCharacter(updatedCharacter);
 
         // Callback para atualizar o personagem no componente pai
@@ -93,10 +101,10 @@ function InventoryModal({
     } else if (operation === "edit") {
       // Se a operação for editar
       api
-        .put(`/inventory/${data.inventory.id}`, inventory)
+        .put(`/inventory/${data.inventory_id}`, inventory)
         .then(() => {
           // Descobre o ID no inventario que vai ser atualizado e modifica essa posição na lista
-          const index = updatedCharacter.inventory.findIndex((obj) => obj.inventory_id === data.inventory.id);
+          const index = updatedCharacter.inventory.findIndex((obj) => obj.inventory_id === data.inventory_id);
           updatedCharacter.inventory[index].inventory = inventory
           setUpdatedCharacter(updatedCharacter);
 
@@ -110,6 +118,8 @@ function InventoryModal({
         })
         .catch((err) => {
           toast.error("Erro ao editar o item!");
+          console.log(err)
+
         });
     }
   };

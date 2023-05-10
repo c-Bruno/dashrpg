@@ -226,7 +226,10 @@ function Sheet({ classes, rawCharacter }) {
         api
           .delete(`/${type}/${id}`)
           .then(() => {
-            window.location.reload(false);
+            setCharacter((prevCharacter) => ({
+              ...prevCharacter,
+              [type]: prevCharacter[type].filter((item) => item[`${type}_id`] !== id),
+            }));
           })
           .catch(() => {
             toast.error(`Erro ao apagar: ${type}`);
@@ -297,7 +300,7 @@ function Sheet({ classes, rawCharacter }) {
   // Aciona o modal de inventario
   const inventoryModal = useModal(({ close, custom }) => {
     const { data, character: inventoryCharacter, space, operation } = custom;
-    
+
     const onSubmit = (newCharacter) => {
       setCharacter(newCharacter);
       close();
@@ -307,7 +310,7 @@ function Sheet({ classes, rawCharacter }) {
       <InventoryModal
         handleClose={close}
         data={data || null}
-        character={inventoryCharacter || character.id}
+        character={inventoryCharacter || data.character_id}
         totalSpace={space}
         onSubmit={onSubmit}
         operation={operation}
