@@ -3,10 +3,7 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-import {
-  Button,
-  Tooltip
-} from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
@@ -146,17 +143,20 @@ export default function TableBox(props) {
   };
 
   // Aciona o modal de combate
-  const combatModal = useModal(({ close, custom }) => (
-    <CombatModal
-      handleClose={close}
-      data={custom.data || null}
-      character={custom.character || custom.data.character_id}
-      onSubmit={() => {
-        window.location.reload(false);
-      }}
-      operation={custom.operation}
-    />
-  ));
+  const combatModal = useModal(({ close, custom }) => {
+    const { data, character: combatCharacter, operation } = custom;
+
+    return (
+      <CombatModal
+        handleClose={close}
+        data={data || null}
+        character={combatCharacter || data.character_id}
+        onSubmit={props.handleCharacter}
+        operation={operation}
+        fullCharacter={props.character}
+      />
+    );
+  });
 
   // Modal de confirmação
   const confirmationModal = useModal(({ close, custom }) => (
@@ -171,7 +171,12 @@ export default function TableBox(props) {
         api
           .delete(`/${type}/${id}`)
           .then(() => {
-            window.location.reload(false);
+            props.handleCharacter((prevCharacter) => ({
+              ...prevCharacter,
+              [type]: prevCharacter[type].filter(
+                (item) => item[`${type}_id`] !== id
+              ),
+            }));
           })
           .catch(() => {
             toast.error(`Erro ao apagar: ${type}`);
@@ -268,12 +273,12 @@ export default function TableBox(props) {
               </TableCell>
 
               {/* Carga atual */}
-              <TableCell style={{ minWidth: 70 }} align="right">
+              <TableCell style={{ minWidth: 70 }} align="right" type="number">
                 {row.current_load}
               </TableCell>
 
               {/* Capacidade */}
-              <TableCell style={{ minWidth: 70 }} align="right">
+              <TableCell style={{ minWidth: 70 }} align="right" type="number">
                 {row.total_load}
               </TableCell>
 

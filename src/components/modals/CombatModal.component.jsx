@@ -35,7 +35,10 @@ function CombatModal({
   operation,
   character,
   handleClose,
+  fullCharacter
 }) {
+  const [updatedCharacter, setUpdatedCharacter] = useState(fullCharacter);
+
   // Definir dados do cabeçalho da tabela
   const columns = [
     { id: "weapon", label: "ARMA", minWidth: 150 },
@@ -95,9 +98,22 @@ function CombatModal({
     if (operation === "create") {
       api
         .post("/combat", combat)
-        .then(() => {
+        .then(async () => {
+          const responseID = await api.get(`/combat/`);
+
+          let newIds = [];
+          responseID.data.forEach((val) => {
+            newIds.push(val.id);
+          });
+
+          updatedCharacter.combat.push({
+            combat_id: Math.max.apply(null, newIds),
+            combat,
+          });
+          setUpdatedCharacter(updatedCharacter);
+
           // Callback
-          onSubmit();
+          onSubmit(updatedCharacter);
 
           // Close modal
           handleClose();
@@ -113,8 +129,16 @@ function CombatModal({
       api
         .put(`/combat/${data.id}`, combat)
         .then(() => {
-          // Callback
-          onSubmit();
+          // Descobre o ID no inventario que vai ser atualizado e modifica essa posição na lista
+          const index = updatedCharacter.combat.findIndex(
+            (obj) => obj.combat_id == data.id
+          );
+
+          updatedCharacter.combat[index].combat = combat;
+          setUpdatedCharacter(updatedCharacter);
+
+          // Callback para atualizar o personagem no componente pai
+          onSubmit(updatedCharacter);
 
           // Close modal
           handleClose();
@@ -226,6 +250,7 @@ function CombatModal({
                 {/* Carga atual */}
                 <TableCell style={{ minWidth: 70 }} align="right">
                   <TextField
+                    type="number"
                     id="filled-basic"
                     label="Carga Atual"
                     variant="standard"
@@ -245,6 +270,7 @@ function CombatModal({
                 {/* Capacidade */}
                 <TableCell style={{ minWidth: 70 }} align="right">
                   <TextField
+                    type="number"
                     id="filled-basic"
                     label="Carga Maxima"
                     variant="standard"

@@ -1,24 +1,15 @@
-import React, { useState } from "react";
-import { withStyles } from "@mui/styles";
-import Image from "next/image";
 import {
-  TextField,
+  Box,
+  Button,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  Chip,
-  DialogTitle,
-  Button,
-  Grid,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Box,
+  Grid
 } from "@mui/material";
-
-import { api } from "../../utils";
+import { withStyles } from "@mui/styles";
+import Image from "next/image";
+import React from "react";
 
 const styles = (theme) => ({
   dice: {

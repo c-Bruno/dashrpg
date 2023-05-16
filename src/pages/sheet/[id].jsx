@@ -228,7 +228,9 @@ function Sheet({ classes, rawCharacter }) {
           .then(() => {
             setCharacter((prevCharacter) => ({
               ...prevCharacter,
-              [type]: prevCharacter[type].filter((item) => item[`${type}_id`] !== id),
+              [type]: prevCharacter[type].filter(
+                (item) => item[`${type}_id`] !== id
+              ),
             }));
           })
           .catch(() => {
@@ -296,7 +298,7 @@ function Sheet({ classes, rawCharacter }) {
       character={character}
     />
   ));
-  
+
   // Aciona o modal de inventario
   const inventoryModal = useModal(({ close, custom }) => {
     const { data, character: inventoryCharacter, space, operation } = custom;
@@ -305,7 +307,7 @@ function Sheet({ classes, rawCharacter }) {
       setCharacter(newCharacter);
       close();
     };
-    
+
     return (
       <InventoryModal
         handleClose={close}
@@ -320,17 +322,25 @@ function Sheet({ classes, rawCharacter }) {
   });
 
   // Aciona o modal de combate
-  const combatModal = useModal(({ close, custom }) => (
-    <CombatModal
-      handleClose={close}
-      data={custom.data || null}
-      character={custom.character || custom.data.character_id}
-      onSubmit={() => {
-        window.location.reload(false);
-      }}
-      operation={custom.operation}
-    />
-  ));
+  const combatModal = useModal(({ close, custom }) => {
+    const { data, character: combatCharacter, operation } = custom;
+
+    const onSubmit = (newCharacter) => {
+      setCharacter(newCharacter);
+      close();
+    };
+
+    return (
+      <CombatModal
+        handleClose={close}
+        data={data || null}
+        character={combatCharacter || data.character_id}
+        onSubmit={onSubmit}
+        operation={operation}
+        fullCharacter={character}
+      />
+    );
+  });
 
   // Atualiza o valor do atributo ao digitar
   const updateCharacterAttributeValue = (attribute, value) => {
@@ -712,7 +722,12 @@ function Sheet({ classes, rawCharacter }) {
                 </Tooltip>
               )}
             >
-              <TableBox character={character}></TableBox>
+              <TableBox
+                character={character}
+                handleCharacter={(newCharacter) => {
+                  setCharacter(newCharacter);
+                }}
+              />
             </Section>
           </Grid>
 
