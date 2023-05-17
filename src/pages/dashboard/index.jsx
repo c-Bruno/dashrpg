@@ -4,7 +4,6 @@ import { withStyles } from "@mui/styles";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-
 import {
   AddBox,
   CharacterBox,
@@ -14,18 +13,15 @@ import {
   Section,
   TransferAttributesList,
 } from "../../components";
-
 import {
   AttributeModal,
   ConfirmationModal,
   CreateCharacterModal,
   SkillModal,
 } from "../../components/modals";
-
+import { prisma } from "../../database";
 import useModal from "../../hooks/useModal.hook";
 import { api } from "../../utils";
-
-import { prisma } from "../../database";
 
 export const getServerSideProps = async () => {
   function parseConfigs(array) {
@@ -77,9 +73,9 @@ export const getServerSideProps = async () => {
 
   return {
     props: {
-      characters: serializedCharacters,
-      attributes: serializedAttributes,
-      skills: serializedSkills,
+      initialCharacters: serializedCharacters,
+      initialAttributes: serializedAttributes,
+      initialSkills: serializedSkills,
       configs: serializedConfigs,
     },
   };
@@ -87,14 +83,16 @@ export const getServerSideProps = async () => {
 
 function Dashboard({
   classes,
-
-  characters,
-  attributes,
-  skills,
   configs,
+  initialSkills,
+  initialCharacters,
+  initialAttributes,
 }) {
-  const router = useRouter();
+  const [skills, setSkills] = useState(initialSkills);
+  const [attributes, setAttributes] = useState(initialAttributes);
+  const [characters, setCharacters] = useState(initialCharacters);
 
+  const router = useRouter();
   const [updatedConfigs, setUpdatedConfigs] = useState({
     DICE_ON_SCREEN_TIMEOUT_IN_MS: null,
     TIME_BETWEEN_DICES_IN_MS: null,
@@ -143,7 +141,9 @@ function Dashboard({
         api
           .delete(`/${type}/${id}`)
           .then(() => {
-            window.location.reload(false);
+            if (type == "attribute") {
+              setAttributes(attributes.filter((item) => item.id !== id));
+            }
           })
           .catch(() => {
             alert(`Erro ao apagar: ${type}`);
@@ -161,28 +161,40 @@ function Dashboard({
     />
   ));
 
-  const attributeModal = useModal(({ close, custom }) => (
-    <AttributeModal
-      handleClose={close}
-      data={custom.data || null}
-      attributeSkill={skills}
-      onSubmit={() => {
-        window.location.reload(false);
-      }}
-      operation={custom.operation}
-    />
-  ));
+  const attributeModal = useModal(({ close, custom }) => {
+    const onSubmit = (newAttribute) => {
+      setAttributes(newAttribute);
+      close();
+    };
 
-  const skillModal = useModal(({ close, custom }) => (
-    <SkillModal
-      handleClose={close}
-      data={custom.data || null}
-      onSubmit={() => {
-        window.location.reload(false);
-      }}
-      operation={custom.operation}
-    />
-  ));
+    return (
+      <AttributeModal
+        handleClose={close}
+        data={custom.data || null}
+        attributeSkill={skills}
+        attributes={attributes}
+        onSubmit={onSubmit}
+        operation={custom.operation}
+      />
+    );
+  });
+
+  const skillModal = useModal(({ close, custom }) => {
+    const onSubmit = (newSkill) => {
+      setSkills(newSkill);
+      close();
+    };
+
+    return (
+      <SkillModal
+        handleClose={close}
+        data={custom.data || null}
+        onSubmit={onSubmit}
+        skills={skills}
+        operation={custom.operation}
+      />
+    );
+  });
 
   return (
     <>
@@ -341,7 +353,7 @@ function Dashboard({
                   image="/assets/groupAttibutes.png"
                 >
                   <Grid item container xs={12} spacing={2}>
-                    <CreatureList/>
+                    <CreatureList />
                   </Grid>
                 </Section>
               </Grid>

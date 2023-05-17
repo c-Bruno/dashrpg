@@ -9,13 +9,21 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
-
 import { api } from "../../utils";
 import { toast, ToastContainer } from "react-toastify";
 
 const styles = (theme) => ({});
 
-function SkillModal({ data, classes, onSubmit, operation, handleClose }) {
+function SkillModal({
+  data,
+  skills,
+  classes,
+  onSubmit,
+  operation,
+  handleClose,
+}) {
+  const [updatedSkills, setUpdatedSkills] = useState(skills);
+
   const [skill, setSkill] = useState({
     name: "",
     description: "",
@@ -47,13 +55,28 @@ function SkillModal({ data, classes, onSubmit, operation, handleClose }) {
     if (operation === "create") {
       api
         .post("/skill", skill)
-        .then(() => {
-          // Callback
-          onSubmit();
+        .then(async () => {
+          const responseID = await api.get(`/skill/`);
+
+          let newIds = [];
+          responseID.data.forEach((val) => {
+            newIds.push(val.id);
+          });
+
+          // Atualiza os itens com os novos valores do inventário
+          updatedSkills.push({
+            id: Math.max.apply(null, newIds),
+            ...skill,
+          });
+          setUpdatedSkills(updatedSkills);
+
+          // Callback para atualizar o atributo no componente pai
+          onSubmit(updatedSkills);
 
           // Close modal
           handleClose();
 
+          // Limpa as informações do formulário
           resetState();
         })
         .catch(() => {

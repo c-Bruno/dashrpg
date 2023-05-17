@@ -27,9 +27,12 @@ function AttributeModal({
   classes,
   onSubmit,
   operation,
+  attributes,
   handleClose,
   attributeSkill,
 }) {
+  const [updatedAttributes, setUpdatedAttributes] = useState(attributes);
+
   const [attribute, setAttribute] = useState({
     name: "",
     description: "",
@@ -64,13 +67,28 @@ function AttributeModal({
     if (operation === "create") {
       api
         .post("/attribute", attribute)
-        .then(() => {
-          // Callback
-          onSubmit();
+        .then(async () => {
+          const responseID = await api.get(`/attribute/`);
+
+          let newIds = [];
+          responseID.data.forEach((val) => {
+            newIds.push(val.id);
+          });
+
+          // Atualiza os itens com os novos valores do inventário
+          updatedAttributes.push({
+            id: Math.max.apply(null, newIds),
+            ...attribute,
+          });
+          setUpdatedAttributes(updatedAttributes);
+
+          // Callback para atualizar o atributo no componente pai
+          onSubmit(updatedAttributes);
 
           // Close modal
           handleClose();
 
+          // Limpa as informações do formulário
           resetState();
         })
         .catch(() => {
@@ -80,12 +98,21 @@ function AttributeModal({
       api
         .put(`/attribute/${data.id}`, attribute)
         .then(() => {
-          // Callback
-          onSubmit();
+          // Descobre o ID no inventario que vai ser atualizado e modifica essa posição na lista
+          const index = updatedAttributes.findIndex(
+            (obj) => obj.id === data.id
+          );
+
+          updatedAttributes[index] = { id: data.id, ...attribute };
+          setUpdatedAttributes(updatedAttributes);
+
+          // Callback para atualizar o personagem no componente pai
+          onSubmit(updatedAttributes);
 
           // Close modal
           handleClose();
 
+          // Limpa as informações do formulário
           resetState();
         })
         .catch((err) => {
