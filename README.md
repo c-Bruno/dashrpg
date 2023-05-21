@@ -1,5 +1,5 @@
 ## Sobre
-Este projeto surgiu como um fork com o objetivo de adaptar uma plataforma de RPG com um sistema personalizado.
+O objetivo desse projeto é adaptar uma plataforma de RPG com um sistema personalizado.
 
 ## Instalação
 - Clone o projeto na sua maquina, ou baixe o zip.
