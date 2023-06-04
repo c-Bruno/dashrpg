@@ -5,16 +5,28 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Grid
+  Grid,
 } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import Image from "next/image";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const styles = (theme) => ({
   dice: {
-    transition: "rotate(360deg)",
-    transform: "rotate(360deg)",
+    animation: "$rotate 1s linear infinite",
+  },
+
+  noRotate: {
+    animation: "none !important",
+  },
+
+  "@keyframes rotate": {
+    "0%": {
+      transform: "rotate(0deg)",
+    },
+    "100%": {
+      transform: "rotate(360deg)",
+    },
   },
 
   formarChip: {
@@ -39,6 +51,22 @@ function DiceRollModal({
   var diceNumber = { number: "" }; // Numero da rolagem de dado
   var diceTypeResult = { description: "" }; // Resultado obtido(Extremo, Sucesso Bom, Sucesso Normal, Fracasso, Fracasso extremo)
   var dicResultColor = { color: "primary" }; // Cor exibida na tela
+  const [showGrids, setShowGrids] = useState(false); // Hook para carregar os grids apenas após a rolagem dos dados
+  const [stopRotation, setStopRotation] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setStopRotation(true);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowGrids(true);
+    }, 1500);
+  }, []);
 
   function rollDamage(amountDamage) {
     const diceRandomNumber = rollDice(amountDamage);
@@ -156,59 +184,63 @@ function DiceRollModal({
             >
               {/* Dado na tela */}
               <Image
+                className={`${classes.dice} ${stopRotation ? classes.noRotate : ""}`}
                 src={"/assets/dice.png"}
                 alt="Dice roll"
-                className={classes.dice}
                 width={40}
                 height={40}
               />
             </Grid>
 
             {/* Valor/numero retornado na rolagem */}
-            <Grid item xs={12}>
-              <Box
-                sx={{
-                  width: 500,
-                  maxWidth: "100%",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginTop: "1%",
-                }}
-              >
-                <Chip
-                  label={diceNumber.number}
-                  className={classes.formarChip}
-                  color={dicResultColor.color}
-                  size="medium"
-                  style={{ width: "20%" }}
-                  variant="outlined"
-                />
-              </Box>
-            </Grid>
+            {showGrids && (
+              <>
+                <Grid item xs={12}>
+                  <Box
+                    sx={{
+                      width: 500,
+                      maxWidth: "100%",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      marginTop: "1%",
+                    }}
+                  >
+                    <Chip
+                      label={diceNumber.number}
+                      className={classes.formarChip}
+                      color={dicResultColor.color}
+                      size="medium"
+                      style={{ width: "20%" }}
+                      variant="outlined"
+                    />
+                  </Box>
+                </Grid>
 
-            {/* Tipo de resultado obtido */}
-            {atribute ? (
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    width: 500,
-                    maxWidth: "100%",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: "0.5%",
-                  }}
-                >
-                  <Chip
-                    label={diceTypeResult.description}
-                    className={classes.formarChip}
-                    color={dicResultColor.color}
-                    size="medium"
-                    style={{ width: "50%" }}
-                  />
-                </Box>
-              </Grid>
-            ) : (
-              atribute
+                {/* Tipo de resultado obtido */}
+                {atribute ? (
+                  <Grid item xs={12}>
+                    <Box
+                      sx={{
+                        width: 500,
+                        maxWidth: "100%",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        marginTop: "0.5%",
+                      }}
+                    >
+                      <Chip
+                        label={diceTypeResult.description}
+                        className={classes.formarChip}
+                        color={dicResultColor.color}
+                        size="medium"
+                        style={{ width: "50%" }}
+                      />
+                    </Box>
+                  </Grid>
+                ) : (
+                  atribute
+                )}
+              </>
             )}
           </Grid>
         }
