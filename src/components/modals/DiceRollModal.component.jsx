@@ -10,6 +10,7 @@ import {
 import { withStyles } from "@mui/styles";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
+import ReactSound from "react-sound";
 
 const styles = (theme) => ({
   dice: {
@@ -52,20 +53,20 @@ function DiceRollModal({
   var diceTypeResult = { description: "" }; // Resultado obtido(Extremo, Sucesso Bom, Sucesso Normal, Fracasso, Fracasso extremo)
   var dicResultColor = { color: "primary" }; // Cor exibida na tela
   const [showGrids, setShowGrids] = useState(false); // Hook para carregar os grids apenas após a rolagem dos dados
-  const [stopRotation, setStopRotation] = useState(false);
+  const [stopRotation, setStopRotation] = useState(false); // Hook para definir a rotação do dado em tela
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Hooke para acionar o audio da rolagem
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setStopRotation(true);
-    }, 1500);
+      setShowGrids(true);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-      setShowGrids(true);
-    }, 1500);
+    setIsAudioPlaying(true);
   }, []);
 
   function rollDamage(amountDamage) {
@@ -88,16 +89,6 @@ function DiceRollModal({
         dicResultColor = { color: "error" };
       }
     }
-
-    setTimeout(() => {
-      //   setTimeout(() => {
-      //     diceModal.css('display', 'none')
-      //     $('#diceNumber').text('')
-      //     $('#diceType').text('')
-      //     $('.modalDice').css('transform', 'rotate(0deg)')
-      //     $('.modalDice').css('-webkit-transform', 'rotate(0deg)')
-      //   }, 20000)
-    }, 2000);
   }
 
   // Rolador de dados
@@ -174,6 +165,10 @@ function DiceRollModal({
       <DialogContent onLoad={rollDamage(amount)}>
         {
           <Grid container>
+            <ReactSound
+              url={`/sounds/DiceRollingOnTable.mp3`}
+              playStatus={ReactSound.status.PLAYING}
+            />
             <Grid
               item
               xs={12}
@@ -184,7 +179,9 @@ function DiceRollModal({
             >
               {/* Dado na tela */}
               <Image
-                className={`${classes.dice} ${stopRotation ? classes.noRotate : ""}`}
+                className={`${classes.dice} ${
+                  stopRotation ? classes.noRotate : ""
+                }`}
                 src={"/assets/dice.png"}
                 alt="Dice roll"
                 width={40}
