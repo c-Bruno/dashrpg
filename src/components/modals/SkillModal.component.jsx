@@ -70,7 +70,7 @@ function SkillModal({
           });
           setUpdatedSkills(updatedSkills);
 
-          // Callback para atualizar o atributo no componente pai
+          // Callback para atualizar o skill no componente pai
           onSubmit(updatedSkills);
 
           // Close modal
@@ -86,12 +86,21 @@ function SkillModal({
       api
         .put(`/skill/${data.id}`, skill)
         .then(() => {
-          // Callback
-          onSubmit();
+          // Descobre o ID no inventario que vai ser atualizado e modifica essa posição na lista
+          const index = updatedSkills.findIndex(
+            (obj) => obj.id === data.id
+          );
+
+          updatedSkills[index] = { id: data.id, ...skill };
+          setUpdatedSkills(updatedSkills);
+
+          // Callback para atualizar a skill no componente pai
+          onSubmit(updatedSkills);
 
           // Close modal
           handleClose();
 
+          // Limpa as informações do formulário
           resetState();
         })
         .catch(() => {

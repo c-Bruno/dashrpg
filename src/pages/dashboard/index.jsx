@@ -143,6 +143,8 @@ function Dashboard({
           .then(() => {
             if (type == "attribute") {
               setAttributes(attributes.filter((item) => item.id !== id));
+            } if (type == "skill") {
+              setSkills(skills.filter((item) => item.id !== id));              
             }
           })
           .catch(() => {
@@ -347,7 +349,7 @@ function Dashboard({
               </Grid>
 
               {/* Monstros disponiveis na campanha */}
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Section
                   title="Criaturas    "
                   image="/assets/groupAttibutes.png"
@@ -356,7 +358,7 @@ function Dashboard({
                     <CreatureList />
                   </Grid>
                 </Section>
-              </Grid>
+              </Grid> */}
             </>
           ) : (
             <Grid item xs={12}>
