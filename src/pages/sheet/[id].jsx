@@ -275,6 +275,7 @@ function Sheet({ classes, rawCharacter }) {
     <DiceRollModal
       amount={"1d100"}
       onDiceRoll={(rollData) => {
+        // console.log(rollData)
         const parsedData = {
           character_id: character.id,
           rolls: rollData.map((each) => ({

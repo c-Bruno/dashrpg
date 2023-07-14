@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Delete as DeleteIcon, Create as EditIcon } from "@mui/icons-material";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
@@ -23,6 +24,21 @@ import { toast } from "react-toastify";
 import useModal from "../hooks/useModal.hook";
 import { api } from "../utils";
 import { CombatModal, ConfirmationModal, DiceRollModal } from "./modals";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles({
+  diceImage: {
+    cursor: "pointer",
+    transition: "-webkit-transform .8s ease-in-out",
+    transform: "transform .8s ease-in-out",
+    marginRight: "8px",
+    "&:hover": {
+      transition: "rotate(360deg)",
+      transform: "rotate(360deg)",
+    },
+  },
+});
+
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -108,6 +124,8 @@ const columns = [
 ];
 
 export default function TableBox(props) {
+  const classes = useStyles();
+  
   // Define as linhas da tabela
   var rows = [].sort((a, b) => (a.weapon < b.weapon ? -1 : 1)); // Ordena alfabeticamente
 
@@ -250,23 +268,13 @@ export default function TableBox(props) {
 
               {/* Dano */}
               <TableCell style={{ minWidth: 100 }} align="right">
-                <Image
+                <img
                   src={"/assets/dice.png"}
                   alt="Dice roll"
                   width={25}
                   height={25}
                   align={"center"}
-                  style={{
-                    cursor: "pointer",
-                    transition: "-webkit-transform .8s ease-in-out",
-                    transform: "transform .8s ease-in-out",
-                    marginRight: "5px",
-
-                    "&:hover": {
-                      transition: "rotate(360deg)",
-                      transform: "rotate(360deg)",
-                    },
-                  }}
+                  className={classes.diceImage}
                   onClick={() => diceRollModal.appear({ amount: row.damage })}
                 />
                 {row.damage}
