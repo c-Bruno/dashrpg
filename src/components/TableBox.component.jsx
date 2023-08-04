@@ -125,7 +125,7 @@ const columns = [
 
 export default function TableBox(props) {
   const classes = useStyles();
-  
+
   // Define as linhas da tabela
   var rows = [].sort((a, b) => (a.weapon < b.weapon ? -1 : 1)); // Ordena alfabeticamente
 
@@ -203,28 +203,23 @@ export default function TableBox(props) {
     />
   ));
 
-  const diceRollModal = useModal(
-    ({ close, custom }) => (
-      console.log(custom),
-      (
-        <DiceRollModal
-          amount={custom.amount}
-          onDiceRoll={(rollData) => {
-            const parsedData = {
-              character_id: character.id,
-              rolls: rollData.map((each) => ({
-                rolled_number: each.rolled_number,
-                max_number: each.max_number,
-              })),
-            };
+  const diceRollModal = useModal(({ close, custom }) => (
+    <DiceRollModal
+      amount={custom.amount}
+      onDiceRoll={(rollData) => {
+        const parsedData = {
+          character_id: character.id,
+          rolls: rollData.map((each) => ({
+            rolled_number: each.rolled_number,
+            max_number: each.max_number,
+          })),
+        };
 
-            socket.emit("dice_roll", parsedData);
-          }}
-          handleClose={close}
-        />
-      )
-    )
-  );
+        socket.emit("dice_roll", parsedData);
+      }}
+      handleClose={close}
+    />
+  ));
 
   return (
     <TableContainer component={Paper}>
@@ -275,7 +270,11 @@ export default function TableBox(props) {
                   height={25}
                   align={"center"}
                   className={classes.diceImage}
-                  onClick={() => diceRollModal.appear({ amount: row.damage })}
+                  onClick={() =>
+                    diceRollModal.appear({
+                      amount: row.damage,
+                    })
+                  }
                 />
                 {row.damage}
               </TableCell>

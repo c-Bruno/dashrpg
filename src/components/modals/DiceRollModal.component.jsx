@@ -49,14 +49,20 @@ function DiceRollModal({
   skillAttibute,
   avaliableSkills,
 }) {
-  var diceNumber = { number: "" }; // Numero da rolagem de dado
-  var diceTypeResult = { description: "" }; // Resultado obtido(Extremo, Sucesso Bom, Sucesso Normal, Fracasso, Fracasso extremo)
-  var dicResultColor = { color: "primary" }; // Cor exibida na tela
   const [showGrids, setShowGrids] = useState(false); // Hook para carregar os grids apenas após a rolagem dos dados
   const [stopRotation, setStopRotation] = useState(false); // Hook para definir a rotação do dado em tela
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Hooke para acionar o audio da rolagem
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Hook para acionar o audio da rolagem
+
+  const [diceNumber, setDiceNumber] = useState({ number: "" });
+  const [diceTypeResult, setDiceTypeResult] = useState({ description: "" });
+  const [diceResultColor, setDiceResultColor] = useState({ color: "primary" });
+
+  // Desativar os logs de debug do SoundManager2
+  soundManager.setup({ debugMode: false });
 
   useEffect(() => {
+    rollDamage(amount);
+
     const timer = setTimeout(() => {
       setStopRotation(true);
       setShowGrids(true);
@@ -71,44 +77,48 @@ function DiceRollModal({
 
   function rollDamage(amountDamage) {
     const diceRandomNumber = rollDice(amountDamage);
-    diceNumber = { number: diceRandomNumber };
+    setDiceNumber({ number: diceRandomNumber });
 
     if (atribute) {
       const diceType = calcDice(atribute, valueAtribute, diceRandomNumber);
-      diceTypeResult = { description: diceType };
+      setDiceTypeResult({ description: diceType });
 
       // Define qual vai ser a cor do component Chip exibido
-      if (diceTypeResult.description == "Extremo") {
-        dicResultColor = { color: "success" };
-      } else if (
-        diceTypeResult.description == "Sucesso Bom" ||
-        diceTypeResult.description == "Sucesso Normal"
-      ) {
-        dicResultColor = { color: "primary" };
+      if (diceType == "Extremo") {
+        setDiceResultColor({ color: "success" });
+      } else if (diceType == "Sucesso Bom" || diceType == "Sucesso Normal") {
+        setDiceResultColor({ color: "primary" });
       } else {
-        dicResultColor = { color: "error" };
+        setDiceResultColor({ color: "error" });
       }
     }
   }
 
   // Rolador de dados
   function rollDice(dice) {
-    let [count, max] = dice.split("d"); // Separar a quantidade de dados, para o valor do dado
+    let dices = dice.split("+");
+    let amountFromDice = 0;
 
-    if (Number(count) && Number(max)) {
-      count = Number(count); // Verifica quantas vezes vai rolar o dado
-      max = Number(max); // Verifica qual o tipo de dado
+    dices.map((item) => {
+      const diceTrimmed = item.trim();
+      let [count, max] = diceTrimmed.split("d"); // Separar a quantidade de dados, para o valor do dado
 
-      let total = 0;
+      if (Number(count) && Number(max)) {
+        count = Number(count); // Verifica quantas vezes vai rolar o dado
+        max = Number(max); // Verifica qual o tipo de dado
 
-      for (let i = 0; i < count; i++) {
-        total += Math.floor(Math.random() * max + 1); // Sorteia um numero entre 1 e o valor do atributo
+        let total = 0;
+        for (let i = 0; i < count; i++) {
+          total += Math.floor(Math.random() * max + 1); // Sorteia um numero entre 1 e o valor do atributo
+        }
+
+        amountFromDice += total;
+      } else {
+        amountFromDice += 0;
       }
+    });
 
-      return total;
-    } else {
-      return null;
-    }
+    return amountFromDice;
   }
 
   // Calcula qual o tipo do resultado do dado (Extremo, Bom, Normal, Fracasso)
@@ -124,7 +134,7 @@ function DiceRollModal({
       });
     }
 
-    // Se tiver encontrado o a skill na lista de skills, soma o seu valor ao resultado atual do dado
+    // Se tiver encontrado a skill na lista de skills, soma o seu valor ao resultado atual do dado
     Number(valueSkill) ? (ability += Number(valueSkill)) : (ability += 0);
 
     // Constante contendo todas as variações com base no ATRIBUTO + PERICIA
@@ -162,7 +172,7 @@ function DiceRollModal({
 
   return (
     <Dialog open={true} onClose={handleClose} fullWidth maxWidth="100vh">
-      <DialogContent onLoad={rollDamage(amount)}>
+      <DialogContent>
         {
           <Grid container>
             <ReactSound
@@ -205,7 +215,7 @@ function DiceRollModal({
                     <Chip
                       label={diceNumber.number}
                       className={classes.formarChip}
-                      color={dicResultColor.color}
+                      color={diceResultColor.color}
                       size="medium"
                       style={{ width: "20%" }}
                       variant="outlined"
@@ -228,7 +238,7 @@ function DiceRollModal({
                       <Chip
                         label={diceTypeResult.description}
                         className={classes.formarChip}
-                        color={dicResultColor.color}
+                        color={diceResultColor.color}
                         size="medium"
                         style={{ width: "50%" }}
                       />
