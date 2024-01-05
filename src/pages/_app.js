@@ -7,7 +7,9 @@ import theme from "../themes/Default.theme";
 import "../themes/global.scss";
 
 import { Provider } from "react-redux";
-import store from "../store";
+import configureStore from '../redux/configureStore';
+
+const store = configureStore({});
 
 function MyApp({ Component, pageProps }) {
   React.useEffect(() => {

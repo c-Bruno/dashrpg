@@ -39,6 +39,7 @@
     "react-toastify": "^8.2.0",
     "react-transition-group": "^4.4.2",
     "redux": "^4.2.1",
+    "redux-actions": "^3.0.0",
     "redux-saga": "^1.2.3",
     "sass": "^1.62.1",
     "socket.io": "^4.3.1",

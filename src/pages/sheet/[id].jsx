@@ -26,6 +26,9 @@ import { SpecialItem } from "../../components/SpecialItem";
 import { Combat } from "../../components/Combat";
 import { Attributes } from "../../components/Attributes";
 import { Skills } from "../../components/Skills";
+import * as characterActions from "../../redux/actions/character.actions";
+
+import { useDispatch } from "react-redux";
 
 const styles = (theme) => ({
   characterImage: {
@@ -122,6 +125,7 @@ export const getServerSideProps = async ({ params }) => {
 };
 
 function Sheet({ classes, rawCharacter }) {
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const refreshData = () => {
@@ -338,6 +342,10 @@ function Sheet({ classes, rawCharacter }) {
       />
     );
   });
+
+  useEffect(() => {
+    dispatch(characterActions.updateCharacter("teste"));
+  }, []);
 
   if (!rawCharacter) {
     return <div>Personagem não existe!</div>;
