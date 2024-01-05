@@ -1,29 +1,20 @@
-/* eslint-disable @next/next/no-img-element */
-import { Add as AddIcon } from "@mui/icons-material";
 import { Button, Container, Grid } from "@mui/material";
-import { withStyles } from "@mui/styles";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import {
-  AddBox,
-  CharacterBox,
-  CreatureList,
-  EditableRow,
-  Header,
-  Section,
-  TransferAttributesList,
-} from "../../components";
+import { Header, Section, TransferAttributesList } from "../../components";
 import {
   AttributeModal,
   ConfirmationModal,
-  CreateCharacterModal,
-  DiceRollModal,
   SkillModal,
 } from "../../components/modals";
+import { AvailableCharacters } from "../../components/AvailableCharacters";
+import { AttributesList } from "../../components/AttributesList";
 import { prisma } from "../../database";
 import useModal from "../../hooks/useModal.hook";
 import { api } from "../../utils";
+import SkillsList from "../../components/SkillsList/SkillsList";
+import MasterDices from "../../components/MasterDices/MasterDices";
 
 export const getServerSideProps = async () => {
   function parseConfigs(array) {
@@ -84,7 +75,6 @@ export const getServerSideProps = async () => {
 };
 
 function Dashboard({
-  classes,
   configs,
   initialSkills,
   initialCharacters,
@@ -157,15 +147,6 @@ function Dashboard({
     />
   ));
 
-  const createCharacterModal = useModal(({ close }) => (
-    <CreateCharacterModal
-      handleClose={close}
-      onCharacterCreated={() => {
-        refreshData();
-      }}
-    />
-  ));
-
   const attributeModal = useModal(({ close, custom }) => {
     const onSubmit = (newAttribute) => {
       setAttributes(newAttribute);
@@ -201,25 +182,6 @@ function Dashboard({
     );
   });
 
-  const diceRollModal = useModal(({ close, custom }) => (
-    <DiceRollModal
-    amount={custom.amount}
-    onDiceRoll={(rollData) => {
-      const parsedData = {
-        character_id: 0,
-        rolls: rollData.map((each) => ({
-          rolled_number: each.rolled_number,
-          max_number: each.max_number,
-        })),
-      };
-
-      socket.emit("dice_roll", parsedData);
-    }}
-    handleClose={close}
-    characterId={0}
-  />
-  ));
-
   return (
     <>
       <Container maxWidth="lg" style={{ marginBottom: "30px" }}>
@@ -234,125 +196,29 @@ function Dashboard({
             <>
               {/* Personagens disponiveis */}
               <Grid item xs={12}>
-                <Section
-                  title="Fichas de personagens      "
-                  image="/assets/characters.png"
-                >
-                  <Grid item container xs={12} spacing={3}>
-                    {characters.map((character, index) => (
-                      <Grid item xs={12} md={4} key={index}>
-                        <CharacterBox
-                          character={character}
-                          deleteCharacter={() =>
-                            confirmationModal.appear({
-                              title: "Apagar personagem",
-                              text: "Deseja apagar este personagem?",
-                              data: { id: character.id, type: "character" },
-                            })
-                          }
-                        />
-                      </Grid>
-                    ))}
-                    <Grid item xs={12} md={4}>
-                      <AddBox onClick={() => createCharacterModal.appear()} />
-                    </Grid>
-                  </Grid>
-                </Section>
+                <AvailableCharacters
+                  characters={characters}
+                  confirmationModal={confirmationModal}
+                  refreshData={refreshData}
+                />
               </Grid>
 
               {/* Lista de ATRIBUTOS adicionadas e opção para adicionar */}
               <Grid item xs={12} md={6}>
-                <Section
-                  title="Atributos   "
-                  image="/assets/atributes.png"
-                  renderButton={() => (
-                    <Button
-                      variant="outlined"
-                      style={{
-                        display: "flex",
-                        alignSelf: "center",
-                      }}
-                      onClick={() =>
-                        attributeModal.appear({ operation: "create" })
-                      }
-                    >
-                      <AddIcon />
-                    </Button>
-                  )}
-                >
-                  <Grid
-                    item
-                    container
-                    xs={12}
-                    spacing={2}
-                    className={classes.scrollableBox}
-                  >
-                    {/* Para cada atributo existente, exiba as informações */}
-                    {attributes.map((attribute, index) => (
-                      <Grid item xs={12} key={index}>
-                        <EditableRow
-                          data={attribute}
-                          editRow={(data) => {
-                            attributeModal.appear({ operation: "edit", data });
-                          }}
-                          deleteRow={(data) => {
-                            confirmationModal.appear({
-                              title: "Apagar atributo",
-                              text: "Deseja apagar este atributo?",
-                              data: { id: data.id, type: "attribute" },
-                            });
-                          }}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Section>
+                <AttributesList
+                  attributes={attributes}
+                  attributeModal={attributeModal}
+                  confirmationModal={confirmationModal}
+                />
               </Grid>
 
               {/* Lista de PERICIAS adicionadas e opção para adicionar */}
               <Grid item xs={12} md={6}>
-                <Section
-                  title="Perícias   "
-                  image="/assets/expertise.png"
-                  renderButton={() => (
-                    <Button
-                      variant="outlined"
-                      style={{
-                        display: "flex",
-                        alignSelf: "center",
-                      }}
-                      onClick={() => skillModal.appear({ operation: "create" })}
-                    >
-                      <AddIcon />
-                    </Button>
-                  )}
-                >
-                  <Grid
-                    item
-                    container
-                    xs={12}
-                    spacing={2}
-                    className={classes.scrollableBox}
-                  >
-                    {skills.map((skill, index) => (
-                      <Grid item xs={12} key={index}>
-                        <EditableRow
-                          data={skill}
-                          editRow={(data) => {
-                            skillModal.appear({ operation: "edit", data });
-                          }}
-                          deleteRow={(data) => {
-                            confirmationModal.appear({
-                              title: "Apagar perícia",
-                              text: "Deseja apagar esta perícia?",
-                              data: { id: data.id, type: "skill" },
-                            });
-                          }}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Section>
+                <SkillsList
+                  skills={skills}
+                  skillModal={skillModal}
+                  confirmationModal={confirmationModal}
+                />
               </Grid>
 
               {/* Agrupamentos de atributos por pericias */}
@@ -384,48 +250,7 @@ function Dashboard({
 
               {/* Rolagem de dados */}
               <Grid item xs={12}>
-                <Section
-                  title="Rolagem de dados    "
-                  image="/assets/mastersDice/fire.png"
-                >
-                  <Grid item container xs={8} spacing={2} className={classes.marginCenter}>
-                      <Grid item xs={12}>
-                        <img className={classes.dice}
-                          src="/assets/mastersDice/d4.png"
-                          alt="D4"
-                          onClick={() => diceRollModal.appear({ amount: '1d4' })}
-                        />
-                        <img className={classes.dice}
-                          src="/assets/mastersDice/d6.png"
-                          alt="D6"
-                          onClick={() => diceRollModal.appear({ amount: '1d6' })}
-                        />
-                        <img className={classes.dice}
-                          src="/assets/mastersDice/d8.png"
-                          alt="D8"
-                          onClick={() => diceRollModal.appear({ amount: '1d8' })}
-                        />
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <img className={classes.dice}
-                          src="/assets/mastersDice/d10.png"
-                          alt="D10"
-                          onClick={() => diceRollModal.appear({ amount: '1d10' })}
-                        />
-                        <img className={classes.dice}
-                          src="/assets/mastersDice/d12.png"
-                          alt="D12"
-                          onClick={() => diceRollModal.appear({ amount: '1d12' })}
-                        />
-                        <img className={classes.dice}
-                          src="/assets/mastersDice/d20.png"
-                          alt="D20"
-                          onClick={() => diceRollModal.appear({ amount: '1d20' })}
-                        />
-                      </Grid>
-                    </Grid>
-                </Section>
+                <MasterDices />
               </Grid>
             </>
           ) : (
@@ -441,21 +266,4 @@ function Dashboard({
   );
 }
 
-const styles = (theme) => ({
-  scrollableBox: {
-    overflow: "auto",
-    maxHeight: "300px",
-    paddingRight: "10px",
-    paddingLeft: "20%",
-  },
-  marginCenter: {
-    marginLeft: 'auto',
-    marginRight: 'auto'
-  },
-  dice: {
-    width: "33.33%",
-    cursor: "pointer",
-  },
-});
-
-export default withStyles(styles)(Dashboard);
+export default Dashboard;
