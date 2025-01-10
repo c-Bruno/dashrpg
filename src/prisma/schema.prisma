@@ -17,6 +17,7 @@ model Character {
   birth String?
   birthplace String?
   fear String?
+  armor Int @default(0)
   current_hit_points Int @default(0)
   max_hit_points Int @default(0)
   current_sanity_points Int @default(0)

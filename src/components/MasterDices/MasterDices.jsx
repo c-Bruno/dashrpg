@@ -1,12 +1,19 @@
 import React from 'react';
+import Image from 'next/image';
 
-import { withStyles } from '@mui/styles';
 import { Grid } from '@mui/material';
 import { Section } from '../../components';
+import { useTranslation } from 'react-i18next'; 
 import { DiceRollModal } from '../../components/modals';
 import useModal from '../../hooks/useModal.hook';
 
-const MasterDices = ({ classes }) => {
+import { DICES } from '../../constants/dices';
+import { useMasterDiceStyles } from './styles';
+
+const MasterDices = () => {
+  const classes = useMasterDiceStyles(); // Hook for styles
+  const { t } = useTranslation(['masterDashboard']); // Translation hook
+
   const diceRollModal = useModal(({ close, custom }) => (
     <DiceRollModal
       amount={custom.amount}
@@ -27,63 +34,24 @@ const MasterDices = ({ classes }) => {
   ));
 
   return (
-    <Section title='Rolagem de dados    ' image='/assets/mastersDice/fire.png'>
+    <Section title={t('dices.title')} image='/assets/diceImages/fire.png'>
       <Grid item container xs={8} spacing={2} className={classes.marginCenter}>
         <Grid item xs={12}>
-          <img
-            className={classes.dice}
-            src='/assets/mastersDice/d4.png'
-            alt='D4'
-            onClick={() => diceRollModal.appear({ amount: '1d4' })}
-          />
-          <img
-            className={classes.dice}
-            src='/assets/mastersDice/d6.png'
-            alt='D6'
-            onClick={() => diceRollModal.appear({ amount: '1d6' })}
-          />
-          <img
-            className={classes.dice}
-            src='/assets/mastersDice/d8.png'
-            alt='D8'
-            onClick={() => diceRollModal.appear({ amount: '1d8' })}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <img
-            className={classes.dice}
-            src='/assets/mastersDice/d10.png'
-            alt='D10'
-            onClick={() => diceRollModal.appear({ amount: '1d10' })}
-          />
-          <img
-            className={classes.dice}
-            src='/assets/mastersDice/d12.png'
-            alt='D12'
-            onClick={() => diceRollModal.appear({ amount: '1d12' })}
-          />
-          <img
-            className={classes.dice}
-            src='/assets/mastersDice/d20.png'
-            alt='D20'
-            onClick={() => diceRollModal.appear({ amount: '1d20' })}
-          />
+          {Object.values(DICES).map(item => (
+            <Image
+              width={80}
+              height={80}
+              alt={`dice`}
+              key={`${item}-dice`}
+              className={classes.dice}
+              src={`/assets/diceImages/${item}.png`}
+              onClick={() => diceRollModal.appear({ amount: `1${item}` })}
+            />
+          ))}
         </Grid>
       </Grid>
     </Section>
   );
 };
 
-const styles = theme => ({
-  marginCenter: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  dice: {
-    width: '33.33%',
-    cursor: 'pointer',
-  },
-});
-
-export default withStyles(styles)(MasterDices);
+export default MasterDices;

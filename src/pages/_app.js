@@ -6,8 +6,10 @@ import { ModalProvider } from "../contexts/ModalContext";
 import theme from "../themes/Default.theme";
 import "../themes/global.scss";
 
+import i18n from '../i18n/i18n';
 import { Provider } from "react-redux";
 import configureStore from '../redux/configureStore';
+import { I18nextProvider } from "react-i18next";
 
 const store = configureStore({});
 
@@ -20,16 +22,16 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <>
-      <Provider store={store}>
+    <Provider store={store}>
+      <I18nextProvider i18n={i18n}>
         <ThemeProvider theme={theme}>
           <ModalProvider>
             <CssBaseline />
             <Component {...pageProps} />
           </ModalProvider>
         </ThemeProvider>
-      </Provider>
-    </>
+      </I18nextProvider>
+    </Provider>
   );
 }
 
