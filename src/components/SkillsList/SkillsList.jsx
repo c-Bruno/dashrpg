@@ -1,47 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import { withStyles } from "@mui/styles";
-import { Button, Grid } from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
-import { EditableRow, Section } from "../../components";
+import { Button, Grid } from '@mui/material';
+import { Add as AddIcon } from '@mui/icons-material';
+import { EditableRow, Section } from '../../components';
 
-const SkillsList = ({classes, skills, skillModal, confirmationModal}) => {
+import { useSkillStyles } from './styles';
+import { useTranslation } from 'react-i18next';
+
+const SkillsList = ({ skills, skillModal, confirmationModal }) => {
+  const classes = useSkillStyles();
+  const { t } = useTranslation(['masterDashboard']);
+
   return (
     <Section
-      title="Perícias   "
-      image="/assets/expertise.png"
+      title={t('skills.title')}
+      image='/assets/expertise.png'
       renderButton={() => (
         <Button
-          variant="outlined"
+          variant='outlined'
           style={{
-            display: "flex",
-            alignSelf: "center",
+            display: 'flex',
+            alignSelf: 'center',
           }}
-          onClick={() => skillModal.appear({ operation: "create" })}
+          onClick={() => skillModal.appear({ operation: 'create' })}
         >
           <AddIcon />
         </Button>
       )}
     >
-      <Grid
-        item
-        container
-        xs={12}
-        spacing={2}
-        className={classes.scrollableBox}
-      >
+      <Grid item container xs={12} spacing={2} className={classes.scrollableBox}>
         {skills.map((skill, index) => (
           <Grid item xs={12} key={index}>
             <EditableRow
               data={skill}
-              editRow={(data) => {
-                skillModal.appear({ operation: "edit", data });
+              editRow={data => {
+                skillModal.appear({ operation: 'edit', data });
               }}
-              deleteRow={(data) => {
+              deleteRow={data => {
                 confirmationModal.appear({
-                  title: "Apagar perícia",
-                  text: "Deseja apagar esta perícia?",
-                  data: { id: data.id, type: "skill" },
+                  title: t('excludeSkillModal.title'),
+                  text: t('excludeSkillModal.description'),
+                  data: { id: data.id, type: 'skill' },
                 });
               }}
             />
@@ -52,13 +51,4 @@ const SkillsList = ({classes, skills, skillModal, confirmationModal}) => {
   );
 };
 
-const styles = (theme) => ({
-  scrollableBox: {
-    overflow: "auto",
-    maxHeight: "300px",
-    paddingRight: "10px",
-    paddingLeft: "20%",
-  },
-});
-
-export default withStyles(styles)(SkillsList);
+export default SkillsList;

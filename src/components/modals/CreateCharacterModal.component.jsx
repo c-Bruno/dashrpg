@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { withStyles } from "@mui/styles";
+import React, { useState } from 'react';
+import { withStyles } from '@mui/styles';
 import {
   TextField,
   Dialog,
@@ -8,20 +8,22 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
-} from "@mui/material";
+} from '@mui/material';
 
-import { api } from "../../utils";
+import { api } from '../../utils';
+import { useTranslation } from 'react-i18next';
 
-const styles = (theme) => ({});
+const styles = theme => ({});
 
 function CreateCharacterModal({ classes, handleClose, onCharacterCreated }) {
+  const { t } = useTranslation(['masterDashboard']);
   const [character, setCharacter] = useState({
-    name: "",
+    name: '',
   });
 
   const resetState = () => {
     return setCharacter({
-      name: "",
+      name: '',
     });
   };
 
@@ -31,7 +33,7 @@ function CreateCharacterModal({ classes, handleClose, onCharacterCreated }) {
     }
 
     api
-      .post("/character", character)
+      .post('/character', character)
       .then(() => {
         // Callback
         onCharacterCreated();
@@ -42,31 +44,29 @@ function CreateCharacterModal({ classes, handleClose, onCharacterCreated }) {
         resetState();
       })
       .catch(() => {
-        alert("Erro ao criar o personagem!");
+        alert('Erro ao criar o personagem!');
       });
   };
 
   return (
     <Dialog open={true} onClose={handleClose}>
-      <DialogTitle>Criar novo personagem</DialogTitle>
+      <DialogTitle>{t('createModal.title')}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Insira as informações do persoangem que deseja criar.
-        </DialogContentText>
+        <DialogContentText>{t('createModal.description')}</DialogContentText>
         <TextField
           style={{
-            marginTop: "15px",
+            marginTop: '15px',
           }}
           autoFocus
-          label="Nome"
-          type="text"
+          label={t('createModal.inputs.name')}
+          type='text'
           fullWidth
-          variant="standard"
+          variant='standard'
           value={character.name}
           onChange={({ target }) => {
             const value = target.value;
 
-            setCharacter((prevState) => ({
+            setCharacter(prevState => ({
               ...prevState,
               name: value,
             }));
@@ -74,10 +74,10 @@ function CreateCharacterModal({ classes, handleClose, onCharacterCreated }) {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">
-          Cancelar
+        <Button onClick={handleClose} color='secondary'>
+          {t('createModal.cancel')}
         </Button>
-        <Button onClick={createCharacter}>Criar</Button>
+        <Button onClick={createCharacter}>{t('createModal.create')}</Button>
       </DialogActions>
     </Dialog>
   );

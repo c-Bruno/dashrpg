@@ -1,11 +1,14 @@
-import { Grid } from "@mui/material";
-import React from "react";
-import { AddBox, CharacterBox, Section } from "..";
-import { CreateCharacterModal } from "../modals";
-import useModal from "../../hooks/useModal.hook";
-import { useRouter } from "next/router";
+import { Grid } from '@mui/material';
+import React from 'react';
+import { AddBox, CharacterBox, Section } from '..';
+import { CreateCharacterModal } from '../modals';
+import useModal from '../../hooks/useModal.hook';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 const AvailableCharacters = ({ characters, refreshData, confirmationModal }) => {
+  const { t } = useTranslation(['masterDashboard']);
+
   const createCharacterModal = useModal(({ close }) => (
     <CreateCharacterModal
       handleClose={close}
@@ -16,7 +19,7 @@ const AvailableCharacters = ({ characters, refreshData, confirmationModal }) => 
   ));
 
   return (
-    <Section title="Fichas de personagens      " image="/assets/characters.png">
+    <Section title={t('characters.title')} image='/assets/characters.png'>
       <Grid item container xs={12} spacing={3}>
         {characters.map((character, index) => (
           <Grid item xs={12} md={4} key={index}>
@@ -24,9 +27,9 @@ const AvailableCharacters = ({ characters, refreshData, confirmationModal }) => 
               character={character}
               deleteCharacter={() =>
                 confirmationModal.appear({
-                  title: "Apagar personagem",
-                  text: "Deseja apagar este personagem?",
-                  data: { id: character.id, type: "character" },
+                  title: t('excludeCharacterModal.title'),
+                  text: t('excludeCharacterModal.description'),
+                  data: { id: character.id, type: 'character' },
                 })
               }
             />

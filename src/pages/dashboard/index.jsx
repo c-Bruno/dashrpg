@@ -1,28 +1,21 @@
-import { Button, Container, Grid } from "@mui/material";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { Header, Section, TransferAttributesList } from "../../components";
-import {
-  AttributeModal,
-  ConfirmationModal,
-  SkillModal,
-} from "../../components/modals";
-import { AvailableCharacters } from "../../components/AvailableCharacters";
-import { AttributesList } from "../../components/AttributesList";
-import { prisma } from "../../database";
-import useModal from "../../hooks/useModal.hook";
-import { api } from "../../utils";
-import SkillsList from "../../components/SkillsList/SkillsList";
-import MasterDices from "../../components/MasterDices/MasterDices";
+import { Button, Container, Grid } from '@mui/material';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { Header, Section, TransferAttributesList } from '../../components';
+import { AttributeModal, ConfirmationModal, SkillModal } from '../../components/modals';
+import { AvailableCharacters } from '../../components/AvailableCharacters';
+import { AttributesList } from '../../components/AttributesList';
+import { prisma } from '../../database';
+import useModal from '../../hooks/useModal.hook';
+import { api } from '../../utils';
+import SkillsList from '../../components/SkillsList/SkillsList';
+import MasterDices from '../../components/MasterDices/MasterDices';
 
 export const getServerSideProps = async () => {
   function parseConfigs(array) {
-    return array.map((config) => {
-      if (
-        config.name === "DICE_ON_SCREEN_TIMEOUT_IN_MS" ||
-        "TIME_BETWEEN_DICES_IN_MS"
-      ) {
+    return array.map(config => {
+      if (config.name === 'DICE_ON_SCREEN_TIMEOUT_IN_MS' || 'TIME_BETWEEN_DICES_IN_MS') {
         return {
           ...config,
           value: parseInt(config.value) / 1000,
@@ -36,7 +29,7 @@ export const getServerSideProps = async () => {
   const characters = await prisma.character.findMany({
     orderBy: [
       {
-        name: "asc",
+        name: 'asc',
       },
     ],
   });
@@ -44,7 +37,7 @@ export const getServerSideProps = async () => {
   const attributes = await prisma.attribute.findMany({
     orderBy: [
       {
-        name: "asc",
+        name: 'asc',
       },
     ],
   });
@@ -52,7 +45,7 @@ export const getServerSideProps = async () => {
   const skills = await prisma.skill.findMany({
     orderBy: [
       {
-        name: "asc",
+        name: 'asc',
       },
     ],
   });
@@ -74,12 +67,7 @@ export const getServerSideProps = async () => {
   };
 };
 
-function Dashboard({
-  configs,
-  initialSkills,
-  initialCharacters,
-  initialAttributes,
-}) {
+function Dashboard({ configs, initialSkills, initialCharacters, initialAttributes }) {
   const [skills, setSkills] = useState(initialSkills);
   const [attributes, setAttributes] = useState(initialAttributes);
   const [characters, setCharacters] = useState(initialCharacters);
@@ -91,8 +79,8 @@ function Dashboard({
   });
 
   useEffect(() => {
-    configs.forEach((config) => {
-      setUpdatedConfigs((prevState) => ({
+    configs.forEach(config => {
+      setUpdatedConfigs(prevState => ({
         ...prevState,
         [config.name]: config.value,
       }));
@@ -104,17 +92,17 @@ function Dashboard({
   };
 
   const updateConfigs = () => {
-    api.put("/config/DICE_ON_SCREEN_TIMEOUT_IN_MS", {
+    api.put('/config/DICE_ON_SCREEN_TIMEOUT_IN_MS', {
       value: `${parseInt(updatedConfigs.DICE_ON_SCREEN_TIMEOUT_IN_MS) * 1000}`,
     });
 
-    api.put("/config/TIME_BETWEEN_DICES_IN_MS", {
+    api.put('/config/TIME_BETWEEN_DICES_IN_MS', {
       value: `${parseInt(updatedConfigs.TIME_BETWEEN_DICES_IN_MS) * 1000}`,
     });
   };
 
   const runInitialSetup = () => {
-    api.post("/setup").then((res) => {
+    api.post('/setup').then(res => {
       if (res.data.success) {
         return window.location.reload();
       }
@@ -127,17 +115,17 @@ function Dashboard({
       text={custom.text}
       data={custom.data}
       handleClose={close}
-      onConfirmation={(data) => {
+      onConfirmation={data => {
         const { id, type } = data;
 
         api
           .delete(`/${type}/${id}`)
           .then(() => {
-            if (type == "attribute") {
-              setAttributes(attributes.filter((item) => item.id !== id));
+            if (type == 'attribute') {
+              setAttributes(attributes.filter(item => item.id !== id));
             }
-            if (type == "skill") {
-              setSkills(skills.filter((item) => item.id !== id));
+            if (type == 'skill') {
+              setSkills(skills.filter(item => item.id !== id));
             }
           })
           .catch(() => {
@@ -148,7 +136,7 @@ function Dashboard({
   ));
 
   const attributeModal = useModal(({ close, custom }) => {
-    const onSubmit = (newAttribute) => {
+    const onSubmit = newAttribute => {
       setAttributes(newAttribute);
       close();
     };
@@ -166,7 +154,7 @@ function Dashboard({
   });
 
   const skillModal = useModal(({ close, custom }) => {
-    const onSubmit = (newSkill) => {
+    const onSubmit = newSkill => {
       setSkills(newSkill);
       close();
     };
@@ -183,61 +171,57 @@ function Dashboard({
   });
 
   return (
-    <>
-      <Container maxWidth="lg" style={{ marginBottom: "30px" }}>
-        <Head>
-          <title>Mestre | RPG</title>
-        </Head>
+    <Container maxWidth='lg' style={{ marginBottom: '30px' }}>
+      <Head>
+        <title>Mestre | RPG</title>
+      </Head>
 
-        <Grid container item spacing={3}>
-          <Header title="Dashboard do Mestre" />
+      <Grid container item spacing={3}>
+        <Header title='Dashboard do Mestre' />
 
-          {configs.length > 0 ? (
-            <>
-              {/* Personagens disponiveis */}
-              <Grid item xs={12}>
-                <AvailableCharacters
-                  characters={characters}
-                  confirmationModal={confirmationModal}
-                  refreshData={refreshData}
-                />
-              </Grid>
+        {configs.length > 0 ? (
+          <>
+            {/* /* Available characters */}
+            <Grid item xs={12}>
+              <AvailableCharacters
+                characters={characters}
+                confirmationModal={confirmationModal}
+                refreshData={refreshData}
+              />
+            </Grid>
 
-              {/* Lista de ATRIBUTOS adicionadas e opção para adicionar */}
-              <Grid item xs={12} md={6}>
-                <AttributesList
-                  attributes={attributes}
-                  attributeModal={attributeModal}
-                  confirmationModal={confirmationModal}
-                />
-              </Grid>
+            {/* /* List of added ATTRIBUTES and option to add */}
+            <Grid item xs={12} md={6}>
+              <AttributesList
+                attributes={attributes}
+                attributeModal={attributeModal}
+                confirmationModal={confirmationModal}
+              />
+            </Grid>
 
-              {/* Lista de PERICIAS adicionadas e opção para adicionar */}
-              <Grid item xs={12} md={6}>
-                <SkillsList
-                  skills={skills}
-                  skillModal={skillModal}
-                  confirmationModal={confirmationModal}
-                />
-              </Grid>
+            {/* /* List of added SKILLS and option to add */}
+            <Grid item xs={12} md={6}>
+              <SkillsList
+                skills={skills}
+                skillModal={skillModal}
+                confirmationModal={confirmationModal}
+              />
+            </Grid>
 
-              {/* Agrupamentos de atributos por pericias */}
-              <Grid item xs={12}>
-                <Section
-                  title="Classificação de atributos    "
-                  image="/assets/groupAttibutes.png"
-                >
-                  <Grid item container xs={12} spacing={2}>
-                    <TransferAttributesList
-                      attributes={attributes}
-                      skills={skills}
-                    ></TransferAttributesList>
-                  </Grid>
-                </Section>
-              </Grid>
+            {/* Agrupamentos de atributos por pericias */}
+            <Grid item xs={12}>
+              <Section title='Classificação de atributos    ' image='/assets/groupAttibutes.png'>
+                <Grid item container xs={12} spacing={2}>
+                  <TransferAttributesList
+                    attributes={attributes}
+                    skills={skills}
+                  ></TransferAttributesList>
+                </Grid>
+              </Section>
+            </Grid>
 
-              {/* Monstros disponiveis na campanha */}
-              {/* <Grid item xs={12}>
+            {/* Monstros disponiveis na campanha */}
+            {/* <Grid item xs={12}>
                 <Section
                   title="Criaturas    "
                   image="/assets/groupAttibutes.png"
@@ -248,21 +232,20 @@ function Dashboard({
                 </Section>
               </Grid> */}
 
-              {/* Rolagem de dados */}
-              <Grid item xs={12}>
-                <MasterDices />
-              </Grid>
-            </>
-          ) : (
+            {/* Rolagem de dados */}
             <Grid item xs={12}>
-              <Button variant="contained" onClick={runInitialSetup} fullWidth>
-                REALIZAR CONFIGURAÇÃO INICIAL
-              </Button>
+              <MasterDices />
             </Grid>
-          )}
-        </Grid>
-      </Container>
-    </>
+          </>
+        ) : (
+          <Grid item xs={12}>
+            <Button variant='contained' onClick={runInitialSetup} fullWidth>
+              REALIZAR CONFIGURAÇÃO INICIAL
+            </Button>
+          </Grid>
+        )}
+      </Grid>
+    </Container>
   );
 }
 
