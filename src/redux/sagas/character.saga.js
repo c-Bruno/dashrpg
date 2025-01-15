@@ -13,7 +13,6 @@ import {
 import { CHARACTER } from '../modules/character'
 
 export const delay = duration => {
-  console.log('to aqui ')
   return new Promise(resolve => {
     setTimeout(() => resolve(true), duration);
   });

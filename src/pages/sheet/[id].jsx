@@ -1,14 +1,11 @@
-import { Container, Grid } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { Header, Section } from "../../components";
-import {
-  CharacterOverview,
-  CharacterInfoForm,
-} from "../../components/Character";
+import React, { useEffect, useState } from 'react';
+
+import { Container, Grid } from '@mui/material';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+import { Header, Section } from '../../components';
+import { CharacterOverview, CharacterInfoForm } from '../../components/Character';
 import {
   ChangePictureModal,
   CombatModal,
@@ -16,55 +13,19 @@ import {
   DiceRollModal,
   InventoryModal,
   StatusBarModal,
-} from "../../components/modals";
-import { prisma } from "../../database";
-import useModal from "../../hooks/useModal.hook";
-import { api } from "../../utils";
-import socket from "../../utils/socket";
-import { Inventory } from "../../components/Inventory";
-import { SpecialItem } from "../../components/SpecialItem";
-import { Combat } from "../../components/Combat";
-import { Attributes } from "../../components/Attributes";
-import { Skills } from "../../components/Skills";
-import * as characterActions from "../../redux/actions/character.actions";
+} from '../../components/modals';
+import { prisma } from '../../database';
+import useModal from '../../hooks/useModal.hook';
+import { api } from '../../utils';
+import socket from '../../utils/socket';
+import { Inventory } from '../../components/Inventory';
+import { SpecialItem } from '../../components/SpecialItem';
+import { Combat } from '../../components/Combat';
+import { Attributes } from '../../components/Attributes';
+import { Skills } from '../../components/Skills';
+import * as characterActions from '../../redux/actions/character.actions';
 
-import { useDispatch } from "react-redux";
-
-const styles = (theme) => ({
-  characterImage: {
-    width: "200px",
-    borderRadius: "50%",
-    cursor: "pointer",
-  },
-
-  alignCenter: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  bar: {
-    marginBottom: "2px",
-  },
-
-  barTitle: {
-    marginBottom: "2px",
-    color: theme.palette.secondary.main,
-    fontSize: "15px",
-    fontWeight: "bold",
-  },
-
-  dice: {
-    cursor: "pointer",
-    transition: "-webkit-transform .8s ease-in-out",
-    transform: "transform .8s ease-in-out",
-
-    "&:hover": {
-      transition: "rotate(360deg)",
-      transform: "rotate(360deg)",
-    },
-  },
-});
+import { useDispatch } from 'react-redux';
 
 export const getServerSideProps = async ({ params }) => {
   const characterId = isNaN(params.id) ? null : Number(params.id);
@@ -124,7 +85,7 @@ export const getServerSideProps = async ({ params }) => {
   };
 };
 
-function Sheet({ classes, rawCharacter }) {
+function Sheet({ rawCharacter }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -134,7 +95,7 @@ function Sheet({ classes, rawCharacter }) {
 
   const [character, setCharacter] = useState(rawCharacter);
 
-  const onCharacterInfoSubmit = async (values) => {
+  const onCharacterInfoSubmit = async values => {
     return new Promise((resolve, reject) => {
       api
         .put(`/character/${character.id}`, values)
@@ -148,7 +109,7 @@ function Sheet({ classes, rawCharacter }) {
   };
 
   // Atualiza(update) o valor de VIDA no banco
-  const onHitPointsModalSubmit = async (newData) => {
+  const onHitPointsModalSubmit = async newData => {
     return new Promise((resolve, reject) => {
       const data = {
         current_hit_points: Number(newData.current),
@@ -162,13 +123,13 @@ function Sheet({ classes, rawCharacter }) {
 
           resolve();
 
-          socket.emit("update_hit_points", {
+          socket.emit('update_hit_points', {
             character_id: character.id,
             current: data.current_hit_points,
             max: data.max_hit_points,
           });
         })
-        .catch((err) => {
+        .catch(err => {
           toast.error(`Erro ao atualizar a vida!`, err);
 
           reject();
@@ -177,7 +138,7 @@ function Sheet({ classes, rawCharacter }) {
   };
 
   // Atualiza(update) o valor de SANIDADE no banco
-  const onSanityPointsModalSubmit = async (newData) => {
+  const onSanityPointsModalSubmit = async newData => {
     return new Promise((resolve, reject) => {
       const data = {
         current_sanity_points: Number(newData.current),
@@ -190,13 +151,13 @@ function Sheet({ classes, rawCharacter }) {
           updateCharacterState(data);
           resolve();
 
-          socket.emit("update_hit_points", {
+          socket.emit('update_hit_points', {
             character_id: character.id,
             current: data.current_sanity_points,
             max: data.max_sanity_points,
           });
         })
-        .catch((err) => {
+        .catch(err => {
           toast.error(`Erro ao atualizar a sanidade!`, err);
           reject();
         });
@@ -207,8 +168,8 @@ function Sheet({ classes, rawCharacter }) {
     setCharacter(rawCharacter);
   }, [rawCharacter]);
 
-  const updateCharacterState = (data) => {
-    return setCharacter((prevState) => ({
+  const updateCharacterState = data => {
+    return setCharacter(prevState => ({
       ...prevState,
       ...data,
     }));
@@ -221,17 +182,15 @@ function Sheet({ classes, rawCharacter }) {
       text={custom.text}
       data={custom.data}
       handleClose={close}
-      onConfirmation={(data) => {
+      onConfirmation={data => {
         const { id, type } = data;
 
         api
           .delete(`/${type}/${id}`)
           .then(() => {
-            setCharacter((prevCharacter) => ({
+            setCharacter(prevCharacter => ({
               ...prevCharacter,
-              [type]: prevCharacter[type].filter(
-                (item) => item[`${type}_id`] !== id
-              ),
+              [type]: prevCharacter[type].filter(item => item[`${type}_id`] !== id),
             }));
           })
           .catch(() => {
@@ -244,8 +203,8 @@ function Sheet({ classes, rawCharacter }) {
   // Modal de vida
   const hitPointsModal = useModal(({ close }) => (
     <StatusBarModal
-      type="hp"
-      onSubmit={async (newData) => {
+      type='hp'
+      onSubmit={async newData => {
         onHitPointsModalSubmit(newData).then(() => close());
       }}
       handleClose={close}
@@ -259,8 +218,8 @@ function Sheet({ classes, rawCharacter }) {
   // Modal de Sanidade
   const sanityPointsModal = useModal(({ close }) => (
     <StatusBarModal
-      type="sn"
-      onSubmit={async (newData) => {
+      type='sn'
+      onSubmit={async newData => {
         onSanityPointsModalSubmit(newData).then(() => close());
       }}
       handleClose={close}
@@ -274,17 +233,17 @@ function Sheet({ classes, rawCharacter }) {
   // Modal dos dados
   const diceRollModal = useModal(({ close }) => (
     <DiceRollModal
-      amount={"1d100"}
-      onDiceRoll={(rollData) => {
+      amount={'1d100'}
+      onDiceRoll={rollData => {
         const parsedData = {
           character_id: character.id,
-          rolls: rollData.map((each) => ({
+          rolls: rollData.map(each => ({
             rolled_number: each.rolled_number,
             max_number: each.max_number,
           })),
         };
 
-        socket.emit("dice_roll", parsedData);
+        socket.emit('dice_roll', parsedData);
       }}
       handleClose={close}
       characterId={character.id}
@@ -304,7 +263,7 @@ function Sheet({ classes, rawCharacter }) {
   const inventoryModal = useModal(({ close, custom }) => {
     const { data, character: inventoryCharacter, space, operation } = custom;
 
-    const onSubmit = (newCharacter) => {
+    const onSubmit = newCharacter => {
       setCharacter(newCharacter);
       close();
     };
@@ -326,7 +285,7 @@ function Sheet({ classes, rawCharacter }) {
   const combatModal = useModal(({ close, custom }) => {
     const { data, character: combatCharacter, operation } = custom;
 
-    const onSubmit = (newCharacter) => {
+    const onSubmit = newCharacter => {
       setCharacter(newCharacter);
       close();
     };
@@ -344,7 +303,7 @@ function Sheet({ classes, rawCharacter }) {
   });
 
   useEffect(() => {
-    dispatch(characterActions.updateCharacter("teste"));
+    dispatch(characterActions.updateCharacter('teste'));
   }, []);
 
   if (!rawCharacter) {
@@ -352,7 +311,7 @@ function Sheet({ classes, rawCharacter }) {
   }
 
   return (
-    <Container style={{ marginBottom: "30px", maxWidth: "1400px" }}>
+    <Container style={{ marginBottom: '30px', maxWidth: '1400px' }}>
       <Head>
         <title>{character.name} | RPG</title>
       </Head>
@@ -372,13 +331,10 @@ function Sheet({ classes, rawCharacter }) {
 
           {/* Grid contendo todos os dados pessoais do personagem */}
           <Grid item xs={12} md={8}>
-            <Section title="Ficha de personagem">
+            <Section title='Ficha de personagem'>
               <Grid container item xs={12}>
                 <Grid item xs={12}>
-                  <CharacterInfoForm
-                    initialValues={character}
-                    onSubmit={onCharacterInfoSubmit}
-                  />
+                  <CharacterInfoForm initialValues={character} onSubmit={onCharacterInfoSubmit} />
                 </Grid>
               </Grid>
             </Section>
@@ -400,11 +356,7 @@ function Sheet({ classes, rawCharacter }) {
 
           {/* Combate */}
           <Grid item xs={12}>
-            <Combat
-              character={character}
-              setCharacter={setCharacter}
-              combatModal={combatModal}
-            />
+            <Combat character={character} setCharacter={setCharacter} combatModal={combatModal} />
           </Grid>
 
           {/* Item especial */}
@@ -422,4 +374,4 @@ function Sheet({ classes, rawCharacter }) {
   );
 }
 
-export default withStyles(styles)(Sheet);
+export default Sheet;

@@ -1,13 +1,10 @@
-import { Delete as DeleteIcon, Create as EditIcon } from "@mui/icons-material";
-import { Button, Grid, TextField, Tooltip } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import React from "react";
+import { Delete as DeleteIcon, Create as EditIcon } from '@mui/icons-material';
+import { Button, Grid, TextField, Tooltip } from '@mui/material';
+import React from 'react';
 
-const styles = (theme) => ({});
-
-const EditableRow = ({ data, editRow, classes, deleteRow }) => {
+const EditableRow = ({ data, editRow, deleteRow }) => {
   return (
-    <div className={classes.root}>
+    <div>
       {/* Inventario do personagem */}
       <Grid container>
         {/* Descrição do item no inventario */}
@@ -15,7 +12,7 @@ const EditableRow = ({ data, editRow, classes, deleteRow }) => {
           <TextField
             disabled
             value={data.name || data.inventory.description}
-            variant="standard"
+            variant='standard'
             fullWidth
           />
         </Grid>
@@ -23,19 +20,14 @@ const EditableRow = ({ data, editRow, classes, deleteRow }) => {
         {/* Peso do item no inventario */}
         {data.inventory && (
           <Grid item md={2} xs={12}>
-            <TextField
-              disabled
-              value={data.inventory.weight}
-              variant="standard"
-              fullWidth
-            />
+            <TextField disabled value={data.inventory.weight} variant='standard' fullWidth />
           </Grid>
         )}
 
         {/* Remover Item */}
         <Grid item md={2} xs={6}>
-          <Tooltip title="Remover item do inventario">
-            <Button variant="outlined" onClick={() => deleteRow(data)}>
+          <Tooltip title='Remover item do inventario'>
+            <Button variant='outlined' onClick={() => deleteRow(data)}>
               <DeleteIcon />
             </Button>
           </Tooltip>
@@ -43,8 +35,8 @@ const EditableRow = ({ data, editRow, classes, deleteRow }) => {
 
         {/* Editar Item */}
         <Grid item md={2} xs={6}>
-          <Tooltip title="Editar indormações do item ">
-            <Button variant="outlined" onClick={() => editRow(data)}>
+          <Tooltip title='Editar indormações do item '>
+            <Button variant='outlined' onClick={() => editRow(data)}>
               <EditIcon />
             </Button>
           </Tooltip>
@@ -54,4 +46,4 @@ const EditableRow = ({ data, editRow, classes, deleteRow }) => {
   );
 };
 
-export default withStyles(styles)(EditableRow);
+export default EditableRow;

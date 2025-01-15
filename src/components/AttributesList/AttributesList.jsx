@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import { withStyles } from '@mui/styles';
 import { Button, Grid } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
 import { EditableRow, Section } from '../../components';
 
-import { useAttributeListStyles } from './styles';
 import { useTranslation } from 'react-i18next';
+import { ScrollTableBox } from './styles';
 
 const AttributesList = ({ attributes, attributeModal, confirmationModal }) => {
-  const classes = useAttributeListStyles();
   const { t } = useTranslation(['masterDashboard']);
 
   return (
@@ -29,7 +27,7 @@ const AttributesList = ({ attributes, attributeModal, confirmationModal }) => {
         </Button>
       )}
     >
-      <Grid item container xs={12} spacing={2} className={classes.scrollableBox}>
+      <ScrollTableBox item container xs={12} spacing={2}>
         {/* Para cada atributo existente, exiba as informações */}
         {attributes.map((attribute, index) => (
           <Grid item xs={12} key={index}>
@@ -48,7 +46,7 @@ const AttributesList = ({ attributes, attributeModal, confirmationModal }) => {
             />
           </Grid>
         ))}
-      </Grid>
+      </ScrollTableBox>
     </Section>
   );
 };

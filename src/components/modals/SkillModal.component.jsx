@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { withStyles } from "@mui/styles";
+import React, { useState, useEffect } from 'react';
+
 import {
   TextField,
   Dialog,
@@ -8,25 +8,16 @@ import {
   Grid,
   DialogTitle,
   Button,
-} from "@mui/material";
-import { api } from "../../utils";
-import { toast, ToastContainer } from "react-toastify";
+} from '@mui/material';
+import { api } from '../../utils';
+import { toast, ToastContainer } from 'react-toastify';
 
-const styles = (theme) => ({});
-
-function SkillModal({
-  data,
-  skills,
-  classes,
-  onSubmit,
-  operation,
-  handleClose,
-}) {
+function SkillModal({ data, skills, onSubmit, operation, handleClose }) {
   const [updatedSkills, setUpdatedSkills] = useState(skills);
 
   const [skill, setSkill] = useState({
-    name: "",
-    description: "",
+    name: '',
+    description: '',
   });
 
   useEffect(() => {
@@ -42,8 +33,8 @@ function SkillModal({
 
   const resetState = () => {
     return setSkill({
-      name: "",
-      description: "",
+      name: '',
+      description: '',
     });
   };
 
@@ -52,14 +43,14 @@ function SkillModal({
       return;
     }
 
-    if (operation === "create") {
+    if (operation === 'create') {
       api
-        .post("/skill", skill)
+        .post('/skill', skill)
         .then(async () => {
           const responseID = await api.get(`/skill/`);
 
           let newIds = [];
-          responseID.data.forEach((val) => {
+          responseID.data.forEach(val => {
             newIds.push(val.id);
           });
 
@@ -80,16 +71,14 @@ function SkillModal({
           resetState();
         })
         .catch(() => {
-          toast.error("Erro ao criar a perícia!");
+          toast.error('Erro ao criar a perícia!');
         });
-    } else if (operation === "edit") {
+    } else if (operation === 'edit') {
       api
         .put(`/skill/${data.id}`, skill)
         .then(() => {
           // Descobre o ID no inventario que vai ser atualizado e modifica essa posição na lista
-          const index = updatedSkills.findIndex(
-            (obj) => obj.id === data.id
-          );
+          const index = updatedSkills.findIndex(obj => obj.id === data.id);
 
           updatedSkills[index] = { id: data.id, ...skill };
           setUpdatedSkills(updatedSkills);
@@ -104,33 +93,31 @@ function SkillModal({
           resetState();
         })
         .catch(() => {
-          toast.error("Erro ao editar a perícia!");
+          toast.error('Erro ao editar a perícia!');
         });
     }
   };
 
   return (
     <Dialog open={true} onClose={handleClose}>
-      <DialogTitle>
-        {operation === "create" ? "Criar nova perícia" : "Editar perícia"}
-      </DialogTitle>
+      <DialogTitle>{operation === 'create' ? 'Criar nova perícia' : 'Editar perícia'}</DialogTitle>
       <DialogContent>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
               style={{
-                marginTop: "15px",
+                marginTop: '15px',
               }}
               autoFocus
-              label="Nome"
-              type="text"
+              label='Nome'
+              type='text'
               fullWidth
-              variant="standard"
+              variant='standard'
               value={skill.name}
               onChange={({ target }) => {
                 const value = target.value;
 
-                setSkill((prevState) => ({
+                setSkill(prevState => ({
                   ...prevState,
                   name: value,
                 }));
@@ -141,19 +128,19 @@ function SkillModal({
           <Grid item xs={12}>
             <TextField
               style={{
-                marginTop: "15px",
+                marginTop: '15px',
               }}
               autoFocus
-              label="Descrição"
-              type="text"
+              label='Descrição'
+              type='text'
               fullWidth
               multiline
-              variant="standard"
+              variant='standard'
               value={skill.description}
               onChange={({ target }) => {
                 const value = target.value;
 
-                setSkill((prevState) => ({
+                setSkill(prevState => ({
                   ...prevState,
                   description: value,
                 }));
@@ -164,7 +151,7 @@ function SkillModal({
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">
+        <Button onClick={handleClose} color='secondary'>
           Cancelar
         </Button>
         <Button onClick={submit}>Confirmar</Button>
@@ -173,4 +160,4 @@ function SkillModal({
   );
 }
 
-export default withStyles(styles)(SkillModal);
+export default SkillModal;

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { withStyles } from "@mui/styles";
+import React, { useState, useEffect } from 'react';
+
 import {
   TextField,
   Dialog,
@@ -9,17 +9,14 @@ import {
   DialogTitle,
   Button,
   Snackbar,
-} from "@mui/material";
+} from '@mui/material';
 
-import { toast, ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from 'react-toastify';
 
-import { api } from "../../utils";
-
-const styles = (theme) => ({});
+import { api } from '../../utils';
 
 function InventoryModal({
   data,
-  classes,
   onSubmit,
   operation,
   character,
@@ -30,7 +27,7 @@ function InventoryModal({
   const [updatedCharacter, setUpdatedCharacter] = useState(fullCharacter);
 
   const [inventory, setInventory] = useState({
-    description: "",
+    description: '',
     weight: null,
     character_id: character,
   });
@@ -49,7 +46,7 @@ function InventoryModal({
 
   const resetState = () => {
     return setInventory({
-      description: "",
+      description: '',
       weight: null,
       character_id: character,
     });
@@ -58,26 +55,26 @@ function InventoryModal({
   const submit = () => {
     if (!inventory.description || !inventory.weight) {
       // Verifica se a descrição e peso esta preenchida
-      toast.error("Preencha todos os campos");
+      toast.error('Preencha todos os campos');
       return;
     }
 
     if (inventory.weight > totalSpace) {
       // Verifica se o novo item cabe no inventario
-      toast.error("Este item não cabe no seu inventário");
+      toast.error('Este item não cabe no seu inventário');
       return;
     }
 
     // Se a operação for criar
-    if (operation === "create") {
+    if (operation === 'create') {
       api
-        .post("/inventory", inventory)
+        .post('/inventory', inventory)
         .then(async () => {
           //
           const responseID = await api.get(`/inventory/`);
 
           let newIds = [];
-          responseID.data.forEach((val) => {
+          responseID.data.forEach(val => {
             newIds.push(val.id);
           });
 
@@ -98,16 +95,16 @@ function InventoryModal({
           resetState();
         })
         .catch(() => {
-          toast.error("Erro ao criar o item!");
+          toast.error('Erro ao criar o item!');
         });
-    } else if (operation === "edit") {
+    } else if (operation === 'edit') {
       // Se a operação for editar
       api
         .put(`/inventory/${data.inventory_id}`, inventory)
         .then(() => {
           // Descobre o ID no inventario que vai ser atualizado e modifica essa posição na lista
           const index = updatedCharacter.inventory.findIndex(
-            (obj) => obj.inventory_id === data.inventory_id
+            obj => obj.inventory_id === data.inventory_id,
           );
           updatedCharacter.inventory[index].inventory = inventory;
           setUpdatedCharacter(updatedCharacter);
@@ -120,8 +117,8 @@ function InventoryModal({
 
           resetState();
         })
-        .catch((err) => {
-          toast.error("Erro ao editar o item!");
+        .catch(err => {
+          toast.error('Erro ao editar o item!');
           console.log(err);
         });
     }
@@ -130,26 +127,26 @@ function InventoryModal({
   return (
     <Dialog open={true} onClose={handleClose}>
       <DialogTitle>
-        {" "}
-        {operation === "create" ? "Adicionar um novo item" : "Editar item"}
+        {' '}
+        {operation === 'create' ? 'Adicionar um novo item' : 'Editar item'}
       </DialogTitle>
       <DialogContent>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
               style={{
-                marginTop: "15px",
+                marginTop: '15px',
               }}
               autoFocus
-              label="Descrição"
-              type="text"
+              label='Descrição'
+              type='text'
               fullWidth
-              variant="standard"
-              defaultValue={data ? data.inventory.description : ""}
+              variant='standard'
+              defaultValue={data ? data.inventory.description : ''}
               onChange={({ target }) => {
                 const value = target.value;
 
-                setInventory((prevState) => ({
+                setInventory(prevState => ({
                   ...prevState,
                   description: value,
                 }));
@@ -161,18 +158,18 @@ function InventoryModal({
           <Grid item xs={12}>
             <TextField
               style={{
-                marginTop: "15px",
+                marginTop: '15px',
               }}
-              label="Peso"
-              type="number"
+              label='Peso'
+              type='number'
               fullWidth
               multiline
-              variant="standard"
-              defaultValue={data ? data.inventory.weight : ""}
+              variant='standard'
+              defaultValue={data ? data.inventory.weight : ''}
               onChange={({ target }) => {
                 const value = Number(target.value);
 
-                setInventory((prevState) => ({
+                setInventory(prevState => ({
                   ...prevState,
                   weight: value,
                 }));
@@ -184,7 +181,7 @@ function InventoryModal({
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">
+        <Button onClick={handleClose} color='secondary'>
           Cancelar
         </Button>
         <Button onClick={submit}>Confirmar</Button>
@@ -193,4 +190,4 @@ function InventoryModal({
   );
 }
 
-export default withStyles(styles)(InventoryModal);
+export default InventoryModal;

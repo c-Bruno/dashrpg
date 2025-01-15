@@ -52,8 +52,8 @@ $ npm start
 
 ## Technologies Used
 
-- **React**: For building the user interface.
-- **Next.js**: Utilizing Server-Side Rendering (SSR) and REST API.
+- **React**: For building the user interface. (Version 18.3.1)
+- **Next.js**: Utilizing Server-Side Rendering (SSR) and REST API. (Version 12.1.5)
 - **Prisma**: As an Object-Relational Mapping (ORM) tool.
 - **MySQL**: Relational database for data storage.
 - **Socket.io**: For real-time communication between server and client.

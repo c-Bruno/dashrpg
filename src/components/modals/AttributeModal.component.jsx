@@ -5,38 +5,28 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  styled,
   TextField,
-} from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { withStyles } from "@mui/styles";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { api } from "../../utils";
+} from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { api } from '../../utils';
 
-const styles = () => ({
-  inputAttributeInfos: {
-    marginTop: "15px",
-  },
-});
+const AttributeName = styled(TextField)(({ theme }) => ({
+  marginTop: '15px',
+}));
 
-function AttributeModal({
-  data,
-  classes,
-  onSubmit,
-  operation,
-  attributes,
-  handleClose,
-  attributeSkill,
-}) {
+function AttributeModal({ data, onSubmit, operation, attributes, handleClose, attributeSkill }) {
   const [updatedAttributes, setUpdatedAttributes] = useState(attributes);
 
   const [attribute, setAttribute] = useState({
-    name: "",
-    description: "",
-    skill_id: "",
+    name: '',
+    description: '',
+    skill_id: '',
   });
 
   useEffect(() => {
@@ -53,9 +43,9 @@ function AttributeModal({
 
   const resetState = () => {
     return setAttribute({
-      name: "",
-      description: "",
-      skill_id: "",
+      name: '',
+      description: '',
+      skill_id: '',
     });
   };
 
@@ -64,14 +54,14 @@ function AttributeModal({
       return;
     }
 
-    if (operation === "create") {
+    if (operation === 'create') {
       api
-        .post("/attribute", attribute)
+        .post('/attribute', attribute)
         .then(async () => {
           const responseID = await api.get(`/attribute/`);
 
           let newIds = [];
-          responseID.data.forEach((val) => {
+          responseID.data.forEach(val => {
             newIds.push(val.id);
           });
 
@@ -92,16 +82,14 @@ function AttributeModal({
           resetState();
         })
         .catch(() => {
-          toast.error("Erro ao criar o atributo!");
+          toast.error('Erro ao criar o atributo!');
         });
-    } else if (operation === "edit") {
+    } else if (operation === 'edit') {
       api
         .put(`/attribute/${data.id}`, attribute)
         .then(() => {
           // Descobre o ID no inventario que vai ser atualizado e modifica essa posição na lista
-          const index = updatedAttributes.findIndex(
-            (obj) => obj.id === data.id
-          );
+          const index = updatedAttributes.findIndex(obj => obj.id === data.id);
 
           updatedAttributes[index] = { id: data.id, ...attribute };
           setUpdatedAttributes(updatedAttributes);
@@ -115,8 +103,8 @@ function AttributeModal({
           // Limpa as informações do formulário
           resetState();
         })
-        .catch((err) => {
-          toast.error("Erro ao editar o atributo!");
+        .catch(err => {
+          toast.error('Erro ao editar o atributo!');
         });
     }
   };
@@ -124,24 +112,23 @@ function AttributeModal({
   return (
     <Dialog open={true} onClose={handleClose}>
       <DialogTitle>
-        {operation === "create" ? "Criar novo atributo" : "Editar atributo"}
+        {operation === 'create' ? 'Criar novo atributo' : 'Editar atributo'}
       </DialogTitle>
       <DialogContent>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             {/* Nome do atributo */}
-            <TextField
-              className={classes.inputAttributeInfos}
+            <AttributeName
               autoFocus
-              label="Nome"
-              type="text"
+              label='Nome'
+              type='text'
               fullWidth
-              variant="standard"
+              variant='standard'
               value={attribute.name}
               onChange={({ target }) => {
                 const value = target.value;
 
-                setAttribute((prevState) => ({
+                setAttribute(prevState => ({
                   ...prevState,
                   name: value,
                 }));
@@ -152,19 +139,18 @@ function AttributeModal({
 
           <Grid item xs={12}>
             {/* Descrição do atributo */}
-            <TextField
-              className={classes.inputAttributeInfos}
+            <AttributeName
               autoFocus
-              label="Descrição"
-              type="text"
+              label='Descrição'
+              type='text'
               fullWidth
               multiline
-              variant="standard"
+              variant='standard'
               value={attribute.description}
               onChange={({ target }) => {
                 const value = target.value;
 
-                setAttribute((prevState) => ({
+                setAttribute(prevState => ({
                   ...prevState,
                   description: value,
                 }));
@@ -175,16 +161,16 @@ function AttributeModal({
 
           <Grid item xs={12}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Perícia</InputLabel>
+              <InputLabel id='demo-simple-select-label'>Perícia</InputLabel>
               <Select
-                labelId="skill_id"
-                id="skill_id"
+                labelId='skill_id'
+                id='skill_id'
                 value={attribute.skill_id}
-                label="Perícia"
+                label='Perícia'
                 onChange={({ target }) => {
                   const value = target.value;
 
-                  setAttribute((prevState) => ({
+                  setAttribute(prevState => ({
                     ...prevState,
                     skill_id: value,
                   }));
@@ -201,7 +187,7 @@ function AttributeModal({
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">
+        <Button onClick={handleClose} color='secondary'>
           Cancelar
         </Button>
         <Button onClick={submit}>Confirmar</Button>
@@ -210,4 +196,4 @@ function AttributeModal({
   );
 }
 
-export default withStyles(styles)(AttributeModal);
+export default AttributeModal;

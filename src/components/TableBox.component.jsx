@@ -1,61 +1,56 @@
-/* eslint-disable @next/next/no-img-element */
-import { Delete as DeleteIcon, Create as EditIcon } from "@mui/icons-material";
-import FirstPageIcon from "@mui/icons-material/FirstPage";
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import LastPageIcon from "@mui/icons-material/LastPage";
-import { Button, Tooltip } from "@mui/material";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableFooter from "@mui/material/TableFooter";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import { useTheme } from "@mui/material/styles";
-import Image from "next/image";
-import PropTypes from "prop-types";
-import * as React from "react";
-import { toast } from "react-toastify";
-import useModal from "../hooks/useModal.hook";
-import { api } from "../utils";
-import { CombatModal, ConfirmationModal, DiceRollModal } from "./modals";
-import { makeStyles } from "@mui/styles";
+import { Delete as DeleteIcon, Create as EditIcon } from '@mui/icons-material';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LastPageIcon from '@mui/icons-material/LastPage';
+import { Button, Tooltip, styled } from '@mui/material';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableFooter from '@mui/material/TableFooter';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import { useTheme } from '@mui/material/styles';
+import PropTypes from 'prop-types';
+import * as React from 'react';
+import { toast } from 'react-toastify';
+import useModal from '../hooks/useModal.hook';
+import { api } from '../utils';
+import { CombatModal, ConfirmationModal, DiceRollModal } from './modals';
 
-const useStyles = makeStyles({
-  diceImage: {
-    cursor: "pointer",
-    transition: "-webkit-transform .8s ease-in-out",
-    transform: "transform .8s ease-in-out",
-    marginRight: "8px",
-    "&:hover": {
-      transition: "rotate(360deg)",
-      transform: "rotate(360deg)",
-    },
+const Dice = styled('img')(({ theme }) => ({
+  cursor: 'pointer',
+  transition: '-webkit-transform .8s ease-in-out',
+  transform: 'transform .8s ease-in-out',
+  marginRight: '8px',
+  '&:hover': {
+    transition: 'rotate(360deg)',
+    transform: 'rotate(360deg)',
   },
-});
+}));
 
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
 
-  const handleFirstPageButtonClick = (event) => {
+  const handleFirstPageButtonClick = event => {
     onPageChange(event, 0);
   };
 
-  const handleBackButtonClick = (event) => {
+  const handleBackButtonClick = event => {
     onPageChange(event, page - 1);
   };
 
-  const handleNextButtonClick = (event) => {
+  const handleNextButtonClick = event => {
     onPageChange(event, page + 1);
   };
 
-  const handleLastPageButtonClick = (event) => {
+  const handleLastPageButtonClick = event => {
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
@@ -64,38 +59,30 @@ function TablePaginationActions(props) {
       <IconButton
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}
-        aria-label="primeira página"
+        aria-label='primeira página'
       >
-        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
       <IconButton
         onClick={handleBackButtonClick}
         disabled={page === 0}
-        aria-label="página anterior"
+        aria-label='página anterior'
       >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowRight />
-        ) : (
-          <KeyboardArrowLeft />
-        )}
+        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="próxima página"
+        aria-label='próxima página'
       >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowLeft />
-        ) : (
-          <KeyboardArrowRight />
-        )}
+        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
       </IconButton>
       <IconButton
         onClick={handleLastPageButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="ultima página"
+        aria-label='ultima página'
       >
-        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
+        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
     </Box>
   );
@@ -115,17 +102,15 @@ function createData(id, weapon, type, damage, current_load, total_load) {
 
 // Definir dados do cabeçalho da tabela
 const columns = [
-  { id: "weapon", label: "ARMA", minWidth: 150 },
-  { id: "type", label: "TIPO", minWidth: 100, align: "right" },
-  { id: "damage", label: "DANO", minWidth: 100, align: "right" },
-  { id: "current_load", label: "CARGA ATUAL", minWidth: 70, align: "right" },
-  { id: "total_load", label: "CARGA MÁXIMA", minWidth: 70, align: "right" },
-  { id: "options", label: "", minWidth: 100, align: "right" },
+  { id: 'weapon', label: 'ARMA', minWidth: 150 },
+  { id: 'type', label: 'TIPO', minWidth: 100, align: 'right' },
+  { id: 'damage', label: 'DANO', minWidth: 100, align: 'right' },
+  { id: 'current_load', label: 'CARGA ATUAL', minWidth: 70, align: 'right' },
+  { id: 'total_load', label: 'CARGA MÁXIMA', minWidth: 70, align: 'right' },
+  { id: 'options', label: '', minWidth: 100, align: 'right' },
 ];
 
 export default function TableBox(props) {
-  const classes = useStyles();
-
   // Define as linhas da tabela
   var rows = [].sort((a, b) => (a.weapon < b.weapon ? -1 : 1)); // Ordena alfabeticamente
 
@@ -139,8 +124,8 @@ export default function TableBox(props) {
         nome.combat.type,
         nome.combat.damage,
         nome.combat.current_load,
-        nome.combat.total_load
-      )
+        nome.combat.total_load,
+      ),
     );
   });
 
@@ -148,14 +133,13 @@ export default function TableBox(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -183,17 +167,15 @@ export default function TableBox(props) {
       text={custom.text}
       data={custom.data}
       handleClose={close}
-      onConfirmation={(data) => {
+      onConfirmation={data => {
         const { id, type } = data;
 
         api
           .delete(`/${type}/${id}`)
           .then(() => {
-            props.handleCharacter((prevCharacter) => ({
+            props.handleCharacter(prevCharacter => ({
               ...prevCharacter,
-              [type]: prevCharacter[type].filter(
-                (item) => item[`${type}_id`] !== id
-              ),
+              [type]: prevCharacter[type].filter(item => item[`${type}_id`] !== id),
             }));
           })
           .catch(() => {
@@ -206,16 +188,16 @@ export default function TableBox(props) {
   const diceRollModal = useModal(({ close, custom }) => (
     <DiceRollModal
       amount={custom.amount}
-      onDiceRoll={(rollData) => {
+      onDiceRoll={rollData => {
         const parsedData = {
           character_id: character.id,
-          rolls: rollData.map((each) => ({
+          rolls: rollData.map(each => ({
             rolled_number: each.rolled_number,
             max_number: each.max_number,
           })),
         };
 
-        socket.emit("dice_roll", parsedData);
+        socket.emit('dice_roll', parsedData);
       }}
       handleClose={close}
     />
@@ -223,20 +205,12 @@ export default function TableBox(props) {
 
   return (
     <TableContainer component={Paper}>
-      <Table
-        sx={{ minWidth: 500 }}
-        aria-label="custom pagination table"
-        stickyHeader
-      >
+      <Table sx={{ minWidth: 500 }} aria-label='custom pagination table' stickyHeader>
         {/* Cabeçalho da tabela */}
         <TableHead>
           <TableRow>
-            {columns.map((column) => (
-              <TableCell
-                key={column.id}
-                align={column.align}
-                style={{ minWidth: column.minWidth }}
-              >
+            {columns.map(column => (
+              <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
                 {column.label}
               </TableCell>
             ))}
@@ -249,27 +223,26 @@ export default function TableBox(props) {
           {(rowsPerPage > 0
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
-          ).map((row) => (
+          ).map(row => (
             <TableRow key={row.id}>
               {/* Descrição da arma */}
-              <TableCell component="th" scope="row">
+              <TableCell component='th' scope='row'>
                 {row.weapon}
               </TableCell>
 
               {/* Tipo */}
-              <TableCell style={{ minWidth: 100 }} align="right">
+              <TableCell style={{ minWidth: 100 }} align='right'>
                 {row.type}
               </TableCell>
 
               {/* Dano */}
-              <TableCell style={{ minWidth: 100 }} align="right">
-                <img
-                  src={"/assets/dice.png"}
-                  alt="Dice roll"
+              <TableCell style={{ minWidth: 100 }} align='right'>
+                <Dice
+                  src={'/assets/dice.png'}
+                  alt='Dice roll'
                   width={25}
                   height={25}
-                  align={"center"}
-                  className={classes.diceImage}
+                  align={'center'}
                   onClick={() =>
                     diceRollModal.appear({
                       amount: row.damage,
@@ -280,25 +253,25 @@ export default function TableBox(props) {
               </TableCell>
 
               {/* Carga atual */}
-              <TableCell style={{ minWidth: 70 }} align="right" type="number">
+              <TableCell style={{ minWidth: 70 }} align='right' type='number'>
                 {row.current_load}
               </TableCell>
 
               {/* Capacidade */}
-              <TableCell style={{ minWidth: 70 }} align="right" type="number">
+              <TableCell style={{ minWidth: 70 }} align='right' type='number'>
                 {row.total_load}
               </TableCell>
 
               {/* Deletar e Editar cadastro */}
-              <TableCell style={{ minWidth: 70 }} align="right">
-                <Tooltip title="Remover item de combate">
+              <TableCell style={{ minWidth: 70 }} align='right'>
+                <Tooltip title='Remover item de combate'>
                   <Button
-                    variant="outlined"
+                    variant='outlined'
                     onClick={() => {
                       confirmationModal.appear({
-                        title: "Apagar item de combate",
-                        text: "Deseja apagar este item?",
-                        data: { id: row.id, type: "combat" },
+                        title: 'Apagar item de combate',
+                        text: 'Deseja apagar este item?',
+                        data: { id: row.id, type: 'combat' },
                       });
                     }}
                   >
@@ -306,13 +279,13 @@ export default function TableBox(props) {
                   </Button>
                 </Tooltip>
 
-                <Tooltip title="Editar indormações do item de combate">
+                <Tooltip title='Editar indormações do item de combate'>
                   <Button
-                    variant="outlined"
-                    style={{ marginLeft: "5px" }}
+                    variant='outlined'
+                    style={{ marginLeft: '5px' }}
                     onClick={() =>
                       combatModal.appear({
-                        operation: "edit",
+                        operation: 'edit',
                         character: props.character.id,
                         data: row,
                       })
@@ -335,14 +308,14 @@ export default function TableBox(props) {
         <TableFooter>
           <TableRow>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: "Todas", value: -1 }]}
+              rowsPerPageOptions={[5, 10, 25, { label: 'Todas', value: -1 }]}
               colSpan={6}
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}
               SelectProps={{
                 inputProps: {
-                  "aria-label": "Linhas por página",
+                  'aria-label': 'Linhas por página',
                 },
                 native: true,
               }}

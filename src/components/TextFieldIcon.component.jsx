@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   FilledInput,
   FormControl,
@@ -6,31 +8,18 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-} from "@mui/material";
-import { withStyles } from "@mui/styles";
-import React from "react";
+} from '@mui/material';
 
-const styles = (theme) => ({});
-
-const TextFieldIcon = ({
-  type,
-  Icon,
-  label,
-  classes,
-  variant,
-  fullWidth,
-  onClickIcon,
-  ...props
-}) => {
-  const InputVariant = (props) => {
+const TextFieldIcon = ({ type, Icon, label, variant, fullWidth, onClickIcon, ...props }) => {
+  const InputVariant = props => {
     if (!variant) {
       return null;
     }
 
     switch (variant) {
-      case "outlined":
+      case 'outlined':
         return <OutlinedInput {...props} />;
-      case "filled":
+      case 'filled':
         return <FilledInput {...props} />;
       default:
         return <Input {...props} />;
@@ -43,8 +32,8 @@ const TextFieldIcon = ({
       <InputVariant
         type={type}
         endAdornment={
-          <InputAdornment position="end" onClick={onClickIcon}>
-            <IconButton edge="end">
+          <InputAdornment position='end' onClick={onClickIcon}>
+            <IconButton edge='end'>
               <Icon />
             </IconButton>
           </InputAdornment>
@@ -56,4 +45,4 @@ const TextFieldIcon = ({
   );
 };
 
-export default withStyles(styles)(TextFieldIcon);
+export default TextFieldIcon;

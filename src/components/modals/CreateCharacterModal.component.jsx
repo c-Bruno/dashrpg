@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withStyles } from '@mui/styles';
+
 import {
   TextField,
   Dialog,
@@ -13,9 +13,7 @@ import {
 import { api } from '../../utils';
 import { useTranslation } from 'react-i18next';
 
-const styles = theme => ({});
-
-function CreateCharacterModal({ classes, handleClose, onCharacterCreated }) {
+function CreateCharacterModal({ handleClose, onCharacterCreated }) {
   const { t } = useTranslation(['masterDashboard']);
   const [character, setCharacter] = useState({
     name: '',
@@ -83,4 +81,4 @@ function CreateCharacterModal({ classes, handleClose, onCharacterCreated }) {
   );
 }
 
-export default withStyles(styles)(CreateCharacterModal);
+export default CreateCharacterModal;

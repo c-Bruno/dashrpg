@@ -1,90 +1,74 @@
-import { Button } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from 'react';
 
-const styles = (theme) => ({
-  root: {
-    height: "100%",
-    padding: "15px",
-    border: "solid",
-    overflow: "auto",
-    borderRadius: "3px",
-    borderWidth: "0.1px",
-    borderColor: "#4e4e4e",
-    background: theme.palette.primary[600],
-  },
+import { styled, Typography } from '@mui/material';
+import Image from 'next/image';
 
-  title: {
-    color: theme.palette.primary.main,
-  },
+const Root = styled('div')(({ theme }) => ({
+  height: '100%',
+  padding: '15px',
+  border: 'solid',
+  overflow: 'auto',
+  borderRadius: '3px',
+  borderWidth: '0.1px',
+  borderColor: '#4e4e4e',
+  background: theme.palette.primary[600],
+}));
 
-  subtitle: {
-    color: theme.palette.secondary.main,
-  },
+const Title = styled(Typography)(({ theme }) => ({
+  color: theme.palette.primary.main,
+  margin: 0,
+  marginTop: '10px',
+  marginLeft: 'auto',
+  marginBottom: '10px',
+  textAlign: 'center',
+}));
 
-  textMargin: {
-    margin: 0,
-    marginTop: "10px",
-    marginLeft: "auto",
-    marginBottom: "10px",
-  },
+const Subtitle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.secondary.main,
+  margin: 0,
+  marginTop: '10px',
+  marginBottom: '10px',
+  textAlign: 'center',
+}));
 
-  textsAlign: {
-    textAlign: "center",
-  },
+const PaddingBox = styled('div')(() => ({
+  padding: '20px',
+}));
 
-  paddingBox: {
-    padding: "20px",
-  },
+const SectionButton = styled('div')(() => ({
+  alignSelf: 'center',
+  float: 'right',
+}));
 
-  sectionButton: {
-    alignSelf: "center",
-    float: "right",
-  },
-});
+const Section = ({ image, title, children, subtitle, renderButton }) => {
+  const [isClient, setIsClient] = useState(false);
 
-const Section = ({
-  image,
-  title,
-  classes,
-  children,
-  subtitle,
-  renderButton,
-}) => {
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
-    <div className={classes.root}>
+    <Root>
       <div>
-        <div className={classes.textsAlign}>
-          <h2 className={[classes.title, classes.textMargin]}>
+        <div>
+          <Title variant='h5'>
             {title}
             {image ? (
-              <Image
-                src={image}
-                alt="Character Portrait"
-                width={30}
-                height={30}
-              ></Image>
+              <Image src={image} alt='Character Portrait' width={30} height={30}></Image>
             ) : (
               image
             )}
 
-            {renderButton && (
-              <Button className={classes.sectionButton}>
-                {renderButton()}
-              </Button>
-            )}
-          </h2>
+            {isClient && renderButton && <SectionButton>{renderButton()}</SectionButton>}
+          </Title>
 
-          <span className={[classes.subtitle, classes.textMargin, classes.textsAlign]}>
-            {subtitle}
-          </span>
+          <Subtitle variant='subtitle1'>{subtitle}</Subtitle>
         </div>
       </div>
 
-      <div className={classes.paddingBox}>{children}</div>
-    </div>
+      <PaddingBox>{children}</PaddingBox>
+    </Root>
   );
 };
 
-export default withStyles(styles)(Section);
+export default Section;

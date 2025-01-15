@@ -1,12 +1,12 @@
-import Queue from "js-queue";
-import Head from "next/head";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from 'react';
 
-import { withStyles } from "@mui/styles";
+import Queue from 'js-queue';
+import Head from 'next/head';
 
-import socket from "../../utils/socket";
+import socket from '../../utils/socket';
 
-import { prisma } from "../../database";
+import { prisma } from '../../database';
+import { styled } from '@mui/material';
 
 export const getServerSideProps = async ({ params }) => {
   const characterId = isNaN(params.id) ? null : Number(params.id);
@@ -42,13 +42,10 @@ export const getServerSideProps = async ({ params }) => {
       character: serialized,
       config: {
         diceOnScreenTimeoutInMS: parseInt(
-          configs.find(
-            (config) => config.name === "DICE_ON_SCREEN_TIMEOUT_IN_MS"
-          ).value
+          configs.find(config => config.name === 'DICE_ON_SCREEN_TIMEOUT_IN_MS').value,
         ),
         timeBetweenDicesInMS: parseInt(
-          configs.find((config) => config.name === "TIME_BETWEEN_DICES_IN_MS")
-            .value
+          configs.find(config => config.name === 'TIME_BETWEEN_DICES_IN_MS').value,
         ),
       },
     },
@@ -61,7 +58,7 @@ function Dice({ classes, character, config }) {
   const [currentDice, setCurrentDice] = useState(null);
 
   useEffect(() => {
-    document.body.style.backgroundColor = "transparent";
+    document.body.style.backgroundColor = 'transparent';
   }, []);
 
   useEffect(() => {
@@ -78,10 +75,10 @@ function Dice({ classes, character, config }) {
       }, config.diceOnScreenTimeoutInMS + config.timeBetweenDicesInMS);
     }
 
-    socket.emit("room:join", `dice_character_${character.id}`);
+    socket.emit('room:join', `dice_character_${character.id}`);
 
-    socket.on("dice_roll", (data) => {
-      data.rolls.forEach((roll) => {
+    socket.on('dice_roll', data => {
+      data.rolls.forEach(roll => {
         queue.add(showDiceOnScreen.bind(queue, roll));
       });
     });
@@ -96,56 +93,49 @@ function Dice({ classes, character, config }) {
       <Head>
         <title>Dados de {character.name} | RPG</title>
       </Head>
-      <div className={classes.container}>
+      <Container>
         {currentDice && (
-          <div className={classes.diceContainer}>
+          <DiceContainer>
             <div>
-              <video
-                width="600"
-                height="600"
-                autoPlay
-                muted
-                className={classes.diceVideo}
-              >
-                <source src="/assets/dice.webm" type="video/webm" />
+              <video width='600' height='600' autoPlay muted>
+                <source src='/assets/dice.webm' type='video/webm' />
               </video>
             </div>
-            <div className={classes.diceResult}>
-              <span className={classes.diceNumber}>
-                {currentDice.rolled_number}
-              </span>
-            </div>
-          </div>
+            <DiceResult>
+              <DiceNumber>{currentDice.rolled_number}</DiceNumber>
+            </DiceResult>
+          </DiceContainer>
         )}
-      </div>
+      </Container>
     </React.Fragment>
   );
 }
 
-const styles = (theme) => ({
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    fontFamily: "Fruktur",
-    userSelect: "none",
-  },
-  diceContainer: {
-    position: "relative",
-  },
-  diceResult: {
-    position: "absolute",
-    top: "180px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-  },
-  diceNumber: {
-    zIndex: 2,
-    fontSize: "150px",
-    textShadow: "0 0 10px #FFFFFF",
-  },
-});
+const Container = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  fontFamily: 'Fruktur',
+  userSelect: 'none',
+}));
 
-export default withStyles(styles)(Dice);
+const DiceContainer = styled('div')(({ theme }) => ({
+  position: 'relative',
+}));
+
+const DiceResult = styled('div')(({ theme }) => ({
+  position: 'absolute',
+  top: '180px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+}));
+
+const DiceNumber = styled('span')(({ theme }) => ({
+  zIndex: 2,
+  fontSize: '150px',
+  textShadow: '0 0 10px #FFFFFF',
+}));
+
+export default Dice;

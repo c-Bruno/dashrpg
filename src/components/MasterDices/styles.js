@@ -1,11 +1,11 @@
-import { makeStyles } from "@mui/styles";
+import { Grid, styled } from "@mui/material";
+import Image from "next/image";
 
-export const useMasterDiceStyles = makeStyles((theme) => ({
-  marginCenter: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  dice: {
-    cursor: 'pointer',
-  },
+export const CenteredGrid = styled(Grid)(({ theme }) => ({
+  marginLeft: 'auto',
+  marginRight: 'auto',
+}));
+
+export const Dice = styled(Image)(({ theme }) => ({
+  cursor: 'pointer',
 }));

@@ -11,6 +11,7 @@ import useModal from '../../hooks/useModal.hook';
 import { api } from '../../utils';
 import SkillsList from '../../components/SkillsList/SkillsList';
 import MasterDices from '../../components/MasterDices/MasterDices';
+import { t } from 'i18next';
 
 export const getServerSideProps = async () => {
   function parseConfigs(array) {
@@ -104,7 +105,9 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
   const runInitialSetup = () => {
     api.post('/setup').then(res => {
       if (res.data.success) {
-        return window.location.reload();
+        if (typeof window !== 'undefined') {
+          return window.location.reload();
+        }
       }
     });
   };

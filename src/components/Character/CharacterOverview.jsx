@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import { withStyles } from "@mui/styles";
-import { Grid } from "@mui/material";
-import { StatusBar, Section } from "..";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import Image from "next/image";
+import { Grid, styled } from '@mui/material';
+import { StatusBar, Section } from '..';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Image from 'next/image';
 
 const CharacterOverview = ({
-  classes,
   character,
   diceRollModal,
   hitPointsModal,
@@ -21,10 +19,7 @@ const CharacterOverview = ({
       return null;
     }
 
-    if (
-      character.standard_character_picture_url &&
-      character.injured_character_picture_url
-    ) {
+    if (character.standard_character_picture_url && character.injured_character_picture_url) {
       if (character.current_hit_points > character.max_hit_points / 2) {
         return character.standard_character_picture_url;
       } else {
@@ -38,123 +33,109 @@ const CharacterOverview = ({
   return (
     <Grid item xs={12} md={4}>
       <Section>
-        <Grid container item spacing={3} className={classes.alignCenter}>
+        <CenteredGrid container item spacing={3}>
           {/* Imagem do personagem */}
-          <Grid item xs={6} className={classes.alignCenter}>
-            <Image
+          <CenteredGrid item xs={6}>
+            <CharacterImage
               src={getCharacterPictureURL()}
-              alt="Imagem de jogador"
-              className={classes.characterImage}
+              alt='Imagem de jogador'
               width={122}
               height={122}
               onClick={() => changePictureModal.appear()}
             />
-          </Grid>
+          </CenteredGrid>
 
           {/* Vida do personagem*/}
-          <Grid item xs={12} className={classes.alignCenter}>
-            <Grid container item xs={12} className={classes.bar}>
-              <Grid item xs={12} className={classes.barTitle}>
+          <CenteredGrid item xs={12}>
+            <Grid container item xs={12} marginBottom={2}>
+              <BarTitle item xs={12}>
                 <span>Vida</span>
-              </Grid>
+              </BarTitle>
               <Grid item xs={12}>
                 <StatusBar
                   current={character.current_hit_points} // Vida Atual
                   max={character.max_hit_points} // Vida Total
                   label={`${character.current_hit_points}/${character.max_hit_points}`} // Valor exibido em tela
-                  primaryColor="#640101"
-                  secondaryColor="#1b1517"
+                  primaryColor='#640101'
+                  secondaryColor='#1b1517'
                   onClick={() => {
                     hitPointsModal.appear();
                   }}
                 />
               </Grid>
             </Grid>
-          </Grid>
+          </CenteredGrid>
 
           {/* Sanidade do personagem*/}
-          <Grid item xs={12} className={classes.alignCenter}>
-            <Grid container item xs={12} className={classes.bar}>
-              <Grid item xs={12} className={classes.barTitle}>
+          <CenteredGrid item xs={12}>
+            <Grid container item xs={12} marginBottom={2}>
+              <BarTitle item xs={12}>
                 <span>Sanidade</span>
-              </Grid>
+              </BarTitle>
               <Grid item xs={12}>
                 <StatusBar
                   current={character.current_sanity_points} // Sanidade Atual
                   max={character.max_sanity_points} // Sanidade Total
                   label={`${character.current_sanity_points}/${character.max_sanity_points}`} // Valor exibido em tela
-                  primaryColor="#011B64"
-                  secondaryColor="#1b1517"
+                  primaryColor='#011B64'
+                  secondaryColor='#1b1517'
                   onClick={() => {
                     sanityPointsModal.appear();
                   }}
                 />
               </Grid>
             </Grid>
-          </Grid>
+          </CenteredGrid>
 
-          <Grid item xs={12} className={classes.alignCenter}>
-            <FormControlLabel
-              control={<Switch color="secondary" />}
-              label="Traumatizado"
-            />
-            <FormControlLabel
-              control={<Switch color="secondary" />}
-              label="Morrendo"
-            />
-          </Grid>
+          <CenteredGrid item xs={12}>
+            <FormControlLabel control={<Switch color='secondary' />} label='Traumatizado' />
+            <FormControlLabel control={<Switch color='secondary' />} label='Morrendo' />
+          </CenteredGrid>
 
           {/* Dado para rolagem d100 */}
-          <Grid item xs={6} className={classes.alignCenter}>
-            <Image
+          <CenteredGrid item xs={6}>
+            <Dice
               width={80}
               height={80}
-              alt="Dice roll"
-              src={"/assets/dice.png"}
-              className={classes.dice}
+              alt='Dice roll'
+              src={'/assets/dice.png'}
               onClick={() => diceRollModal.appear()}
             />
-          </Grid>
-        </Grid>
+          </CenteredGrid>
+        </CenteredGrid>
       </Section>
     </Grid>
   );
 };
 
-const styles = (theme) => ({
-  characterImage: {
-    width: "200px",
-    borderRadius: "50%",
-    cursor: "pointer",
+const CenteredGrid = styled(Grid)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+}));
+
+const CharacterImage = styled(Image)(({ theme }) => ({
+  width: '200px',
+  borderRadius: '50%',
+  cursor: 'pointer',
+}));
+
+const BarTitle = styled(Grid)(({ theme }) => ({
+  marginBottom: '2px',
+  color: theme.palette.secondary.main,
+  fontSize: '15px',
+  fontWeight: 'bold',
+}));
+
+const Dice = styled(Image)(({ theme }) => ({
+  cursor: 'pointer',
+  transition: '-webkit-transform .8s ease-in-out',
+  transform: 'transform .8s ease-in-out',
+
+  '&:hover': {
+    transition: 'rotate(360deg)',
+    transform: 'rotate(360deg)',
   },
+}));
 
-  alignCenter: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  bar: {
-    marginBottom: "2px",
-  },
-
-  barTitle: {
-    marginBottom: "2px",
-    color: theme.palette.secondary.main,
-    fontSize: "15px",
-    fontWeight: "bold",
-  },
-
-  dice: {
-    cursor: "pointer",
-    transition: "-webkit-transform .8s ease-in-out",
-    transform: "transform .8s ease-in-out",
-
-    "&:hover": {
-      transition: "rotate(360deg)",
-      transform: "rotate(360deg)",
-    },
-  },
-});
-
-export default withStyles(styles)(CharacterOverview);
+export default CharacterOverview;

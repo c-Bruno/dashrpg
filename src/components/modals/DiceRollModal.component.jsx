@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+
 import {
   Box,
   Button,
@@ -6,43 +8,36 @@ import {
   DialogActions,
   DialogContent,
   Grid,
-} from "@mui/material";
-import { withStyles } from "@mui/styles";
-import Image from "next/image";
-import React, { useState, useEffect } from "react";
-import ReactSound from "react-sound";
+  keyframes,
+  styled,
+} from '@mui/material';
+import Image from 'next/image';
+import useSound from 'use-sound';
 
-const styles = (theme) => ({
-  dice: {
-    animation: "$rotate 1s linear infinite",
-  },
+const rotate = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
 
-  noRotate: {
-    animation: "none !important",
-  },
+const StyledChip = styled(Chip)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  fontSize: 'medium',
+}));
 
-  "@keyframes rotate": {
-    "0%": {
-      transform: "rotate(0deg)",
-    },
-    "100%": {
-      transform: "rotate(360deg)",
-    },
-  },
-
-  formarChip: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: "auto",
-    marginRight: "auto",
-    fontSize: "medium",
-  },
-});
+const StyledDice = styled(Image)(({ stopRotation }) => ({
+  animation: stopRotation ? 'none' : `${rotate} 1s linear infinite`,
+}));
 
 function DiceRollModal({
   amount,
-  classes,
   atribute,
   handleClose,
   valueAtribute,
@@ -52,13 +47,16 @@ function DiceRollModal({
   const [showGrids, setShowGrids] = useState(false); // Hook para carregar os grids apenas após a rolagem dos dados
   const [stopRotation, setStopRotation] = useState(false); // Hook para definir a rotação do dado em tela
   const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Hook para acionar o audio da rolagem
+  const [play] = useSound('/sounds/DiceRollingOnTable.mp3');
 
-  const [diceNumber, setDiceNumber] = useState({ number: "" });
-  const [diceTypeResult, setDiceTypeResult] = useState({ description: "" });
-  const [diceResultColor, setDiceResultColor] = useState({ color: "primary" });
+  const [diceNumber, setDiceNumber] = useState({ number: '' });
+  const [diceTypeResult, setDiceTypeResult] = useState({ description: '' });
+  const [diceResultColor, setDiceResultColor] = useState({ color: 'primary' });
 
-  // Desativar os logs de debug do SoundManager2
-  soundManager.setup({ debugMode: false });
+  // Hook para iniciar o audio da rolagem
+  useEffect(() => {
+    play();
+  }, [play]);
 
   useEffect(() => {
     rollDamage(amount);
@@ -84,24 +82,24 @@ function DiceRollModal({
       setDiceTypeResult({ description: diceType });
 
       // Define qual vai ser a cor do component Chip exibido
-      if (diceType == "Extremo") {
-        setDiceResultColor({ color: "success" });
-      } else if (diceType == "Sucesso Bom" || diceType == "Sucesso Normal") {
-        setDiceResultColor({ color: "primary" });
+      if (diceType == 'Extremo') {
+        setDiceResultColor({ color: 'success' });
+      } else if (diceType == 'Sucesso Bom' || diceType == 'Sucesso Normal') {
+        setDiceResultColor({ color: 'primary' });
       } else {
-        setDiceResultColor({ color: "error" });
+        setDiceResultColor({ color: 'error' });
       }
     }
   }
 
   // Rolador de dados
   function rollDice(dice) {
-    let dices = dice.split("+");
+    let dices = dice.split('+');
     let amountFromDice = 0;
 
-    dices.map((item) => {
+    dices.map(item => {
       const diceTrimmed = item.trim();
-      let [count, max] = diceTrimmed.split("d"); // Separar a quantidade de dados, para o valor do dado
+      let [count, max] = diceTrimmed.split('d'); // Separar a quantidade de dados, para o valor do dado
 
       if (Number(count) && Number(max)) {
         count = Number(count); // Verifica quantas vezes vai rolar o dado
@@ -127,7 +125,7 @@ function DiceRollModal({
     ability = Number(ability);
 
     if (skillAttibute) {
-      avaliableSkills.forEach((element) => {
+      avaliableSkills.forEach(element => {
         if (element.skill_id == skillAttibute) {
           valueSkill = element.value;
         }
@@ -163,39 +161,26 @@ function DiceRollModal({
     ];
 
     const type = ability <= 20 ? table[ability - 1] : table[20]; // Verificar a faixa de valor que vai ser utilizada
-    if (dice >= type.extreme) return "Extremo";
-    else if (dice >= type.good) return "Sucesso Bom";
-    else if (dice >= type.normal) return "Sucesso Normal";
-    else if (dice >= type.extremeFail) return "Fracasso";
-    else if (dice < type.extremeFail) return "Fracasso extremo";
+    if (dice >= type.extreme) return 'Extremo';
+    else if (dice >= type.good) return 'Sucesso Bom';
+    else if (dice >= type.normal) return 'Sucesso Normal';
+    else if (dice >= type.extremeFail) return 'Fracasso';
+    else if (dice < type.extremeFail) return 'Fracasso extremo';
   }
 
   return (
-    <Dialog open={true} onClose={handleClose} fullWidth maxWidth="100vh">
+    <Dialog open={true} onClose={handleClose} fullWidth maxWidth='100vh'>
       <DialogContent>
         {
           <Grid container>
-            <ReactSound
-              url={`/sounds/DiceRollingOnTable.mp3`}
-              playStatus={ReactSound.status.PLAYING}
-            />
-            <Grid
-              item
-              xs={12}
-              container
-              spacing={0}
-              alignItems="center"
-              justifyContent="center"
-            >
+            <Grid item xs={12} container spacing={0} alignItems='center' justifyContent='center'>
               {/* Dado na tela */}
-              <Image
-                className={`${classes.dice} ${
-                  stopRotation ? classes.noRotate : ""
-                }`}
-                src={"/assets/dice.png"}
-                alt="Dice roll"
+              <StyledDice
                 width={40}
                 height={40}
+                alt='Dice roll'
+                src={'/assets/dice.png'}
+                stopRotation={stopRotation}
               />
             </Grid>
 
@@ -206,19 +191,18 @@ function DiceRollModal({
                   <Box
                     sx={{
                       width: 500,
-                      maxWidth: "100%",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                      marginTop: "1%",
+                      maxWidth: '100%',
+                      marginLeft: 'auto',
+                      marginRight: 'auto',
+                      marginTop: '1%',
                     }}
                   >
-                    <Chip
+                    <StyledChip
                       label={diceNumber.number}
-                      className={classes.formarChip}
                       color={diceResultColor.color}
-                      size="medium"
-                      style={{ width: "20%" }}
-                      variant="outlined"
+                      size='medium'
+                      style={{ width: '20%' }}
+                      variant='outlined'
                     />
                   </Box>
                 </Grid>
@@ -229,18 +213,17 @@ function DiceRollModal({
                     <Box
                       sx={{
                         width: 500,
-                        maxWidth: "100%",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        marginTop: "0.5%",
+                        maxWidth: '100%',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        marginTop: '0.5%',
                       }}
                     >
-                      <Chip
+                      <StyledChip
                         label={diceTypeResult.description}
-                        className={classes.formarChip}
                         color={diceResultColor.color}
-                        size="medium"
-                        style={{ width: "50%" }}
+                        size='medium'
+                        style={{ width: '50%' }}
                       />
                     </Box>
                   </Grid>
@@ -254,7 +237,7 @@ function DiceRollModal({
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">
+        <Button onClick={handleClose} color='secondary'>
           Fechar
         </Button>
       </DialogActions>
@@ -262,4 +245,4 @@ function DiceRollModal({
   );
 }
 
-export default withStyles(styles)(DiceRollModal);
+export default DiceRollModal;

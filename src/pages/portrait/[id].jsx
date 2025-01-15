@@ -1,13 +1,13 @@
-import Head from "next/head";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import { withStyles } from "@mui/styles";
+import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
-import socket from "../../utils/socket";
+import socket from '../../utils/socket';
 
-import { prisma } from "../../database";
+import { prisma } from '../../database';
+import { styled } from '@mui/material';
 
 export const getServerSideProps = async ({ params }) => {
   const characterId = isNaN(params.id) ? null : Number(params.id);
@@ -46,7 +46,7 @@ export const getServerSideProps = async ({ params }) => {
 function Portrait({ classes, character }) {
   const router = useRouter();
 
-  const showOptions = router.query.show || "";
+  const showOptions = router.query.show || '';
 
   const [isDead, setIsDead] = useState(false);
 
@@ -61,7 +61,7 @@ function Portrait({ classes, character }) {
     max: 0,
   });
 
-  const updateHitPoints = (data) => {
+  const updateHitPoints = data => {
     if (data.current === 0) {
       setIsDead(true);
     } else {
@@ -75,10 +75,7 @@ function Portrait({ classes, character }) {
   };
 
   const getCharacterPicture = () => {
-    if (
-      character.standard_character_picture_url &&
-      character.injured_character_picture_url
-    ) {
+    if (character.standard_character_picture_url && character.injured_character_picture_url) {
       if (hitPoints.current > hitPoints.max / 2) {
         return character.standard_character_picture_url;
       } else {
@@ -90,12 +87,12 @@ function Portrait({ classes, character }) {
   };
 
   useEffect(() => {
-    document.body.style.backgroundColor = "transparent";
+    document.body.style.backgroundColor = 'transparent';
 
-    const splitShowOptions = showOptions.split(",");
+    const splitShowOptions = showOptions.split(',');
 
-    splitShowOptions.forEach((option) => {
-      setShowOnly((prevState) => ({
+    splitShowOptions.forEach(option => {
+      setShowOnly(prevState => ({
         ...prevState,
         [option]: true,
       }));
@@ -108,9 +105,9 @@ function Portrait({ classes, character }) {
   }, [character, showOptions]);
 
   useEffect(() => {
-    socket.emit("room:join", `portrait_character_${character.id}`);
+    socket.emit('room:join', `portrait_character_${character.id}`);
 
-    socket.on("update_hit_points", (data) => {
+    socket.on('update_hit_points', data => {
       updateHitPoints(data);
     });
   }, [character]);
@@ -124,60 +121,48 @@ function Portrait({ classes, character }) {
       <Head>
         <title>Portrait de {character.name} | RPG</title>
       </Head>
-      <div className={classes.container}>
-        <div style={{ display: showOnly.picture ? "block" : "none" }}>
-          <Image
-            width={400}
-            height={600}
-            layout="fixed"
-            src={getCharacterPicture()}
-            alt=""
-            className={isDead ? classes.deadPicture : ""}
-          />
+      <Container>
+        <div style={{ display: showOnly.picture ? 'block' : 'none' }}>
+          <StyledImage width={400} height={600} layout='fixed' src={getCharacterPicture()} alt='' />
         </div>
         <div>
-          <div
-            className={classes.name}
-            style={{ display: showOnly.name ? "block" : "none" }}
-          >
+          <CharacterName style={{ display: showOnly.name ? 'block' : 'none' }}>
             {character.name}
-          </div>
-          <div style={{ display: showOnly.stats ? "block" : "none" }}>
-            <span className={classes.hitPoints}>
+          </CharacterName>
+          <div style={{ display: showOnly.stats ? 'block' : 'none' }}>
+            <CharacterHitPoints>
               {hitPoints.current}/{hitPoints.max}
-            </span>
+            </CharacterHitPoints>
           </div>
         </div>
-      </div>
+      </Container>
     </React.Fragment>
   );
 }
 
-const styles = (theme) => ({
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    fontFamily: "Fruktur",
-  },
-
-  name: {
-    textTransform: "uppercase",
-    fontSize: "72px",
-    color: "#fff",
-    textShadow: "0 0 10px #FFFFFF",
-  },
-
-  hitPoints: {
-    textTransform: "uppercase",
-    fontSize: "62px",
-    color: "#ffe2e2",
-    textShadow: "0 0 10px #ff0000",
-  },
-
-  deadPicture: {
-    filter: "brightness(0%)",
-  },
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  fontFamily: 'Fruktur',
 });
 
-export default withStyles(styles)(Portrait);
+const StyledImage = styled(Image)(({ isDead }) => ({
+  filter: isDead ? 'brightness(0%)' : 'none',
+}));
+
+const CharacterName = styled('div')({
+  textTransform: 'uppercase',
+  fontSize: '72px',
+  color: '#fff',
+  textShadow: '0 0 10px #FFFFFF',
+});
+
+const CharacterHitPoints = styled('span')({
+  textTransform: 'uppercase',
+  fontSize: '62px',
+  color: '#ffe2e2',
+  textShadow: '0 0 10px #ff0000',
+});
+
+export default Portrait;

@@ -6,28 +6,21 @@ import {
   DialogTitle,
   Grid,
   Link,
+  styled,
   TextField,
-} from "@mui/material";
-import { withStyles } from "@mui/styles";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { api } from "../../utils";
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { api } from '../../utils';
 
-const styles = () => ({
-  inputCahngePicture: {
-    marginTop: "15px",
-  },
-});
+const CharacterPicture = styled(TextField)(({ theme }) => ({
+  marginTop: '15px',
+}));
 
-function ChangePictureModal({
-  classes,
-  character,
-  handleClose,
-  onPictureChange,
-}) {
+function ChangePictureModal({ character, handleClose, onPictureChange }) {
   const [pictureURLs, setPictureURLs] = useState({
-    standard_character_picture_url: "",
-    injured_character_picture_url: "",
+    standard_character_picture_url: '',
+    injured_character_picture_url: '',
   });
 
   useEffect(() => {
@@ -41,65 +34,56 @@ function ChangePictureModal({
     return;
 
     if (
-      !pictureURLs.standard_character_picture_url.includes("discord") ||
-      !pictureURLs.standard_character_picture_url.includes("imgur")
+      !pictureURLs.standard_character_picture_url.includes('discord') ||
+      !pictureURLs.standard_character_picture_url.includes('imgur')
     ) {
-      toast.error("Preencha as duas artes com URLs validas!");
+      toast.error('Preencha as duas artes com URLs validas!');
       return;
     }
 
     if (
-      !pictureURLs.injured_character_picture_url.includes("discord") ||
-      !pictureURLs.injured_character_picture_url.includes("imgur")
+      !pictureURLs.injured_character_picture_url.includes('discord') ||
+      !pictureURLs.injured_character_picture_url.includes('imgur')
     ) {
-      toast.error("Preencha as duas artes com URLs validas!");
+      toast.error('Preencha as duas artes com URLs validas!');
       return;
     }
   }
 
   const submit = () => {
-    if (
-      !pictureURLs.injured_character_picture_url ||
-      !pictureURLs.standard_character_picture_url
-    ) {
-      toast.error("Preencha as duas artes!");
+    if (!pictureURLs.injured_character_picture_url || !pictureURLs.standard_character_picture_url) {
+      toast.error('Preencha as duas artes!');
       return;
     }
 
-    const allowedWebsites = ["discord", "imgur"];
+    const allowedWebsites = ['discord', 'imgur'];
 
     if (
-      !allowedWebsites.some((website) =>
-        pictureURLs.injured_character_picture_url.includes(website)
-      )
+      !allowedWebsites.some(website => pictureURLs.injured_character_picture_url.includes(website))
     ) {
-      toast.error("Preencha as duas artes com URLs validas!");
+      toast.error('Preencha as duas artes com URLs validas!');
       return;
     }
 
     if (
-      !allowedWebsites.some((website) =>
-        pictureURLs.standard_character_picture_url.includes(website)
-      )
+      !allowedWebsites.some(website => pictureURLs.standard_character_picture_url.includes(website))
     ) {
-      toast.error("Preencha as duas artes com URLs validas!");
+      toast.error('Preencha as duas artes com URLs validas!');
       return;
     }
 
     if (
-      !pictureURLs.injured_character_picture_url.endsWith(".png") &&
-      !pictureURLs.standard_character_picture_url.endsWith(".png")
+      !pictureURLs.injured_character_picture_url.endsWith('.png') &&
+      !pictureURLs.standard_character_picture_url.endsWith('.png')
     ) {
-      toast.error("As artes precisam estar em formato PNG.");
+      toast.error('As artes precisam estar em formato PNG.');
       return;
     }
 
     api
       .put(`/character/${character.id}`, {
-        injured_character_picture_url:
-          pictureURLs.injured_character_picture_url,
-        standard_character_picture_url:
-          pictureURLs.standard_character_picture_url,
+        injured_character_picture_url: pictureURLs.injured_character_picture_url,
+        standard_character_picture_url: pictureURLs.standard_character_picture_url,
       })
       .then(() => {
         // Callback
@@ -109,7 +93,9 @@ function ChangePictureModal({
         handleClose();
       })
       .catch(() => {
-        return window.alert("Erro ao salvar!");
+        if (typeof window !== 'undefined') {
+          window.alert('Erro ao salvar!');
+        }
       });
   };
 
@@ -120,29 +106,27 @@ function ChangePictureModal({
         <Grid container>
           <Grid item xs={12}>
             <p>
-              {" "}
-              Se posssivel utilize imagens de tamanho <strong>420x600</strong> e
-              em formato <strong>PNG</strong>. Apenas são aceitos links de
-              imagens upadas no site{" "}
-              <Link href="https://imgur.com/" target="_blank">
+              {' '}
+              Se posssivel utilize imagens de tamanho <strong>420x600</strong> e em formato{' '}
+              <strong>PNG</strong>. Apenas são aceitos links de imagens upadas no site{' '}
+              <Link href='https://imgur.com/' target='_blank'>
                 Imgur
-              </Link>{" "}
+              </Link>{' '}
               ou no Discord.
             </p>
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              className={classes.inputCahngePicture}
+            <CharacterPicture
               autoFocus
-              label="Imagem padrão"
-              type="text"
+              label='Imagem padrão'
+              type='text'
               fullWidth
-              variant="standard"
+              variant='standard'
               value={pictureURLs.standard_character_picture_url}
               onChange={({ target }) => {
                 const value = target.value;
 
-                setPictureURLs((prevState) => ({
+                setPictureURLs(prevState => ({
                   ...prevState,
                   standard_character_picture_url: value,
                 }));
@@ -150,18 +134,17 @@ function ChangePictureModal({
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              className={classes.inputCahngePicture}
+            <CharacterPicture
               autoFocus
-              label="Imagem machucada"
-              type="text"
+              label='Imagem machucada'
+              type='text'
               fullWidth
-              variant="standard"
+              variant='standard'
               value={pictureURLs.injured_character_picture_url}
               onChange={({ target }) => {
                 const value = target.value;
 
-                setPictureURLs((prevState) => ({
+                setPictureURLs(prevState => ({
                   ...prevState,
                   injured_character_picture_url: value,
                 }));
@@ -171,7 +154,7 @@ function ChangePictureModal({
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">
+        <Button onClick={handleClose} color='secondary'>
           Cancelar
         </Button>
         <Button onClick={submit}>Alterar</Button>
@@ -180,4 +163,4 @@ function ChangePictureModal({
   );
 }
 
-export default withStyles(styles)(ChangePictureModal);
+export default ChangePictureModal;

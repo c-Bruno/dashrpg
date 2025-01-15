@@ -1,5 +1,4 @@
-import React from "react";
-import { withStyles } from "@mui/styles";
+import React from 'react';
 import {
   Dialog,
   DialogActions,
@@ -7,18 +6,9 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
-} from "@mui/material";
+} from '@mui/material';
 
-const styles = (theme) => ({});
-
-function ConfirmationModal({
-  data,
-  text,
-  title,
-  classes,
-  handleClose,
-  onConfirmation,
-}) {
+function ConfirmationModal({ data, text, title, handleClose, onConfirmation }) {
   return (
     <Dialog open={true} onClose={handleClose}>
       <DialogTitle>{title}</DialogTitle>
@@ -26,7 +16,7 @@ function ConfirmationModal({
         <DialogContentText>{text}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">
+        <Button onClick={handleClose} color='secondary'>
           Cancelar
         </Button>
         <Button
@@ -43,4 +33,4 @@ function ConfirmationModal({
   );
 }
 
-export default withStyles(styles)(ConfirmationModal);
+export default ConfirmationModal;

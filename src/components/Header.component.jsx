@@ -1,25 +1,25 @@
-import { Grid } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import React from "react";
+import { Grid, styled, Typography } from '@mui/material';
+import React from 'react';
 
-const styles = (theme) => ({
-  header: {
-    textAlign: "center",
-    fontFamily: "Lacquer, cursive",
-  },
+const HeaderContainer = styled(Grid)(({ theme }) => ({
+  textAlign: 'center',
+  fontFamily: 'Lacquer, cursive',
+}));
 
+const Title = styled(Typography)(({ theme }) => ({
   title: {
-    color: "#FFFFFF",
-    marginTop: 40,
+    color: '#FFFFFF',
   },
-});
+}));
 
-const Header = ({ title, classes }) => {
+const Header = ({ title }) => {
   return (
-    <Grid item xs={12} justifyContent="center" className={classes.header}>
-      <h1 className={classes.title}>{title}</h1>
-    </Grid>
+    <HeaderContainer item xs={12} justifyContent='center'>
+      <Title variant='h4' marginTop={10}>
+        {title}
+      </Title>
+    </HeaderContainer>
   );
 };
 
-export default withStyles(styles)(Header);
+export default Header;

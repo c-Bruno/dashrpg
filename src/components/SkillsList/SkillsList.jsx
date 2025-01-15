@@ -4,11 +4,10 @@ import { Button, Grid } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
 import { EditableRow, Section } from '../../components';
 
-import { useSkillStyles } from './styles';
+import { ScrollTableBox, useSkillStyles } from './styles';
 import { useTranslation } from 'react-i18next';
 
 const SkillsList = ({ skills, skillModal, confirmationModal }) => {
-  const classes = useSkillStyles();
   const { t } = useTranslation(['masterDashboard']);
 
   return (
@@ -28,7 +27,7 @@ const SkillsList = ({ skills, skillModal, confirmationModal }) => {
         </Button>
       )}
     >
-      <Grid item container xs={12} spacing={2} className={classes.scrollableBox}>
+      <ScrollTableBox item container xs={12} spacing={2}>
         {skills.map((skill, index) => (
           <Grid item xs={12} key={index}>
             <EditableRow
@@ -46,7 +45,7 @@ const SkillsList = ({ skills, skillModal, confirmationModal }) => {
             />
           </Grid>
         ))}
-      </Grid>
+      </ScrollTableBox>
     </Section>
   );
 };

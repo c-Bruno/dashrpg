@@ -1,5 +1,4 @@
-import React from "react";
-import { withStyles } from "@mui/styles";
+import React from 'react';
 import {
   Dialog,
   DialogActions,
@@ -7,13 +6,11 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
-} from "@mui/material";
+} from '@mui/material';
 
-const styles = (theme) => ({});
-
-function InfoModal({ classes, handleClose, title, text }) {
+function InfoModal({ handleClose, title, text }) {
   return (
-    <Dialog open={true} onClose={handleClose} fullWidth={true} maxWidth="sm">
+    <Dialog open={true} onClose={handleClose} fullWidth={true} maxWidth='sm'>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{text}</DialogContentText>
@@ -25,4 +22,4 @@ function InfoModal({ classes, handleClose, title, text }) {
   );
 }
 
-export default withStyles(styles)(InfoModal);
+export default InfoModal;

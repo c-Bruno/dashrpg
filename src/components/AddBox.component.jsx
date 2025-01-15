@@ -1,33 +1,31 @@
-import { Add as AddIcon } from "@mui/icons-material";
-import { withStyles } from "@mui/styles";
-import React from "react";
+import { Add as AddIcon } from '@mui/icons-material';
+import { styled } from '@mui/material';
+import React from 'react';
 
-const styles = (theme) => ({
-  root: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    padding: "15px",
-    cursor: "pointer",
-    borderRadius: "3px",
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "center",
-    background: theme.palette.primary[900],
-  },
+const Root = styled('div')(({ theme }) => ({
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  padding: '15px',
+  cursor: 'pointer',
+  borderRadius: '3px',
+  alignItems: 'center',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  background: theme.palette.primary[900],
+}));
 
-  icon: {
-    fontSize: "65px",
-    color: theme.palette.primary.main,
-  },
-});
+const Icon = styled(AddIcon)(({ theme }) => ({
+  fontSize: '65px',
+  color: theme.palette.primary.main,
+}));
 
-const AddBox = ({ classes, ...rest }) => {
+const AddBox = ({ ...rest }) => {
   return (
-    <div className={classes.root} {...rest}>
-      <AddIcon className={classes.icon} />
-    </div>
+    <Root {...rest}>
+      <Icon />
+    </Root>
   );
 };
 
-export default withStyles(styles)(AddBox);
+export default AddBox;
