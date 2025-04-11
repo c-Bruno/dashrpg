@@ -1,14 +1,13 @@
 import React from 'react';
 
 import { Grid } from '@mui/material';
-import { Section } from '../../components';
+import { Section } from "main/components/molecules";
 import { useTranslation } from 'react-i18next'; 
 import { DiceRollModal } from '../../components/modals';
 import useModal from '../../hooks/useModal.hook';
 import { CenteredGrid, Dice } from './styles';
 
-import { DICES } from '../../constants/dices';
-
+import { DICES } from 'common/constants';
 const MasterDices = () => {
   const { t } = useTranslation(['masterDashboard']); // Translation hook
 

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import { Button, Grid } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
-import { EditableRow, Section, SheetEditableRow } from "../../components";
+import { EditableRow, SheetEditableRow } from "../../components";
+import { Section } from "main/components/molecules";
 import { api } from "../../utils";
 
 const Skills = ({ character, setCharacter }) => {

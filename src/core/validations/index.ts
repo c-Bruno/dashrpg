@@ -1,0 +1,1 @@
+export { default as CharacterInfoSchema } from './character-info.validation';

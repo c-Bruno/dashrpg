@@ -1,0 +1,1 @@
+export { default as getInputVariant } from './get-input-variant';

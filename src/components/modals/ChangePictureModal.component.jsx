@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { api } from '../../utils';
+import { api } from 'common/libs';
 
 const CharacterPicture = styled(TextField)(({ theme }) => ({
   marginTop: '15px',

@@ -90,7 +90,7 @@ function CharacterBox({ classes, character, deleteCharacter, ...rest }) {
         return character.injured_character_picture_url;
       }
     } else {
-      return `/assets/character.png`;
+      return `/assets/placeholders/wizard.placeholder.png`;
     }
   };
 

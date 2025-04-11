@@ -4,7 +4,7 @@ import { Container, Grid } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import { Header, Section } from '../../components';
+import { Section } from "main/components/molecules";
 import { CharacterOverview, CharacterInfoForm } from '../../components/Character';
 import {
   ChangePictureModal,
@@ -16,14 +16,15 @@ import {
 } from '../../components/modals';
 import { prisma } from '../../database';
 import useModal from '../../hooks/useModal.hook';
-import { api } from '../../utils';
+import { api } from 'common/libs';
 import socket from '../../utils/socket';
 import { Inventory } from '../../components/Inventory';
-import { SpecialItem } from '../../components/SpecialItem';
 import { Combat } from '../../components/Combat';
 import { Attributes } from '../../components/Attributes';
 import { Skills } from '../../components/Skills';
 import * as characterActions from '../../redux/actions/character.actions';
+import { Header } from 'main/components/atoms';
+import { SpecialItem } from 'main/components/organisms';
 
 import { useDispatch } from 'react-redux';
 

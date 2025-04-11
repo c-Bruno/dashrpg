@@ -10,7 +10,7 @@ import {
   Button,
 } from '@mui/material';
 
-import { api } from '../../utils';
+import { api } from 'common/libs';
 import { useTranslation } from 'react-i18next';
 
 function CreateCharacterModal({ handleClose, onCharacterCreated }) {

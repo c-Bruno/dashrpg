@@ -82,7 +82,7 @@ function Portrait({ classes, character }) {
         return character.injured_character_picture_url;
       }
     } else {
-      return `/assets/character.png`;
+      return `/assets/placeholders/wizard.placeholder.png`;
     }
   };
 

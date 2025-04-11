@@ -1,4 +1,4 @@
-export const DICES = Object.freeze({
+const DICES = Object.freeze({
   D4: 'd4',
   D6: 'd6',
   D8: 'd8',
@@ -6,3 +6,5 @@ export const DICES = Object.freeze({
   D12: 'd12',
   D20: 'd20',
 });
+
+export default DICES;

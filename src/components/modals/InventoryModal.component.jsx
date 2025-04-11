@@ -13,7 +13,7 @@ import {
 
 import { toast, ToastContainer } from 'react-toastify';
 
-import { api } from '../../utils';
+import { api } from 'common/libs';
 
 function InventoryModal({
   data,

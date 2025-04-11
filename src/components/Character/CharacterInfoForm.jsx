@@ -1,9 +1,9 @@
 import { Button, Grid, TextField } from '@mui/material';
 import { Form, Formik } from 'formik';
 
-import { CharacterInfoSchema } from '../../validations';
+import { CharacterInfoSchema } from 'core/validations';
 
-import Loader from '../Loader.component';
+import { Loader } from 'main/components/atoms';
 
 const CharacterInfoForm = ({ classes, initialValues, onSubmit }) => (
   <Formik

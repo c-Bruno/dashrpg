@@ -2,16 +2,17 @@ import { Button, Container, Grid } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { Header, Section, TransferAttributesList } from '../../components';
+import { TransferAttributesList } from '../../components';
+import { Section } from "main/components/molecules";
 import { AttributeModal, ConfirmationModal, SkillModal } from '../../components/modals';
 import { AvailableCharacters } from '../../components/AvailableCharacters';
 import { AttributesList } from '../../components/AttributesList';
 import { prisma } from '../../database';
 import useModal from '../../hooks/useModal.hook';
-import { api } from '../../utils';
+import { api } from 'common/libs';
 import SkillsList from '../../components/SkillsList/SkillsList';
 import MasterDices from '../../components/MasterDices/MasterDices';
-import { t } from 'i18next';
+import { Header } from 'main/components/atoms';
 
 export const getServerSideProps = async () => {
   function parseConfigs(array) {

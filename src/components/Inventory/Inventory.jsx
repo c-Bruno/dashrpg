@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, Grid, styled, TextField } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
-import { EditableRow, Section } from '../../components';
+import { EditableRow } from '../../components';
+import { Section } from "main/components/molecules";
 
 const Inventory = ({ classes, character, inventoryModal, confirmationModal }) => {
   const calcSpaceInventory = () => {

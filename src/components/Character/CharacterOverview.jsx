@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Grid, styled } from '@mui/material';
-import { StatusBar, Section } from '..';
+import { Section, StatusBar } from "main/components/molecules";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Image from 'next/image';
@@ -26,7 +26,7 @@ const CharacterOverview = ({
         return character.injured_character_picture_url;
       }
     } else {
-      return `/assets/character.png`;
+      return `/assets/placeholders/wizard.placeholder.png`;
     }
   };
 
@@ -116,8 +116,11 @@ const CenteredGrid = styled(Grid)(({ theme }) => ({
 
 const CharacterImage = styled(Image)(({ theme }) => ({
   width: '200px',
+  height: '200px',
   borderRadius: '50%',
+  overflow: 'hidden',
   cursor: 'pointer',
+  position: 'relative',
 }));
 
 const BarTitle = styled(Grid)(({ theme }) => ({

@@ -2,7 +2,7 @@ import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import React from "react";
 
-import { ModalProvider } from "../contexts/ModalContext";
+import { ModalProvider } from "main/contexts/ModalContext";
 import theme from "../themes/Default.theme";
 import "../themes/global.scss";
 

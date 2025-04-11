@@ -1,8 +1,7 @@
-import { Add as AddIcon } from '@mui/icons-material';
 import { styled } from '@mui/material';
-import React from 'react';
+import { Add } from '@mui/icons-material';
 
-const Root = styled('div')(({ theme }) => ({
+export const Container = styled('div')(({ theme }) => ({
   width: '100%',
   height: '100%',
   display: 'flex',
@@ -15,17 +14,7 @@ const Root = styled('div')(({ theme }) => ({
   background: theme.palette.primary[900],
 }));
 
-const Icon = styled(AddIcon)(({ theme }) => ({
+export const AddIcon = styled(Add)(({ theme }) => ({
   fontSize: '65px',
   color: theme.palette.primary.main,
 }));
-
-const AddBox = ({ ...rest }) => {
-  return (
-    <Root {...rest}>
-      <Icon />
-    </Root>
-  );
-};
-
-export default AddBox;

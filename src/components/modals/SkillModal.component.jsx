@@ -9,7 +9,7 @@ import {
   DialogTitle,
   Button,
 } from '@mui/material';
-import { api } from '../../utils';
+import { api } from 'common/libs';
 import { toast, ToastContainer } from 'react-toastify';
 
 function SkillModal({ data, skills, onSubmit, operation, handleClose }) {

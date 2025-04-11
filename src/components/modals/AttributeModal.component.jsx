@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { api } from '../../utils';
+import { api } from 'common/libs';
 
 const AttributeName = styled(TextField)(({ theme }) => ({
   marginTop: '15px',

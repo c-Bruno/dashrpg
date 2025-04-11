@@ -14,7 +14,7 @@ import {
   MenuItem,
 } from '@mui/material';
 
-import { api } from '../../utils';
+import { api } from 'common/libs';
 
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import { Button, Grid } from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
-import { EditableRow, Section, SheetEditableRow } from "../../components";
+import { Grid } from "@mui/material";
+import { SheetEditableRow } from "../../components";
 import { api } from "../../utils";
+import { Section } from "main/components/molecules";
 
 const Attributes = ({ character, setCharacter }) => {
   // Atualiza o valor do atributo ao digitar

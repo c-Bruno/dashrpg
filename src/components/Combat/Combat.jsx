@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import { Button, Grid, TextField, Tooltip } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
-import { EditableRow, Section, TableBox } from "../../components";
+import { EditableRow, TableBox } from "../../components";
+import { Section } from "main/components/molecules";
 
 const Combat = ({ character, setCharacter, combatModal }) => {
   return (

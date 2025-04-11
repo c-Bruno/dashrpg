@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, Grid } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
-import { EditableRow, Section } from '../../components';
+import { EditableRow } from '../../components';
+import { Section } from "main/components/molecules";
 
 import { useTranslation } from 'react-i18next';
 import { ScrollTableBox } from './styles';

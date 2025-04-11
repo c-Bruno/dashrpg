@@ -1,10 +1,12 @@
 import { Grid } from '@mui/material';
 import React from 'react';
-import { AddBox, CharacterBox, Section } from '..';
+import { AddBox, CharacterBox } from '..';
 import { CreateCharacterModal } from '../modals';
 import useModal from '../../hooks/useModal.hook';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import { Section } from "main/components/molecules";
+import { AddButtonBox } from "main/components/atoms";
 
 const AvailableCharacters = ({ characters, refreshData, confirmationModal }) => {
   const { t } = useTranslation(['masterDashboard']);
@@ -36,7 +38,7 @@ const AvailableCharacters = ({ characters, refreshData, confirmationModal }) => 
           </Grid>
         ))}
         <Grid item xs={12} md={4}>
-          <AddBox onClick={() => createCharacterModal.appear()} />
+          <AddButtonBox onClick={() => createCharacterModal.appear()} />
         </Grid>
       </Grid>
     </Section>
