@@ -1,11 +1,10 @@
 import { Grid } from '@mui/material';
 import React from 'react';
-import { AddBox, CharacterBox } from '..';
 import { CreateCharacterModal } from '../modals';
 import useModal from '../../hooks/useModal.hook';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import { Section } from "main/components/molecules";
+import { CharacterSnapshotCard, Section } from "main/components/molecules";
 import { AddButtonBox } from "main/components/atoms";
 
 const AvailableCharacters = ({ characters, refreshData, confirmationModal }) => {
@@ -25,7 +24,7 @@ const AvailableCharacters = ({ characters, refreshData, confirmationModal }) => 
       <Grid item container xs={12} spacing={3}>
         {characters.map((character, index) => (
           <Grid item xs={12} md={4} key={index}>
-            <CharacterBox
+            <CharacterSnapshotCard
               character={character}
               deleteCharacter={() =>
                 confirmationModal.appear({
@@ -37,6 +36,7 @@ const AvailableCharacters = ({ characters, refreshData, confirmationModal }) => 
             />
           </Grid>
         ))}
+        
         <Grid item xs={12} md={4}>
           <AddButtonBox onClick={() => createCharacterModal.appear()} />
         </Grid>

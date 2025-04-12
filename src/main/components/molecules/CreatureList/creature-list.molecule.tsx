@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
+import React from "react";
 
-export default function CreatureList() {
+const CreatureList: React.FC = () => {
   return (
     <Grid
       container
@@ -11,7 +12,6 @@ export default function CreatureList() {
     >
       <Grid item>
         <a
-          alt="Mythrill"
           target="_blank"
           rel="noreferrer"
           href="https://www.mythrillfiction.com/the-dark-rider"
@@ -21,15 +21,18 @@ export default function CreatureList() {
               <img
                 className="cover-image"
                 src="https://ggayane.github.io/css-experiments/cards/dark_rider-cover.jpg"
+                alt="Dark Rider Cover"
               />
             </div>
             <img
               className="title"
               src="https://ggayane.github.io/css-experiments/cards/dark_rider-title.png"
+              alt="Dark Rider Title"
             />
             <img
               className="character"
               src="https://ggayane.github.io/css-experiments/cards/dark_rider-character.webp"
+              alt="Dark Rider Character"
             />
           </div>
         </a>
@@ -37,7 +40,6 @@ export default function CreatureList() {
 
       <Grid item>
         <a
-          alt="Mythrill"
           target="_blank"
           rel="noreferrer"
           href="https://www.mythrillfiction.com/force-mage"
@@ -47,19 +49,24 @@ export default function CreatureList() {
               <img
                 className="cover-image"
                 src="https://ggayane.github.io/css-experiments/cards/force_mage-cover.jpg"
+                alt="Force Mage Cover"
               />
             </div>
             <img
               className="title"
               src="https://ggayane.github.io/css-experiments/cards/force_mage-title.png"
+              alt="Force Mage Title"
             />
             <img
               className="character"
               src="https://ggayane.github.io/css-experiments/cards/force_mage-character.webp"
+              alt="Force Mage Character"
             />
           </div>
         </a>
       </Grid>
     </Grid>
   );
-}
+};
+
+export default CreatureList;

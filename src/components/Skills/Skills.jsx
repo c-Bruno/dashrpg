@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import { Button, Grid } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
-import { EditableRow, SheetEditableRow } from "../../components";
-import { Section } from "main/components/molecules";
 import { api } from "../../utils";
+import { RollableAttribute, Section} from "main/components/molecules";
 
 const Skills = ({ character, setCharacter }) => {
   // Atualiza o valor da pericia ao digitar
@@ -40,7 +39,7 @@ const Skills = ({ character, setCharacter }) => {
       >
         {character.skills.map((each, index) => (
           <Grid item xs={2} key={index}>
-            <SheetEditableRow
+            <RollableAttribute
               image="/assets/expertiseRoll.png"
               data={{
                 name: each.skill.name,

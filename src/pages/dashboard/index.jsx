@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { TransferAttributesList } from '../../components';
-import { Section } from "main/components/molecules";
+import { CreatureList, Section } from "main/components/molecules";
 import { AttributeModal, ConfirmationModal, SkillModal } from '../../components/modals';
 import { AvailableCharacters } from '../../components/AvailableCharacters';
 import { AttributesList } from '../../components/AttributesList';

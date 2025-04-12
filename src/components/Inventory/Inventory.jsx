@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, Grid, styled, TextField } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
-import { EditableRow } from '../../components';
-import { Section } from "main/components/molecules";
+import { EditableDataRow, Section } from "main/components/molecules";
 
 const Inventory = ({ classes, character, inventoryModal, confirmationModal }) => {
   const calcSpaceInventory = () => {
@@ -88,7 +87,7 @@ const Inventory = ({ classes, character, inventoryModal, confirmationModal }) =>
       <ScrollableBox item container xs={12} spacing={2}>
         {character.inventory.map((inventory, index) => (
           <Grid item xs={12} key={index}>
-            <EditableRow
+            <EditableDataRow
               data={inventory}
               // Atualizar informação do item do inventario
               editRow={data => {

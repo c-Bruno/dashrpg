@@ -1,9 +1,8 @@
 import React from "react";
 
 import { Grid } from "@mui/material";
-import { SheetEditableRow } from "../../components";
 import { api } from "../../utils";
-import { Section } from "main/components/molecules";
+import { RollableAttribute, Section } from "main/components/molecules";
 
 const Attributes = ({ character, setCharacter }) => {
   // Atualiza o valor do atributo ao digitar
@@ -39,7 +38,7 @@ const Attributes = ({ character, setCharacter }) => {
       >
         {character.attributes.map((each, index) => (
           <Grid item xs={2} key={index}>
-            <SheetEditableRow
+            <RollableAttribute
               avaliableSkills={character.skills}
               image="/assets/dice.png"
               data={{

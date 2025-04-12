@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, Grid } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
-import { EditableRow } from '../../components';
-import { Section } from "main/components/molecules";
+import { EditableDataRow, Section } from "main/components/molecules";
 
 import { useTranslation } from 'react-i18next';
 import { ScrollTableBox } from './styles';
@@ -32,7 +31,7 @@ const AttributesList = ({ attributes, attributeModal, confirmationModal }) => {
         {/* Para cada atributo existente, exiba as informações */}
         {attributes.map((attribute, index) => (
           <Grid item xs={12} key={index}>
-            <EditableRow
+            <EditableDataRow
               data={attribute}
               editRow={data => {
                 attributeModal.appear({ operation: 'edit', data });

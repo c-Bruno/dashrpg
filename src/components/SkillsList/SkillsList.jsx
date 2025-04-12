@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, Grid } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
-import { EditableRow } from '../../components';
-import { Section } from "main/components/molecules";
+import { EditableDataRow, Section } from "main/components/molecules";
 
 import { ScrollTableBox, useSkillStyles } from './styles';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +30,7 @@ const SkillsList = ({ skills, skillModal, confirmationModal }) => {
       <ScrollTableBox item container xs={12} spacing={2}>
         {skills.map((skill, index) => (
           <Grid item xs={12} key={index}>
-            <EditableRow
+            <EditableDataRow
               data={skill}
               editRow={data => {
                 skillModal.appear({ operation: 'edit', data });

@@ -1,36 +1,23 @@
 import React from 'react';
-import Image from 'next/image';
 
-import { Grid, styled, TextField } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
-import useModal from '../hooks/useModal.hook';
-import { DiceRollModal, InfoModal } from './modals';
+import useModal from '../../../../hooks/useModal.hook';
+import { DiceRollModal, InfoModal } from '../../../../components/modals';
+  
+import * as S from './rollable-attribute.styles';
 
-const Dice = styled(Image)(({ theme }) => ({
-  cursor: 'pointer',
-  transition: '-webkit-transform .8s ease-in-out',
-  transform: 'transform .8s ease-in-out',
+interface RollableAttributeProps {
+  data: any;
+  image: string;
+  onInput: (value: string) => void;
+  onValueChange: (value: string) => void;
+  avaliableSkills: any; 
+};
 
-  '&:hover': {
-    transition: 'rotate(360deg)',
-    transform: 'rotate(360deg)',
-  },
-}));
-
-const AttributeName = styled(Grid)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-}));
-
-const AttributeTextName = styled('span')(({ theme }) => ({
-  cursor: 'pointer',
-  textAlign: 'center',
-  fontWeight: 'bold',
-}));
-
-const SheetEditableRow = ({ data, image, onInput, onValueChange, avaliableSkills }) => {
+const RollableAttribute: React.FC<RollableAttributeProps> = ({ data, image, onInput, onValueChange, avaliableSkills }) => {
   const infoModal = useModal(({ close }) => (
     <InfoModal title={data.name} text={data.description} handleClose={close} />
   ));
@@ -38,32 +25,31 @@ const SheetEditableRow = ({ data, image, onInput, onValueChange, avaliableSkills
   const diceRollModal = useModal(({ close }) => (
     <DiceRollModal
       amount={'1d20'}
-      // character={character}
       atribute={data.name}
       valueAtribute={data.value}
       skillAttibute={data.skill_id}
       avaliableSkills={avaliableSkills}
-      onDiceRoll={rollData => {
-        const parsedData = {
-          character_id: character.id,
-          rolls: rollData.map(each => ({
-            rolled_number: each.rolled_number,
-            max_number: each.max_number,
-          })),
-        };
+      // onDiceRoll={rollData => {
+      //   const parsedData = {
+      //     character_id: character.id,
+      //     rolls: rollData.map(each => ({
+      //       rolled_number: each.rolled_number,
+      //       max_number: each.max_number,
+      //     })),
+      //   };
 
-        socket.emit('dice_roll', parsedData);
-      }}
+      //   socket.emit('dice_roll', parsedData);
+      // }}
       handleClose={close}
     />
   ));
 
   return (
     <div>
-      <Grid container direction='column' alignItems='center' justify='center'>
+      <Grid container direction='column' alignItems='center' justifyContent='center'>
         {/* Imagem do dado para rolagem no atributo */}
         <Grid item>
-          <Dice
+          <S.Dice
             width={40}
             height={40}
             src={image}
@@ -77,9 +63,9 @@ const SheetEditableRow = ({ data, image, onInput, onValueChange, avaliableSkills
         </Grid>
 
         {/* Nome do atributo com acionamento para o modal de informação */}
-        <AttributeName item>
-          <AttributeTextName onClick={() => infoModal.appear()}>{data.name}</AttributeTextName>
-        </AttributeName>
+        <S.AttributeName item>
+          <S.AttributeTextName onClick={() => infoModal.appear()}>{data.name}</S.AttributeTextName>
+        </S.AttributeName>
 
         {/* Text para digitar o valor do atributo */}
         <Grid>
@@ -103,4 +89,4 @@ const SheetEditableRow = ({ data, image, onInput, onValueChange, avaliableSkills
   );
 };
 
-export default SheetEditableRow;
+export default RollableAttribute;

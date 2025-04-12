@@ -1,13 +1,19 @@
-import { Delete as DeleteIcon, Create as EditIcon } from '@mui/icons-material';
-import { Button, Grid, TextField, Tooltip } from '@mui/material';
 import React from 'react';
 
-const EditableRow = ({ data, editRow, deleteRow }) => {
+import { Delete as DeleteIcon, Create as EditIcon } from '@mui/icons-material';
+import { Button, Grid, TextField, Tooltip } from '@mui/material';
+
+interface EditableDataRowProps {
+  data: any;
+  editRow: (data: any) => void;
+  deleteRow: (data: any) => void;
+};
+
+const EditableDataRow: React.FC<EditableDataRowProps> = ({ data, editRow, deleteRow }) => {
   return (
     <div>
-      {/* Inventario do personagem */}
       <Grid container>
-        {/* Descrição do item no inventario */}
+        {/* Descrição do item */}
         <Grid item md={6} xs={12}>
           <TextField
             disabled
@@ -17,7 +23,6 @@ const EditableRow = ({ data, editRow, deleteRow }) => {
           />
         </Grid>
 
-        {/* Peso do item no inventario */}
         {data.inventory && (
           <Grid item md={2} xs={12}>
             <TextField disabled value={data.inventory.weight} variant='standard' fullWidth />
@@ -26,7 +31,7 @@ const EditableRow = ({ data, editRow, deleteRow }) => {
 
         {/* Remover Item */}
         <Grid item md={2} xs={6}>
-          <Tooltip title='Remover item do inventario'>
+          <Tooltip title='Remover item'>
             <Button variant='outlined' onClick={() => deleteRow(data)}>
               <DeleteIcon />
             </Button>
@@ -35,7 +40,7 @@ const EditableRow = ({ data, editRow, deleteRow }) => {
 
         {/* Editar Item */}
         <Grid item md={2} xs={6}>
-          <Tooltip title='Editar indormações do item '>
+          <Tooltip title='Editar indormações'>
             <Button variant='outlined' onClick={() => editRow(data)}>
               <EditIcon />
             </Button>
@@ -46,4 +51,4 @@ const EditableRow = ({ data, editRow, deleteRow }) => {
   );
 };
 
-export default EditableRow;
+export default EditableDataRow;
