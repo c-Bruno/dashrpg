@@ -1,12 +1,12 @@
 import React from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 
 import { Grid, TextField } from '@mui/material';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
+import { DiceRollModal, InfoModal } from 'main/components/molecules';
+
 import useModal from '../../../../hooks/useModal.hook';
-import { DiceRollModal, InfoModal } from '../../../../components/modals';
-  
 import * as S from './rollable-attribute.styles';
 
 interface RollableAttributeProps {
@@ -14,10 +14,9 @@ interface RollableAttributeProps {
   image: string;
   onInput: (value: string) => void;
   onValueChange: (value: string) => void;
-  avaliableSkills: any; 
-};
+}
 
-const RollableAttribute: React.FC<RollableAttributeProps> = ({ data, image, onInput, onValueChange, avaliableSkills }) => {
+const RollableAttribute: React.FC<RollableAttributeProps> = ({ data, image, onInput, onValueChange }) => {
   const infoModal = useModal(({ close }) => (
     <InfoModal title={data.name} text={data.description} handleClose={close} />
   ));
@@ -26,9 +25,6 @@ const RollableAttribute: React.FC<RollableAttributeProps> = ({ data, image, onIn
     <DiceRollModal
       amount={'1d20'}
       atribute={data.name}
-      valueAtribute={data.value}
-      skillAttibute={data.skill_id}
-      avaliableSkills={avaliableSkills}
       // onDiceRoll={rollData => {
       //   const parsedData = {
       //     character_id: character.id,
@@ -55,9 +51,7 @@ const RollableAttribute: React.FC<RollableAttributeProps> = ({ data, image, onIn
             src={image}
             alt='Dice roll'
             onClick={() => {
-              data.value
-                ? diceRollModal.appear()
-                : toast.error('Primeiro preencha o valor do atributo');
+              data.value ? diceRollModal.appear() : toast.error('Primeiro preencha o valor do atributo');
             }}
           />
         </Grid>
@@ -79,8 +73,8 @@ const RollableAttribute: React.FC<RollableAttributeProps> = ({ data, image, onIn
                 textAlign: 'center',
               },
             }}
-            onBlur={event => onValueChange(event.target.value)}
-            onChange={event => onInput(event.target.value)}
+            onBlur={(event) => onValueChange(event.target.value)}
+            onChange={(event) => onInput(event.target.value)}
           />
         </Grid>
       </Grid>

@@ -1,9 +1,3 @@
-import TransferAttributesList from "./TransferAttributesList.component";
+import TableBox from './TableBox.component';
 
-import TableBox from "./TableBox.component";
-
-export {
-  TableBox,
-  TransferAttributesList,
-};
-
+export { TableBox };

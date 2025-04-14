@@ -1,22 +1,22 @@
+import React, { useEffect, useState } from 'react';
+
 import { Button, Container, Grid } from '@mui/material';
+import { api } from 'common/libs';
+import { Header } from 'main/components/atoms';
+import { CreatureList, Section } from 'main/components/molecules';
+import { AttributesBySkill, AvailableItemsList } from 'main/components/organisms';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { TransferAttributesList } from '../../components';
-import { CreatureList, Section } from "main/components/molecules";
-import { AttributeModal, ConfirmationModal, SkillModal } from '../../components/modals';
+
 import { AvailableCharacters } from '../../components/AvailableCharacters';
-import { AttributesList } from '../../components/AttributesList';
+import MasterDices from '../../components/MasterDices/MasterDices';
+import { AttributeModal, ConfirmationModal, SkillModal } from '../../components/modals';
 import { prisma } from '../../database';
 import useModal from '../../hooks/useModal.hook';
-import { api } from 'common/libs';
-import SkillsList from '../../components/SkillsList/SkillsList';
-import MasterDices from '../../components/MasterDices/MasterDices';
-import { Header } from 'main/components/atoms';
 
 export const getServerSideProps = async () => {
   function parseConfigs(array) {
-    return array.map(config => {
+    return array.map((config) => {
       if (config.name === 'DICE_ON_SCREEN_TIMEOUT_IN_MS' || 'TIME_BETWEEN_DICES_IN_MS') {
         return {
           ...config,
@@ -81,8 +81,8 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
   });
 
   useEffect(() => {
-    configs.forEach(config => {
-      setUpdatedConfigs(prevState => ({
+    configs.forEach((config) => {
+      setUpdatedConfigs((prevState) => ({
         ...prevState,
         [config.name]: config.value,
       }));
@@ -104,7 +104,7 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
   };
 
   const runInitialSetup = () => {
-    api.post('/setup').then(res => {
+    api.post('/setup').then((res) => {
       if (res.data.success) {
         if (typeof window !== 'undefined') {
           return window.location.reload();
@@ -119,17 +119,17 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
       text={custom.text}
       data={custom.data}
       handleClose={close}
-      onConfirmation={data => {
+      onConfirmation={(data) => {
         const { id, type } = data;
 
         api
           .delete(`/${type}/${id}`)
           .then(() => {
             if (type == 'attribute') {
-              setAttributes(attributes.filter(item => item.id !== id));
+              setAttributes(attributes.filter((item) => item.id !== id));
             }
             if (type == 'skill') {
-              setSkills(skills.filter(item => item.id !== id));
+              setSkills(skills.filter((item) => item.id !== id));
             }
           })
           .catch(() => {
@@ -140,7 +140,7 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
   ));
 
   const attributeModal = useModal(({ close, custom }) => {
-    const onSubmit = newAttribute => {
+    const onSubmit = (newAttribute) => {
       setAttributes(newAttribute);
       close();
     };
@@ -158,7 +158,7 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
   });
 
   const skillModal = useModal(({ close, custom }) => {
-    const onSubmit = newSkill => {
+    const onSubmit = (newSkill) => {
       setSkills(newSkill);
       close();
     };
@@ -196,18 +196,24 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
 
             {/* /* List of added ATTRIBUTES and option to add */}
             <Grid item xs={12} md={6}>
-              <AttributesList
-                attributes={attributes}
-                attributeModal={attributeModal}
+              <AvailableItemsList
+                type={'attribute'}
+                title='Atributos'
+                image='/assets/atributes.png'
+                items={attributes}
+                itemModal={attributeModal}
                 confirmationModal={confirmationModal}
               />
             </Grid>
 
             {/* /* List of added SKILLS and option to add */}
             <Grid item xs={12} md={6}>
-              <SkillsList
-                skills={skills}
-                skillModal={skillModal}
+              <AvailableItemsList
+                type={'skill'}
+                title='Perícias'
+                image='/assets/expertise.png'
+                items={skills}
+                itemModal={skillModal}
                 confirmationModal={confirmationModal}
               />
             </Grid>
@@ -216,10 +222,7 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
             <Grid item xs={12}>
               <Section title='Classificação de atributos    ' image='/assets/groupAttibutes.png'>
                 <Grid item container xs={12} spacing={2}>
-                  <TransferAttributesList
-                    attributes={attributes}
-                    skills={skills}
-                  ></TransferAttributesList>
+                  <AttributesBySkill attributes={attributes} skills={skills} />
                 </Grid>
               </Section>
             </Grid>

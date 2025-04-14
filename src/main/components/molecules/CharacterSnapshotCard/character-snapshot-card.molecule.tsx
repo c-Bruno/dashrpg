@@ -8,25 +8,20 @@ import {
   Chair as SanityIcon,
   ChairAltOutlined as SanityIconEmpty,
 } from '@mui/icons-material';
+import { getCharacterPicture } from 'common/helpers';
 
 import * as S from './character-snapshot-card.styles';
-import { getCharacterPicture } from 'common/helpers';
 
 interface CharacterSnapshotCardProps {
   character: any;
   deleteCharacter: () => void;
   [key: string]: any; // Permite passar props adicionais
-};
+}
 
 const CharacterSnapshotCard: React.FC<CharacterSnapshotCardProps> = ({ character, deleteCharacter, ...rest }) => {
   return (
     <S.CharacterCardContainer {...rest}>
-      <S.CharacterAvatar
-        src={getCharacterPicture(character)} 
-        alt='Character Portrait'
-        width={70}
-        height={70}
-      />
+      <S.CharacterAvatar src={getCharacterPicture(character)} alt='Character Portrait' width={70} height={70} />
       <S.CharacterDetails>
         {/* Nome do personagem */}
         <S.CharacterTitle>

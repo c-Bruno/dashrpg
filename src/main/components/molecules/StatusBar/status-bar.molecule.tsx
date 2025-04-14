@@ -1,5 +1,7 @@
-import { Box } from "@mui/material";
-import { LabeledProgressBar } from "main/components/atoms";
+import React from 'react';
+
+import { Box } from '@mui/material';
+import { LabeledProgressBar } from 'main/components/atoms';
 
 interface StatusBarProps {
   max: number;

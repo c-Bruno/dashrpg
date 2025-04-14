@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { Grid } from '@mui/material';
-import { Section } from "main/components/molecules";
+import { DiceRollModal, Section } from "main/components/molecules";
 import { useTranslation } from 'react-i18next'; 
-import { DiceRollModal } from '../../components/modals';
 import useModal from '../../hooks/useModal.hook';
 import { CenteredGrid, Dice } from './styles';
 

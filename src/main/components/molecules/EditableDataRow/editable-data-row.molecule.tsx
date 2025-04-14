@@ -7,7 +7,7 @@ interface EditableDataRowProps {
   data: any;
   editRow: (data: any) => void;
   deleteRow: (data: any) => void;
-};
+}
 
 const EditableDataRow: React.FC<EditableDataRowProps> = ({ data, editRow, deleteRow }) => {
   return (
@@ -15,12 +15,7 @@ const EditableDataRow: React.FC<EditableDataRowProps> = ({ data, editRow, delete
       <Grid container>
         {/* Descrição do item */}
         <Grid item md={6} xs={12}>
-          <TextField
-            disabled
-            value={data.name || data.inventory.description}
-            variant='standard'
-            fullWidth
-          />
+          <TextField disabled value={data.name || data.inventory.description} variant='standard' fullWidth />
         </Grid>
 
         {data.inventory && (

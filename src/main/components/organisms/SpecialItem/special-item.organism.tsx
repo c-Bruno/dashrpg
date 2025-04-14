@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
-
-import { Grid, TextField } from "@mui/material";
+import React, { useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
-import { Section } from "main/components/molecules";
-import { api } from "common/libs";
+
+import { Grid, TextField } from '@mui/material';
+import { api } from 'common/libs';
+import { Section } from 'main/components/molecules';
 
 interface SpecialItemProps {
   character: any;
@@ -35,17 +35,17 @@ const SpecialItem: React.FC<SpecialItemProps> = ({ character }) => {
   }, []);
 
   return (
-    <Section title="Item especial   " image="/assets/specialItem.png">
+    <Section title='Item especial   ' image='/assets/specialItem.png'>
       <Grid item xs={12}>
         <TextField
           rows={6}
-          name="specialItem"
-          variant="standard"
+          name='specialItem'
+          variant='standard'
           onKeyUp={handleUpdate}
           fullWidth
           multiline
           defaultValue={character.specialItem}
-          placeholder="Descreva aqui o item especial do personagem..."
+          placeholder='Descreva aqui o item especial do personagem...'
         />
       </Grid>
     </Section>

@@ -1,14 +1,14 @@
 import React from 'react';
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Button,
-} from '@mui/material';
 
-function InfoModal({ handleClose, title, text }) {
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
+
+interface InfoModalProps {
+  handleClose: () => void;
+  title: string;
+  text: string;
+}
+
+const InfoModal: React.FC<InfoModalProps> = ({ handleClose, title, text }) => {
   return (
     <Dialog open={true} onClose={handleClose} fullWidth={true} maxWidth='sm'>
       <DialogTitle>{title}</DialogTitle>

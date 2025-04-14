@@ -1,3 +1,5 @@
+import React from 'react';
+
 import * as S from './add-button-box.styles';
 
 interface AddButtonBoxProps {

@@ -1,4 +1,5 @@
-const DICE_ROLLS = Object.freeze({ table : [
+const DICE_ROLLS = Object.freeze({
+  table: [
     /*0*/ { normal: 20 }, // Atributos com valor = 1
     /*1*/ { normal: 19, good: 20 }, // Atributos com valor = 2
     /*2*/ { normal: 18, good: 20 }, // Atributos com valor = 3
@@ -20,6 +21,7 @@ const DICE_ROLLS = Object.freeze({ table : [
     /*18*/ { normal: 5, good: 12, extreme: 18 }, // Atributos com valor = 19
     /*19*/ { normal: 5, good: 12, extreme: 18 }, // Atributos com valor = 20
     /*20*/ { normal: 5, good: 11, extreme: 17 }, // Atributos com valor iguais ou superiores a 21
-  ] });
+  ],
+});
 
 export default DICE_ROLLS;

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+
 import Image from 'next/image';
 
 import * as S from './section.styles';
@@ -24,9 +25,7 @@ const Section: React.FC<SectionProps> = ({ image, title, children, subtitle, ren
         <div>
           <S.SectionTitle variant='h5'>
             {title}
-            {image && (
-              <Image src={image} alt='Character Portrait' width={30} height={30}></Image>
-            )}
+            {image && <Image src={image} alt='Character Portrait' width={30} height={30}></Image>}
 
             {isClient && renderButton && <S.TopRightButtonWrapper>{renderButton()}</S.TopRightButtonWrapper>}
           </S.SectionTitle>

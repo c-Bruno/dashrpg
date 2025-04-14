@@ -1,32 +1,31 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { Container, Grid } from '@mui/material';
+import { api } from 'common/libs';
+import { Header } from 'main/components/atoms';
+import { DiceRollModal, Section } from 'main/components/molecules';
+import { SpecialItem } from 'main/components/organisms';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { toast } from 'react-toastify';
-import { Section } from "main/components/molecules";
+
+import { Attributes } from '../../components/Attributes';
 import { CharacterOverview, CharacterInfoForm } from '../../components/Character';
+import { Combat } from '../../components/Combat';
+import { Inventory } from '../../components/Inventory';
 import {
   ChangePictureModal,
   CombatModal,
   ConfirmationModal,
-  DiceRollModal,
   InventoryModal,
   StatusBarModal,
 } from '../../components/modals';
+import { Skills } from '../../components/Skills';
 import { prisma } from '../../database';
 import useModal from '../../hooks/useModal.hook';
-import { api } from 'common/libs';
-import socket from '../../utils/socket';
-import { Inventory } from '../../components/Inventory';
-import { Combat } from '../../components/Combat';
-import { Attributes } from '../../components/Attributes';
-import { Skills } from '../../components/Skills';
 import * as characterActions from '../../redux/actions/character.actions';
-import { Header } from 'main/components/atoms';
-import { SpecialItem } from 'main/components/organisms';
-
-import { useDispatch } from 'react-redux';
+import socket from '../../utils/socket';
 
 export const getServerSideProps = async ({ params }) => {
   const characterId = isNaN(params.id) ? null : Number(params.id);
@@ -96,7 +95,7 @@ function Sheet({ rawCharacter }) {
 
   const [character, setCharacter] = useState(rawCharacter);
 
-  const onCharacterInfoSubmit = async values => {
+  const onCharacterInfoSubmit = async (values) => {
     return new Promise((resolve, reject) => {
       api
         .put(`/character/${character.id}`, values)
@@ -110,7 +109,7 @@ function Sheet({ rawCharacter }) {
   };
 
   // Atualiza(update) o valor de VIDA no banco
-  const onHitPointsModalSubmit = async newData => {
+  const onHitPointsModalSubmit = async (newData) => {
     return new Promise((resolve, reject) => {
       const data = {
         current_hit_points: Number(newData.current),
@@ -130,7 +129,7 @@ function Sheet({ rawCharacter }) {
             max: data.max_hit_points,
           });
         })
-        .catch(err => {
+        .catch((err) => {
           toast.error(`Erro ao atualizar a vida!`, err);
 
           reject();
@@ -139,7 +138,7 @@ function Sheet({ rawCharacter }) {
   };
 
   // Atualiza(update) o valor de SANIDADE no banco
-  const onSanityPointsModalSubmit = async newData => {
+  const onSanityPointsModalSubmit = async (newData) => {
     return new Promise((resolve, reject) => {
       const data = {
         current_sanity_points: Number(newData.current),
@@ -158,7 +157,7 @@ function Sheet({ rawCharacter }) {
             max: data.max_sanity_points,
           });
         })
-        .catch(err => {
+        .catch((err) => {
           toast.error(`Erro ao atualizar a sanidade!`, err);
           reject();
         });
@@ -169,8 +168,8 @@ function Sheet({ rawCharacter }) {
     setCharacter(rawCharacter);
   }, [rawCharacter]);
 
-  const updateCharacterState = data => {
-    return setCharacter(prevState => ({
+  const updateCharacterState = (data) => {
+    return setCharacter((prevState) => ({
       ...prevState,
       ...data,
     }));
@@ -183,15 +182,15 @@ function Sheet({ rawCharacter }) {
       text={custom.text}
       data={custom.data}
       handleClose={close}
-      onConfirmation={data => {
+      onConfirmation={(data) => {
         const { id, type } = data;
 
         api
           .delete(`/${type}/${id}`)
           .then(() => {
-            setCharacter(prevCharacter => ({
+            setCharacter((prevCharacter) => ({
               ...prevCharacter,
-              [type]: prevCharacter[type].filter(item => item[`${type}_id`] !== id),
+              [type]: prevCharacter[type].filter((item) => item[`${type}_id`] !== id),
             }));
           })
           .catch(() => {
@@ -205,7 +204,7 @@ function Sheet({ rawCharacter }) {
   const hitPointsModal = useModal(({ close }) => (
     <StatusBarModal
       type='hp'
-      onSubmit={async newData => {
+      onSubmit={async (newData) => {
         onHitPointsModalSubmit(newData).then(() => close());
       }}
       handleClose={close}
@@ -220,7 +219,7 @@ function Sheet({ rawCharacter }) {
   const sanityPointsModal = useModal(({ close }) => (
     <StatusBarModal
       type='sn'
-      onSubmit={async newData => {
+      onSubmit={async (newData) => {
         onSanityPointsModalSubmit(newData).then(() => close());
       }}
       handleClose={close}
@@ -233,38 +232,19 @@ function Sheet({ rawCharacter }) {
 
   // Modal dos dados
   const diceRollModal = useModal(({ close }) => (
-    <DiceRollModal
-      amount={'1d100'}
-      onDiceRoll={rollData => {
-        const parsedData = {
-          character_id: character.id,
-          rolls: rollData.map(each => ({
-            rolled_number: each.rolled_number,
-            max_number: each.max_number,
-          })),
-        };
-
-        socket.emit('dice_roll', parsedData);
-      }}
-      handleClose={close}
-      characterId={character.id}
-    />
+    <DiceRollModal amount={'1d100'} handleClose={close} characterId={character.id} />
   ));
 
   // Alterar foto de personagem
   const changePictureModal = useModal(({ close }) => (
-    <ChangePictureModal
-      onPictureChange={() => refreshData()}
-      handleClose={close}
-      character={character}
-    />
+    <ChangePictureModal onPictureChange={() => refreshData()} handleClose={close} character={character} />
   ));
 
   // Aciona o modal de inventario
   const inventoryModal = useModal(({ close, custom }) => {
     const { data, character: inventoryCharacter, space, operation } = custom;
 
-    const onSubmit = newCharacter => {
+    const onSubmit = (newCharacter) => {
       setCharacter(newCharacter);
       close();
     };
@@ -286,7 +266,7 @@ function Sheet({ rawCharacter }) {
   const combatModal = useModal(({ close, custom }) => {
     const { data, character: combatCharacter, operation } = custom;
 
-    const onSubmit = newCharacter => {
+    const onSubmit = (newCharacter) => {
       setCharacter(newCharacter);
       close();
     };
@@ -343,11 +323,7 @@ function Sheet({ rawCharacter }) {
 
           {/* Inventario */}
           <Grid item xs={12} md={4}>
-            <Inventory
-              character={character}
-              inventoryModal={inventoryModal}
-              confirmationModal={confirmationModal}
-            />
+            <Inventory character={character} inventoryModal={inventoryModal} confirmationModal={confirmationModal} />
           </Grid>
 
           {/* Atributos de habilidade */}
