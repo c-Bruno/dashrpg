@@ -2,7 +2,7 @@ import React from 'react';
 import { toast } from 'react-toastify';
 
 import { Delete, Edit } from '@mui/icons-material';
-import { TableRow, TableCell, Tooltip, Button } from '@mui/material';
+import { TableRow, TableCell, Tooltip, Button, TableBody as MuiTableBody } from '@mui/material';
 import { useModal } from 'common/hooks';
 import { api } from 'common/libs';
 import { ConfirmationModal, DiceRollModal } from 'main/components/molecules';
@@ -10,30 +10,7 @@ import { ConfirmationModal, DiceRollModal } from 'main/components/molecules';
 import { CombatModal } from '../../../../../components/modals';
 import * as S from './table-body.styles';
 
-const TableBody: React.FC<any> = (props) => {
-  const rows = [].sort((a, b) => (a.weapon < b.weapon ? -1 : 1));
-
-  function createData(id, weapon, type, damage, current_load, total_load) {
-    return { id, weapon, type, damage, current_load, total_load };
-  }
-  
-  const combatItems = props.character.combat;
-  combatItems.map(function (nome, i) {
-    rows.push(
-      createData(
-        nome.combat_id,
-        nome.combat.weapon,
-        nome.combat.type,
-        nome.combat.damage,
-        nome.combat.current_load,
-        nome.combat.total_load,
-      ),
-    );
-  });
-
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+const TableBody: React.FC<any> = ({ character, handleCharacter, rows, rowsPerPage, page }) => {
   const diceRollModal = useModal(({ close, custom }) => <DiceRollModal amount={custom.amount} handleClose={close} />);
 
   const confirmationModal = useModal(({ close, custom }) => (
@@ -48,7 +25,7 @@ const TableBody: React.FC<any> = (props) => {
         api
           .delete(`/${type}/${id}`)
           .then(() => {
-            props.handleCharacter((prevCharacter) => ({
+            handleCharacter((prevCharacter) => ({
               ...prevCharacter,
               [type]: prevCharacter[type].filter((item) => item[`${type}_id`] !== id),
             }));
@@ -69,15 +46,15 @@ const TableBody: React.FC<any> = (props) => {
         handleClose={close}
         data={data || null}
         character={combatCharacter || data.character_id}
-        onSubmit={props.handleCharacter}
+        onSubmit={handleCharacter}
         operation={operation}
-        fullCharacter={props.character}
+        fullCharacter={character}
       />
     );
   });
 
   return (
-    <TableBody>
+    <MuiTableBody>
       {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map((row) => (
         <TableRow key={row.id}>
           {/* Descrição da arma */}
@@ -140,7 +117,7 @@ const TableBody: React.FC<any> = (props) => {
                 onClick={() =>
                   combatModal.appear({
                     operation: 'edit',
-                    character: props.character.id,
+                    character: character.id,
                     data: row,
                   })
                 }
@@ -151,7 +128,7 @@ const TableBody: React.FC<any> = (props) => {
           </TableCell>
         </TableRow>
       ))}
-    </TableBody>
+    </MuiTableBody>
   );
 };
 

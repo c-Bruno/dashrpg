@@ -1,20 +1,26 @@
-import { Grid } from '@mui/material';
 import React from 'react';
-import { CreateCharacterModal } from '../modals';
-import useModal from '../../hooks/useModal.hook';
-import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import { CharacterSnapshotCard, Section } from "main/components/molecules";
-import { AddButtonBox } from "main/components/atoms";
 
-const AvailableCharacters = ({ characters, refreshData, confirmationModal }) => {
+import { Grid } from '@mui/material';
+import { useModal } from 'common/hooks';
+import { AddButtonBox } from 'main/components/atoms';
+import { CharacterSnapshotCard, Section } from 'main/components/molecules';
+import { CreateCharacterModal } from 'src/components/modals';
+
+interface AvailableCharactersProps {
+  characters: any[];
+  refreshData: () => Promise<boolean>;
+  confirmationModal: any;
+}
+
+const AvailableCharacters: React.FC<AvailableCharactersProps> = ({ characters, refreshData, confirmationModal }) => {
   const { t } = useTranslation(['masterDashboard']);
 
   const createCharacterModal = useModal(({ close }) => (
     <CreateCharacterModal
       handleClose={close}
       onCharacterCreated={() => {
-        refreshData;
+        refreshData();
       }}
     />
   ));
@@ -36,7 +42,7 @@ const AvailableCharacters = ({ characters, refreshData, confirmationModal }) => 
             />
           </Grid>
         ))}
-        
+
         <Grid item xs={12} md={4}>
           <AddButtonBox onClick={() => createCharacterModal.appear()} />
         </Grid>

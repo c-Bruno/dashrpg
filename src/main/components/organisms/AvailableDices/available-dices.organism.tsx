@@ -5,17 +5,17 @@ import { DICES } from 'common/constants';
 import { useModal } from 'common/hooks';
 import { DiceRollModal, Section } from 'main/components/molecules';
 
-import { CenteredGrid, Dice } from './styles';
+import * as S from './available-dices.styles';
 
-const MasterDices = () => {
+const AvaliableDices = () => {
   const diceRollModal = useModal(({ close, custom }) => <DiceRollModal amount={custom.amount} handleClose={close} />);
 
   return (
     <Section title='Dados' image='/assets/diceImages/fire.png'>
-      <CenteredGrid item container xs={8} spacing={2}>
+      <S.CenteredGrid item container xs={8} spacing={2}>
         <Grid item xs={12}>
           {Object.values(DICES).map((item) => (
-            <Dice
+            <S.Dice
               width={80}
               height={80}
               alt={`dice`}
@@ -25,9 +25,9 @@ const MasterDices = () => {
             />
           ))}
         </Grid>
-      </CenteredGrid>
+      </S.CenteredGrid>
     </Section>
   );
 };
 
-export default MasterDices;
+export default AvaliableDices;

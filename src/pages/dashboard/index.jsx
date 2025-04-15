@@ -3,13 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { Button, Container, Grid } from '@mui/material';
 import { api } from 'common/libs';
 import { Header } from 'main/components/atoms';
-import { CreatureList, Section } from 'main/components/molecules';
-import { AttributesBySkill, AvailableItemsList } from 'main/components/organisms';
+import { AttributesBySkill, AvailableItemsList, AvailableCharacters, AvailableDices } from 'main/components/organisms';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import { AvailableCharacters } from '../../components/AvailableCharacters';
-import MasterDices from '../../components/MasterDices/MasterDices';
 import { AttributeModal, ConfirmationModal, SkillModal } from '../../components/modals';
 import { prisma } from '../../database';
 import useModal from '../../hooks/useModal.hook';
@@ -206,7 +203,7 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
               />
             </Grid>
 
-            {/* /* List of added SKILLS and option to add */}
+            {/* List of added SKILLS and option to add */}
             <Grid item xs={12} md={6}>
               <AvailableItemsList
                 type={'skill'}
@@ -220,11 +217,7 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
 
             {/* Agrupamentos de atributos por pericias */}
             <Grid item xs={12}>
-              <Section title='Classificação de atributos    ' image='/assets/groupAttibutes.png'>
-                <Grid item container xs={12} spacing={2}>
-                  <AttributesBySkill attributes={attributes} skills={skills} />
-                </Grid>
-              </Section>
+              <AttributesBySkill attributes={attributes} skills={skills} />
             </Grid>
 
             {/* Monstros disponiveis na campanha */}
@@ -241,7 +234,7 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
 
             {/* Rolagem de dados */}
             <Grid item xs={12}>
-              <MasterDices />
+              <AvailableDices />
             </Grid>
           </>
         ) : (

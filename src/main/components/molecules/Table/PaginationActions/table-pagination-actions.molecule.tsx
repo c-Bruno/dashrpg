@@ -35,9 +35,11 @@ const TablePaginationActions: React.FC<TablePaginationActionsProps> = ({ count, 
       <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0} aria-label='primeira página'>
         {theme.direction === 'rtl' ? <LastPage /> : <FirstPage />}
       </IconButton>
+
       <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label='página anterior'>
         {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
       </IconButton>
+
       <IconButton
         onClick={handleNextButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
@@ -45,6 +47,7 @@ const TablePaginationActions: React.FC<TablePaginationActionsProps> = ({ count, 
       >
         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
       </IconButton>
+
       <IconButton
         onClick={handleLastPageButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}

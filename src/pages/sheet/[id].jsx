@@ -5,15 +5,13 @@ import { toast } from 'react-toastify';
 import { Container, Grid } from '@mui/material';
 import { api } from 'common/libs';
 import { Header } from 'main/components/atoms';
-import { DiceRollModal, Section } from 'main/components/molecules';
-import { SpecialItem } from 'main/components/organisms';
+import { AttributeStatusItem, DiceRollModal, Section } from 'main/components/molecules';
+import { CharacterInfoForm, InventoryList, SpecialItem, WeaponStatusList } from 'main/components/organisms';
+import { WrappedCard } from 'main/components/templates';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import { Attributes } from '../../components/Attributes';
-import { CharacterOverview, CharacterInfoForm } from '../../components/Character';
-import { Combat } from '../../components/Combat';
-import { Inventory } from '../../components/Inventory';
+import { CharacterOverview } from '../../components/Character';
 import {
   ChangePictureModal,
   CombatModal,
@@ -315,25 +313,54 @@ function Sheet({ rawCharacter }) {
             <Section title='Ficha de personagem'>
               <Grid container item xs={12}>
                 <Grid item xs={12}>
+                  {/* <CharacterInfoForm initialValues={character} onSubmit={onCharacterInfoSubmit} /> */}
                   <CharacterInfoForm initialValues={character} onSubmit={onCharacterInfoSubmit} />
                 </Grid>
               </Grid>
             </Section>
           </Grid>
 
-          {/* Inventario */}
+          {/* Itens do inventario */}
           <Grid item xs={12} md={4}>
-            <Inventory character={character} inventoryModal={inventoryModal} confirmationModal={confirmationModal} />
+            <WrappedCard
+              entityType='inventory'
+              character={character}
+              modal={inventoryModal}
+              childrenComponent={
+                <InventoryList
+                  character={character}
+                  inventoryModal={inventoryModal}
+                  confirmationModal={confirmationModal}
+                />
+              }
+            />
+            {/* <Inventory character={character} inventoryModal={inventoryModal} confirmationModal={confirmationModal} /> */}
           </Grid>
 
           {/* Atributos de habilidade */}
           <Grid item xs={12} md={8}>
-            <Attributes character={character} setCharacter={setCharacter} />
+            <WrappedCard
+              entityType='attribute'
+              character={character}
+              childrenComponent={<AttributeStatusItem character={character} setCharacter={setCharacter} />}
+            />
           </Grid>
 
-          {/* Combate */}
+          {/* Ações de combate */}
           <Grid item xs={12}>
-            <Combat character={character} setCharacter={setCharacter} combatModal={combatModal} />
+            <WrappedCard
+              entityType='combat'
+              character={character}
+              modal={combatModal}
+              childrenComponent={
+                <WeaponStatusList
+                  character={character}
+                  handleCharacter={(newCharacter) => {
+                    setCharacter(newCharacter);
+                  }}
+                />
+              }
+            />
           </Grid>
 
           {/* Item especial */}

@@ -1,4 +1,4 @@
-const getCharacterPictureURL = (character: any): string => { 
+const getCharacterPictureURL = (character: any): string => {
   if (!character) {
     return null;
   }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Grid } from '@mui/material';
-import { SkillAttributeList } from 'main/components/molecules';
+import { Section, SkillAttributeList } from 'main/components/molecules';
 
 interface Attribute {
   name: string;
@@ -31,13 +31,17 @@ const AttributesBySkill: React.FC<AttributesBySkillProps> = ({ skills, attribute
   }, [attributes]);
 
   return (
-    <Grid container spacing={2} justifyContent='center' alignItems='center'>
-      {skills.map((skill) => (
-        <Grid item key={skill.id}>
-          <SkillAttributeList title={skill.name} items={attributesBySkillId[skill.id] || []} />
+    <Section title='Classificação de atributos    ' image='/assets/groupAttibutes.png'>
+      <Grid item container xs={12} spacing={2}>
+        <Grid container spacing={2} justifyContent='center' alignItems='center'>
+          {skills.map((skill) => (
+            <Grid item key={skill.id}>
+              <SkillAttributeList title={skill.name} items={attributesBySkillId[skill.id] || []} />
+            </Grid>
+          ))}
         </Grid>
-      ))}
-    </Grid>
+      </Grid>
+    </Section>
   );
 };
 
