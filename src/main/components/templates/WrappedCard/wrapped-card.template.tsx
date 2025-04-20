@@ -10,11 +10,11 @@ import * as S from './wrapped-card.styles';
 interface WrappedCardProps {
   character: any;
   modal?: any;
-  childrenComponent: any;
+  children: React.ReactNode;
   entityType: 'combat' | 'inventory' | 'skill' | 'attribute';
 }
 
-const WrappedCard: React.FC<WrappedCardProps> = ({ character, modal, childrenComponent, entityType }) => {
+const WrappedCard: React.FC<WrappedCardProps> = ({ character, modal, children, entityType }) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const WrappedCard: React.FC<WrappedCardProps> = ({ character, modal, childrenCom
         </div>
       </div>
 
-      <S.ContentWrapper>{childrenComponent}</S.ContentWrapper>
+      <S.ContentWrapper>{children}</S.ContentWrapper>
     </S.SectionContainer>
   );
 };

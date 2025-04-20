@@ -15,6 +15,7 @@ export const CharacterCardContainer = styled('div')(({ theme }) => ({
 export const CharacterAvatar = styled(Image)(({ theme }) => ({
   width: '75px',
   borderRadius: '50%',
+  objectFit: 'cover',
 }));
 
 export const CharacterTitle = styled(Typography)(({ theme }) => ({

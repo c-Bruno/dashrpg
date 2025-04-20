@@ -21,7 +21,7 @@ interface CharacterSnapshotCardProps {
 const CharacterSnapshotCard: React.FC<CharacterSnapshotCardProps> = ({ character, deleteCharacter, ...rest }) => {
   return (
     <S.CharacterCardContainer {...rest}>
-      <S.CharacterAvatar src={getCharacterPicture(character)} alt='Character Portrait' width={70} height={70} />
+      <S.CharacterAvatar src={getCharacterPicture(character)} alt='Character Portrait' width={100} height={100} />
       <S.CharacterDetails>
         {/* Nome do personagem */}
         <S.CharacterTitle>

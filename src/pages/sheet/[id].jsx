@@ -5,13 +5,19 @@ import { toast } from 'react-toastify';
 import { Container, Grid } from '@mui/material';
 import { api } from 'common/libs';
 import { Header } from 'main/components/atoms';
-import { AttributeStatusItem, DiceRollModal, Section } from 'main/components/molecules';
-import { CharacterInfoForm, InventoryList, SpecialItem, WeaponStatusList } from 'main/components/organisms';
+import { AttributeStatusItem, DiceRollModal } from 'main/components/molecules';
+import {
+  CharacterInfoForm,
+  InventoryList,
+  SpecialItem,
+  WeaponStatusList,
+  CharacterOverview,
+  SkillsList,
+} from 'main/components/organisms';
 import { WrappedCard } from 'main/components/templates';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import { CharacterOverview } from '../../components/Character';
 import {
   ChangePictureModal,
   CombatModal,
@@ -19,7 +25,6 @@ import {
   InventoryModal,
   StatusBarModal,
 } from '../../components/modals';
-import { Skills } from '../../components/Skills';
 import { prisma } from '../../database';
 import useModal from '../../hooks/useModal.hook';
 import * as characterActions from '../../redux/actions/character.actions';
@@ -292,7 +297,7 @@ function Sheet({ rawCharacter }) {
   return (
     <Container style={{ marginBottom: '30px', maxWidth: '1400px' }}>
       <Head>
-        <title>{character.name} | RPG</title>
+        <title>{character.name} | RPG</title>{' '}
       </Head>
 
       <Grid container item spacing={3}>
@@ -300,77 +305,67 @@ function Sheet({ rawCharacter }) {
 
         <Grid container item xs={12} spacing={3}>
           {/* Grid de overview do personagem contento imagem, vida e sanidade */}
-          <CharacterOverview
-            character={character}
-            diceRollModal={diceRollModal}
-            hitPointsModal={hitPointsModal}
-            sanityPointsModal={sanityPointsModal}
-            changePictureModal={changePictureModal}
-          />
+          <Grid item xs={12} md={4}>
+            <WrappedCard entityType='characterOverview' character={character}>
+              <CharacterOverview
+                character={character}
+                diceRollModal={diceRollModal}
+                hitPointsModal={hitPointsModal}
+                sanityPointsModal={sanityPointsModal}
+                changePictureModal={changePictureModal}
+              />
+            </WrappedCard>
+          </Grid>
 
           {/* Grid contendo todos os dados pessoais do personagem */}
           <Grid item xs={12} md={8}>
-            <Section title='Ficha de personagem'>
-              <Grid container item xs={12}>
-                <Grid item xs={12}>
-                  {/* <CharacterInfoForm initialValues={character} onSubmit={onCharacterInfoSubmit} /> */}
-                  <CharacterInfoForm initialValues={character} onSubmit={onCharacterInfoSubmit} />
-                </Grid>
-              </Grid>
-            </Section>
+            <WrappedCard entityType='characterInfoForm' character={character}>
+              <CharacterInfoForm initialValues={character} onSubmit={onCharacterInfoSubmit} />
+            </WrappedCard>
           </Grid>
 
           {/* Itens do inventario */}
           <Grid item xs={12} md={4}>
-            <WrappedCard
-              entityType='inventory'
-              character={character}
-              modal={inventoryModal}
-              childrenComponent={
-                <InventoryList
-                  character={character}
-                  inventoryModal={inventoryModal}
-                  confirmationModal={confirmationModal}
-                />
-              }
-            />
-            {/* <Inventory character={character} inventoryModal={inventoryModal} confirmationModal={confirmationModal} /> */}
+            <WrappedCard entityType='inventory' character={character} modal={inventoryModal}>
+              <InventoryList
+                character={character}
+                inventoryModal={inventoryModal}
+                confirmationModal={confirmationModal}
+              />
+            </WrappedCard>
           </Grid>
 
           {/* Atributos de habilidade */}
           <Grid item xs={12} md={8}>
-            <WrappedCard
-              entityType='attribute'
-              character={character}
-              childrenComponent={<AttributeStatusItem character={character} setCharacter={setCharacter} />}
-            />
+            <WrappedCard entityType='attribute' character={character}>
+              <AttributeStatusItem character={character} setCharacter={setCharacter} />
+            </WrappedCard>
           </Grid>
 
           {/* Ações de combate */}
           <Grid item xs={12}>
-            <WrappedCard
-              entityType='combat'
-              character={character}
-              modal={combatModal}
-              childrenComponent={
-                <WeaponStatusList
-                  character={character}
-                  handleCharacter={(newCharacter) => {
-                    setCharacter(newCharacter);
-                  }}
-                />
-              }
-            />
+            <WrappedCard entityType='combat' character={character} modal={combatModal}>
+              <WeaponStatusList
+                character={character}
+                handleCharacter={(newCharacter) => {
+                  setCharacter(newCharacter);
+                }}
+              />
+            </WrappedCard>
           </Grid>
 
           {/* Item especial */}
           <Grid item xs={12} md={4}>
-            <SpecialItem character={character} />
+            <WrappedCard entityType='SpecialItem' character={character}>
+              <SpecialItem character={character} />
+            </WrappedCard>
           </Grid>
 
           {/* Pericias */}
           <Grid item xs={8}>
-            <Skills character={character} setCharacter={setCharacter} />
+            <WrappedCard entityType='skills' character={character}>
+              <SkillsList character={character} setCharacter={setCharacter} />
+            </WrappedCard>
           </Grid>
         </Grid>
       </Grid>

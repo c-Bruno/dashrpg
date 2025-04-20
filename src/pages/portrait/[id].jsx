@@ -8,6 +8,7 @@ import socket from '../../utils/socket';
 
 import { prisma } from '../../database';
 import { styled } from '@mui/material';
+import { getCharacterPicture } from 'common/helpers';
 
 export const getServerSideProps = async ({ params }) => {
   const characterId = isNaN(params.id) ? null : Number(params.id);
@@ -74,18 +75,6 @@ function Portrait({ classes, character }) {
     });
   };
 
-  const getCharacterPicture = () => {
-    if (character.standard_character_picture_url && character.injured_character_picture_url) {
-      if (hitPoints.current > hitPoints.max / 2) {
-        return character.standard_character_picture_url;
-      } else {
-        return character.injured_character_picture_url;
-      }
-    } else {
-      return `/assets/placeholders/wizard.placeholder.png`;
-    }
-  };
-
   useEffect(() => {
     document.body.style.backgroundColor = 'transparent';
 
@@ -123,7 +112,7 @@ function Portrait({ classes, character }) {
       </Head>
       <Container>
         <div style={{ display: showOnly.picture ? 'block' : 'none' }}>
-          <StyledImage width={400} height={600} layout='fixed' src={getCharacterPicture()} alt='' />
+          <StyledImage width={400} height={600} layout='fixed' src={getCharacterPicture(character)} alt='' />
         </div>
         <div>
           <CharacterName style={{ display: showOnly.name ? 'block' : 'none' }}>

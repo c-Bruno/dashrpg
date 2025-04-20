@@ -6,17 +6,22 @@ import { Form, Formik } from 'formik';
 import { Loader } from 'main/components/atoms';
 import CharacterFormSection from 'main/components/molecules/CharacterFormSection/character-form-section.molecule';
 
-const CharacterInfoForm = ({ initialValues, onSubmit }) => (
+interface CharacterInfoFormProps {
+  initialValues: any;
+  onSubmit: (values: any) => Promise<void>;
+}
+
+const CharacterInfoForm: React.FC<CharacterInfoFormProps> = ({ initialValues, onSubmit }) => (
   <Formik
     initialValues={{
-      age: initialValues.age ?? '',
+      age: initialValues.age ?? null,
       name: initialValues.name ?? '',
       fear: initialValues.fear ?? '',
       birth: initialValues.birth ?? '',
       weight: initialValues.weight ?? '',
       gender: initialValues.gender ?? '',
       birthplace: initialValues.birthplace ?? '',
-      background: initialValues.background ?? '',
+      // background: initialValues.background ?? '',
       occupation: initialValues.occupation ?? '',
       player_name: initialValues.player_name ?? '',
     }}
@@ -100,6 +105,7 @@ const CharacterInfoForm = ({ initialValues, onSubmit }) => (
             error={Boolean(errors.birthplace)}
             onChange={handleChange}
           />
+
           <CharacterFormSection
             label='Maior medo'
             name='fear'
@@ -107,18 +113,19 @@ const CharacterInfoForm = ({ initialValues, onSubmit }) => (
             error={Boolean(errors.fear)}
             onChange={handleChange}
           />
-          <CharacterFormSection
+
+          {/* <CharacterFormSection
             label='Sobre o personagem'
             name='background'
             value={values.background}
             error={Boolean(errors.background)}
             onChange={handleChange}
             type='text'
-          />
+          /> */}
 
           <Grid item xs={12}>
             <div className='save-button'>
-              {isSubmitting && <Loader className='loader-save-button' size={5} />}
+              {isSubmitting && <Loader className='loader-save-button' size={20} />}
               <Button variant='contained' type='submit' disabled={isSubmitting}>
                 Salvar
               </Button>

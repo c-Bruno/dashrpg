@@ -10,7 +10,7 @@ const getCharacterPictureURL = (character: any): string => {
       return character.injured_character_picture_url;
     }
   } else {
-    return `/assets/placeholders/wizard.placeholder.png`;
+    return `/assets/placeholders/warrior.placeholder.png`;
   }
 };
 

@@ -4,6 +4,8 @@ export { default as AvailableCharacters } from './AvailableCharacters/avaliable-
 export { default as AvailableDices } from './AvailableDices/available-dices.organism';
 export { default as AvailableItemsList } from './AvailableItemsList/avaliable-items-list.organism';
 export { default as CharacterInfoForm } from './CharacterInfoForm/character-info-form.organism';
+export { default as CharacterOverview } from './CharacterOverview/character-overview.organism';
 export { default as InventoryList } from './InventoryList/inventory-list.organism';
 export { default as SpecialItem } from './SpecialItem/special-item.organism';
+export { default as SkillsList } from './SkillsList/skills-list.organism';
 export { default as WeaponStatusList } from './WeaponStatsList/weapon-status-list.organism';
