@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, Button, Typography, Box } from '@mui/material';
-import { TextFieldInput } from 'main/components/atoms';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Button,
+  Typography,
+  Box,
+  TextField,
+} from '@mui/material';
 
 function StatusBarModal({ handleClose, onSubmit, data, type }) {
   const [newData, setNewData] = useState({ current: '', max: '' });
@@ -68,20 +77,24 @@ function StatusBarModal({ handleClose, onSubmit, data, type }) {
         <Box sx={{ mb: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextFieldInput
+              <TextField
+                fullWidth
+                type='number'
                 name='current'
                 label='Valor Atual'
-                type='number'
                 value={newData.current}
+                variant='standard'
                 onChange={(e) => handleInputChange('current', e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextFieldInput
+              <TextField
+                fullWidth
                 name='max'
-                label='Valor Máximo'
                 type='number'
+                label='Valor Máximo'
                 value={newData.max}
+                variant='standard'
                 onChange={(e) => handleInputChange('max', e.target.value)}
               />
             </Grid>

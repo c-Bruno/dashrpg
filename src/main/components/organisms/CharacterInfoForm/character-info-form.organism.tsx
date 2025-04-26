@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, TextField } from '@mui/material';
+import { CHARACTER_FORM_FIELDS } from 'common/constants';
 import { CharacterInfoSchema } from 'core/validations';
 import { Form, Formik } from 'formik';
 import { Loader } from 'main/components/atoms';
-import CharacterFormSection from 'main/components/molecules/CharacterFormSection/character-form-section.molecule';
 
 interface CharacterInfoFormProps {
   initialValues: any;
@@ -34,94 +34,20 @@ const CharacterInfoForm: React.FC<CharacterInfoFormProps> = ({ initialValues, on
       // Formulario contendo os dados da ficha de um jogador
       <Form onSubmit={handleSubmit} autoComplete='off'>
         <Grid container item xs={12} spacing={3}>
-          <CharacterFormSection
-            label='Nome do jogador(a)'
-            name='player_name'
-            value={values.player_name}
-            error={Boolean(errors.player_name)}
-            onChange={handleChange}
-          />
-
-          <CharacterFormSection
-            label='Nome do personagem'
-            name='name'
-            value={values.name}
-            error={Boolean(errors.name)}
-            onChange={handleChange}
-          />
-
-          <CharacterFormSection
-            xs={6}
-            label='Idade'
-            name='age'
-            value={values.age}
-            error={Boolean(errors.age)}
-            onChange={handleChange}
-            type='number'
-          />
-
-          <CharacterFormSection
-            xs={6}
-            label='Gênero'
-            name='gender'
-            value={values.gender}
-            error={Boolean(errors.gender)}
-            onChange={handleChange}
-          />
-
-          <CharacterFormSection
-            xs={6}
-            label='Peso'
-            name='weight'
-            value={values.weight}
-            error={Boolean(errors.weight)}
-            onChange={handleChange}
-            type='number'
-          />
-
-          <CharacterFormSection
-            xs={6}
-            label='Profissão'
-            name='occupation'
-            value={values.occupation}
-            error={Boolean(errors.occupation)}
-            onChange={handleChange}
-          />
-
-          <CharacterFormSection
-            xs={6}
-            label='Quando nasceu'
-            name='birth'
-            value={values.birth}
-            error={Boolean(errors.birth)}
-            onChange={handleChange}
-          />
-
-          <CharacterFormSection
-            xs={6}
-            label='Onde nasceu'
-            name='birthplace'
-            value={values.birthplace}
-            error={Boolean(errors.birthplace)}
-            onChange={handleChange}
-          />
-
-          <CharacterFormSection
-            label='Maior medo'
-            name='fear'
-            value={values.fear}
-            error={Boolean(errors.fear)}
-            onChange={handleChange}
-          />
-
-          {/* <CharacterFormSection
-            label='Sobre o personagem'
-            name='background'
-            value={values.background}
-            error={Boolean(errors.background)}
-            onChange={handleChange}
-            type='text'
-          /> */}
+          {CHARACTER_FORM_FIELDS.map(({ id, label, name, xs, type }) => (
+            <Grid key={`${id}-${name}`} item xs={xs}>
+              <TextField
+                fullWidth
+                type={type}
+                name={name}
+                label={label}
+                value={values[name]}
+                error={Boolean(errors[name])}
+                variant='standard'
+                onChange={handleChange}
+              />
+            </Grid>
+          ))}
 
           <Grid item xs={12}>
             <div className='save-button'>

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Typography } from '@mui/material';
 import { IMAGE_PLACEHOLDERS } from 'common/constants';
-import { DefaultImageOption } from 'main/components/atoms';
+import { RoundedImage } from 'main/components/atoms';
 
 interface DefaultImageSelectorProps {
   onSelect: (url: string) => void;
@@ -16,7 +16,7 @@ const DefaultImageSelector: React.FC<DefaultImageSelectorProps> = ({ onSelect })
       </Typography>
       <Box mt={2.5} mb={2.5} display='flex' gap={3} flexWrap='wrap'>
         {IMAGE_PLACEHOLDERS.map((img, idx) => (
-          <DefaultImageOption key={idx} src={img} onClick={() => onSelect(img)} />
+          <RoundedImage key={idx} src={img} altText='Default Option' onClick={() => onSelect(img)} />
         ))}
       </Box>
     </Box>

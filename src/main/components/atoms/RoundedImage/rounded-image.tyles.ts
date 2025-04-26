@@ -2,8 +2,6 @@ import { styled } from '@mui/material';
 import Image from 'next/image';
 
 export const ImageButton = styled('div')(() => ({
-  width: 80,
-  height: 80,
   borderRadius: '50%',
   overflow: 'hidden',
   cursor: 'pointer',

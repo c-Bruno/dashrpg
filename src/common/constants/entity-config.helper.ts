@@ -44,6 +44,11 @@ const ENTITY_CONFIG = {
     title: 'Perícias   ',
     image: '/assets/expertise.png',
   }),
+
+  dices: () => ({
+    title: 'Dados   ',
+    image: '/assets/diceImages/fire.png',
+  }),
 };
 
 export default ENTITY_CONFIG;

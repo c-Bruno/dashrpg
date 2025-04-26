@@ -9,6 +9,7 @@ import {
   ChairAltOutlined as SanityIconEmpty,
 } from '@mui/icons-material';
 import { getCharacterPicture } from 'common/helpers';
+import { RoundedImage } from 'main/components/atoms';
 
 import * as S from './character-snapshot-card.styles';
 
@@ -21,7 +22,7 @@ interface CharacterSnapshotCardProps {
 const CharacterSnapshotCard: React.FC<CharacterSnapshotCardProps> = ({ character, deleteCharacter, ...rest }) => {
   return (
     <S.CharacterCardContainer {...rest}>
-      <S.CharacterAvatar src={getCharacterPicture(character)} alt='Character Portrait' width={100} height={100} />
+      <RoundedImage src={getCharacterPicture(character)} altText='Default Option' width={100} height={100} />
       <S.CharacterDetails>
         {/* Nome do personagem */}
         <S.CharacterTitle>

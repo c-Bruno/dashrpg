@@ -72,7 +72,6 @@ const TableBody: React.FC<any> = ({ character, handleCharacter, rows, rowsPerPag
             <Dice
               width={25}
               height={25}
-              image={'/assets/dice.png'}
               altText='Dice roll'
               onClick={() =>
                 diceRollModal.appear({

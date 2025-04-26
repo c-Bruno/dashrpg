@@ -8,10 +8,10 @@ import Image from 'next/image';
 import * as S from './wrapped-card.styles';
 
 interface WrappedCardProps {
-  character: any;
+  character: any | null;
   modal?: any;
   children: React.ReactNode;
-  entityType: 'combat' | 'inventory' | 'skill' | 'attribute';
+  entityType: 'combat' | 'inventory' | 'skill' | 'attribute' | 'dices';
 }
 
 const WrappedCard: React.FC<WrappedCardProps> = ({ character, modal, children, entityType }) => {

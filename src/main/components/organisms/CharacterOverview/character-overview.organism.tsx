@@ -3,7 +3,7 @@ import React from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { getCharacterPicture } from 'common/helpers';
-import { Dice } from 'main/components/atoms';
+import { RoundedImage, Dice } from 'main/components/atoms';
 import { StatusBar } from 'main/components/molecules';
 
 import * as S from './character-overview.styles';
@@ -13,11 +13,11 @@ const CharacterOverview = ({ character, diceRollModal, hitPointsModal, sanityPoi
     <S.CenteredGrid container item spacing={3}>
       {/* Imagem do personagem */}
       <S.CenteredGrid item xs={6}>
-        <S.CharacterImage
+        <RoundedImage
           src={getCharacterPicture(character)}
-          alt='Imagem de jogador'
-          width={122}
-          height={122}
+          altText='Imagem de jogador'
+          width={125}
+          height={125}
           onClick={() => changePictureModal.appear()}
         />
       </S.CenteredGrid>
@@ -59,13 +59,7 @@ const CharacterOverview = ({ character, diceRollModal, hitPointsModal, sanityPoi
 
       {/* Dado para rolagem d100 */}
       <S.CenteredGrid item xs={6}>
-        <Dice
-          width={80}
-          height={80}
-          image={'/assets/dice.png'}
-          altText='Dice roll'
-          onClick={() => diceRollModal.appear()}
-        />
+        <Dice width={80} height={80} altText='Dice roll' onClick={() => diceRollModal.appear()} />
       </S.CenteredGrid>
     </S.CenteredGrid>
   );

@@ -1,5 +1,4 @@
 import { Box, Button, styled, Typography } from '@mui/material';
-import Image from 'next/image';
 
 export const CharacterCardContainer = styled('div')(({ theme }) => ({
   gap: '20px',
@@ -10,12 +9,6 @@ export const CharacterCardContainer = styled('div')(({ theme }) => ({
   borderRadius: '5px',
   alignItems: 'center',
   background: theme.palette.primary[900],
-}));
-
-export const CharacterAvatar = styled(Image)(({ theme }) => ({
-  width: '75px',
-  borderRadius: '50%',
-  objectFit: 'cover',
 }));
 
 export const CharacterTitle = styled(Typography)(({ theme }) => ({

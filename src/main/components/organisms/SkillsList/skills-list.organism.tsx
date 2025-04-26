@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import { Grid } from '@mui/material';
 import { api } from 'common/libs';
-import { RollableAttribute, Section } from 'main/components/molecules';
+import { RollableAttribute } from 'main/components/molecules';
 
 const Skills = ({ character, setCharacter }) => {
   // Atualiza o valor da pericia ao digitar

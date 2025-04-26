@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Link, Typography } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { api } from 'common/libs';
-import { TextFieldInput } from 'main/components/atoms';
 import { DefaultImageSelector } from 'main/components/molecules';
 
 function ChangePictureModal({ character, handleClose, onPictureChange }) {
@@ -76,18 +85,22 @@ function ChangePictureModal({ character, handleClose, onPictureChange }) {
           </Grid>
 
           <Grid item xs={12}>
-            <TextFieldInput
+            <TextField
+              fullWidth
               name='standard_character_picture_url'
               label='Imagem padrão'
+              variant='standard'
               value={pictureURLs.standard_character_picture_url}
               onChange={(e) => onPictureChange(e.target.value)}
             />
           </Grid>
 
           <Grid item xs={12}>
-            <TextFieldInput
+            <TextField
+              fullWidth
               name='injured_character_picture_url'
               label='Imagem machucada'
+              variant='standard'
               value={pictureURLs.injured_character_picture_url}
               onChange={(e) => onPictureChange(e.target.value)}
             />

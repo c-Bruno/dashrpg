@@ -3,7 +3,9 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import { DICES } from 'common/constants';
 import { useModal } from 'common/hooks';
-import { DiceRollModal, Section } from 'main/components/molecules';
+import { Dice } from 'main/components/atoms';
+import { DiceRollModal } from 'main/components/molecules';
+import { WrappedCard } from 'main/components/templates';
 
 import * as S from './available-dices.styles';
 
@@ -11,22 +13,22 @@ const AvaliableDices = () => {
   const diceRollModal = useModal(({ close, custom }) => <DiceRollModal amount={custom.amount} handleClose={close} />);
 
   return (
-    <Section title='Dados' image='/assets/diceImages/fire.png'>
-      <S.CenteredGrid item container xs={8} spacing={2}>
+    <WrappedCard entityType='dices' character={null}>
+      <S.CenteredGrid item container xs={8} spacing={20}>
         <Grid item xs={12}>
           {Object.values(DICES).map((item) => (
-            <S.Dice
+            <Dice
               width={80}
               height={80}
-              alt={`dice`}
+              altText={`dice`}
               key={`${item}-dice`}
-              src={`/assets/diceImages/${item}.png`}
+              image={`/assets/diceImages/${item}.png`}
               onClick={() => diceRollModal.appear({ amount: `1${item}` })}
             />
           ))}
         </Grid>
       </S.CenteredGrid>
-    </Section>
+    </WrappedCard>
   );
 };
 
