@@ -4,9 +4,16 @@ import { Paper, Table, TableContainer, TableRow, TableFooter, TablePagination } 
 import { TableBody, TableHead, TablePaginationActions } from 'main/components/molecules';
 
 // Cria cada linha da coluna
-function createData(id, weapon, type, damage, current_load, total_load) {
+const createData = (
+  id: string,
+  weapon: string,
+  type: string,
+  damage: number,
+  current_load: number,
+  total_load: number,
+) => {
   return { id, weapon, type, damage, current_load, total_load };
-}
+};
 
 type CombatItem = {
   combat_id: string;

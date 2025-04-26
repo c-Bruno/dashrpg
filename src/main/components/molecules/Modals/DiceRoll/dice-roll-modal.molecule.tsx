@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, Button, Dialog, DialogActions, DialogContent, Grid } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import { rollDiceHelper } from 'common/helpers';
+import { ModalTemplate } from 'main/components/templates';
 import useSound from 'use-sound';
 
 import * as S from './dice-roll-modal.styles';
@@ -45,82 +46,78 @@ const DiceRollModal: React.FC<DiceRollModalProps> = ({ amount, atribute, handleC
     return () => clearTimeout(timer);
   }, []);
 
+  const actions = (
+    <Button onClick={handleClose} color='secondary'>
+      Fechar
+    </Button>
+  );
+
   return (
-    <Dialog open={true} onClose={handleClose} fullWidth maxWidth='xl'>
-      <DialogContent>
-        {
-          <Grid container>
-            <Grid item xs={12} container spacing={0} alignItems='center' justifyContent='center'>
-              {/* Dado na tela */}
-              <S.RotatingDiceImage
-                width={40}
-                height={40}
-                alt='Dice roll'
-                src={'/assets/dice.png'}
-                stopRotation={stopRotation}
-              />
+    <ModalTemplate onClose={handleClose} actions={actions} maxWidth='xl'>
+      <Grid container>
+        <Grid item xs={12} container spacing={0} alignItems='center' justifyContent='center'>
+          {/* Dado na tela */}
+          <S.RotatingDiceImage
+            width={40}
+            height={40}
+            alt='Dice roll'
+            src={'/assets/dice.png'}
+            stopRotation={stopRotation}
+          />
+        </Grid>
+
+        {/* Valor/numero retornado na rolagem */}
+        {showGrids && (
+          <>
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  width: 500,
+                  maxWidth: '100%',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  marginTop: '1%',
+                }}
+              >
+                <S.CenteredChip
+                  label={rollDiceResult.number}
+                  color={rollDiceResult.color}
+                  size='medium'
+                  style={{ width: '20%' }}
+                  variant='outlined'
+                />
+              </Box>
             </Grid>
 
-            {/* Valor/numero retornado na rolagem */}
-            {showGrids && (
-              <>
-                <Grid item xs={12}>
-                  <Box
-                    sx={{
-                      width: 500,
-                      maxWidth: '100%',
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                      marginTop: '1%',
-                    }}
-                  >
+            {/* Tipo de resultado obtido */}
+            {atribute ? (
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    width: 500,
+                    maxWidth: '100%',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    marginTop: '0.5%',
+                  }}
+                >
+                  {rollDiceResult.description && (
                     <S.CenteredChip
-                      label={rollDiceResult.number}
+                      label={rollDiceResult.description}
                       color={rollDiceResult.color}
                       size='medium'
-                      style={{ width: '20%' }}
-                      variant='outlined'
+                      style={{ width: '50%' }}
                     />
-                  </Box>
-                </Grid>
-
-                {/* Tipo de resultado obtido */}
-                {atribute ? (
-                  <Grid item xs={12}>
-                    <Box
-                      sx={{
-                        width: 500,
-                        maxWidth: '100%',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        marginTop: '0.5%',
-                      }}
-                    >
-                      {rollDiceResult.description && (
-                        <S.CenteredChip
-                          label={rollDiceResult.description}
-                          color={rollDiceResult.color}
-                          size='medium'
-                          style={{ width: '50%' }}
-                        />
-                      )}
-                    </Box>
-                  </Grid>
-                ) : (
-                  atribute
-                )}
-              </>
+                  )}
+                </Box>
+              </Grid>
+            ) : (
+              atribute
             )}
-          </Grid>
-        }
-      </DialogContent>
-
-      <DialogActions>
-        <Button onClick={handleClose} color='secondary'>
-          Fechar
-        </Button>
-      </DialogActions>
-    </Dialog>
+          </>
+        )}
+      </Grid>
+    </ModalTemplate>
   );
 };
 

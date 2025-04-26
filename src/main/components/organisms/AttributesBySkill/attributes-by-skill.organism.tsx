@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { Grid } from '@mui/material';
 import { SkillAttributeList } from 'main/components/molecules';
-import { WrappedCard } from 'main/components/templates';
 
 interface Attribute {
   name: string;
@@ -32,17 +31,15 @@ const AttributesBySkill: React.FC<AttributesBySkillProps> = ({ skills, attribute
   }, [attributes]);
 
   return (
-    <WrappedCard entityType='attribute' character={null}>
-      <Grid item container xs={12} spacing={2}>
-        <Grid container spacing={2} justifyContent='center' alignItems='center'>
-          {skills.map((skill) => (
-            <Grid item key={skill.id}>
-              <SkillAttributeList title={skill.name} items={attributesBySkillId[skill.id] || []} />
-            </Grid>
-          ))}
-        </Grid>
+    <Grid item container xs={12} spacing={2}>
+      <Grid container spacing={2} justifyContent='center' alignItems='center'>
+        {skills.map((skill) => (
+          <Grid item key={skill.id}>
+            <SkillAttributeList title={skill.name} items={attributesBySkillId[skill.id] || []} />
+          </Grid>
+        ))}
       </Grid>
-    </WrappedCard>
+    </Grid>
   );
 };
 

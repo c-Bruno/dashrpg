@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
+import { DialogContentText, Button } from '@mui/material';
+import { ModalTemplate } from 'main/components/templates';
 
 interface ConfirmationModalProps {
   data: any;
@@ -11,27 +12,27 @@ interface ConfirmationModalProps {
 }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ data, text, title, handleClose, onConfirmation }) => {
-  return (
-    <Dialog open={true} onClose={handleClose}>
-      <DialogTitle>{title}</DialogTitle>
-      <DialogContent>
-        <DialogContentText>{text}</DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color='secondary'>
-          Cancelar
-        </Button>
-        <Button
-          onClick={() => {
-            onConfirmation(data);
+  const actions = (
+    <>
+      <Button onClick={handleClose} color='secondary'>
+        Cancelar
+      </Button>
+      <Button
+        onClick={() => {
+          onConfirmation(data);
 
-            handleClose();
-          }}
-        >
-          Confirmar
-        </Button>
-      </DialogActions>
-    </Dialog>
+          handleClose();
+        }}
+      >
+        Confirmar
+      </Button>
+    </>
+  );
+
+  return (
+    <ModalTemplate title={title} onClose={handleClose} actions={actions}>
+      <DialogContentText>{text}</DialogContentText>
+    </ModalTemplate>
   );
 };
 

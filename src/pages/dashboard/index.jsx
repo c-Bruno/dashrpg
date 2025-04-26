@@ -3,11 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Button, Container, Grid } from '@mui/material';
 import { api } from 'common/libs';
 import { Header } from 'main/components/atoms';
+import { ConfirmationModal } from 'main/components/molecules';
 import { AttributesBySkill, AvailableItemsList, AvailableCharacters, AvailableDices } from 'main/components/organisms';
+import { WrappedCard } from 'main/components/templates';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import { AttributeModal, ConfirmationModal, SkillModal } from '../../components/modals';
+import { AttributeModal, SkillModal } from '../../components/modals';
 import { prisma } from '../../database';
 import useModal from '../../hooks/useModal.hook';
 
@@ -184,40 +186,44 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
           <>
             {/* /* Available characters */}
             <Grid item xs={12}>
-              <AvailableCharacters
-                characters={characters}
-                confirmationModal={confirmationModal}
-                refreshData={refreshData}
-              />
+              <WrappedCard entityType='avaliableCharacters' character={null}>
+                <AvailableCharacters
+                  characters={characters}
+                  confirmationModal={confirmationModal}
+                  refreshData={refreshData}
+                />
+              </WrappedCard>
             </Grid>
 
             {/* /* List of added ATTRIBUTES and option to add */}
             <Grid item xs={12} md={6}>
-              <AvailableItemsList
-                type={'attribute'}
-                title='Atributos'
-                image='/assets/atributes.png'
-                items={attributes}
-                itemModal={attributeModal}
-                confirmationModal={confirmationModal}
-              />
+              <WrappedCard entityType='attributesList' character={null} modal={attributeModal}>
+                <AvailableItemsList
+                  type={'attribute'}
+                  items={attributes}
+                  itemModal={attributeModal}
+                  confirmationModal={confirmationModal}
+                />
+              </WrappedCard>
             </Grid>
 
             {/* List of added SKILLS and option to add */}
             <Grid item xs={12} md={6}>
-              <AvailableItemsList
-                type={'skill'}
-                title='Perícias'
-                image='/assets/expertise.png'
-                items={skills}
-                itemModal={skillModal}
-                confirmationModal={confirmationModal}
-              />
+              <WrappedCard entityType='skillsList' character={null} modal={skillModal}>
+                <AvailableItemsList
+                  type={'skill'}
+                  items={skills}
+                  itemModal={skillModal}
+                  confirmationModal={confirmationModal}
+                />
+              </WrappedCard>
             </Grid>
 
             {/* Agrupamentos de atributos por pericias */}
             <Grid item xs={12}>
-              <AttributesBySkill attributes={attributes} skills={skills} />
+              <WrappedCard entityType='attribute' character={null}>
+                <AttributesBySkill attributes={attributes} skills={skills} />
+              </WrappedCard>
             </Grid>
 
             {/* Monstros disponiveis na campanha */}
@@ -234,7 +240,9 @@ function Dashboard({ configs, initialSkills, initialCharacters, initialAttribute
 
             {/* Rolagem de dados */}
             <Grid item xs={12}>
-              <AvailableDices />
+              <WrappedCard entityType='dices' character={null}>
+                <AvailableDices />
+              </WrappedCard>
             </Grid>
           </>
         ) : (

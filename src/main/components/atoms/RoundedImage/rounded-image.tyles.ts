@@ -10,7 +10,7 @@ export const ImageButton = styled('div')(() => ({
   alignItems: 'center',
   justifyContent: 'center',
   '&:hover': {
-    transform: 'scale(1.5)',
+    transform: 'scale(1.3)',
     borderColor: '#1976d2',
   },
 }));

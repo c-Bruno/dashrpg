@@ -1,4 +1,9 @@
 const ENTITY_CONFIG = {
+  avaliableCharacters: () => ({
+    title: 'Fichas de personagem   ',
+    image: '/assets/characters.png',
+  }),
+
   characterOverview: () => ({
     title: '',
   }),
@@ -24,6 +29,16 @@ const ENTITY_CONFIG = {
     image: '/assets/atributes.png',
   }),
 
+  attributesList: ({ modal }) => ({
+    title: 'Lista de atributos   ',
+    image: '/assets/atributes.png',
+    onClick: () =>
+      modal.appear({
+        operation: 'create',
+      }),
+    tooltip: 'Criar uma pericias para os personagens',
+  }),
+
   combat: ({ character, modal }) => ({
     title: 'Combate   ',
     image: '/assets/slash.png',
@@ -43,6 +58,16 @@ const ENTITY_CONFIG = {
   skills: () => ({
     title: 'Perícias   ',
     image: '/assets/expertise.png',
+  }),
+
+  skillsList: ({ modal }) => ({
+    title: 'Lista de pericias   ',
+    image: '/assets/expertise.png',
+    onClick: () =>
+      modal.appear({
+        operation: 'create',
+      }),
+    tooltip: 'Criar uma pericias para os personagens',
   }),
 
   dices: () => ({
