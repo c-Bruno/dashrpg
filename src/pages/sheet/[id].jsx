@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Container, Grid } from '@mui/material';
 import { api } from 'common/libs';
 import { Header } from 'main/components/atoms';
-import { AttributeStatusItem, DiceRollModal } from 'main/components/molecules';
+import { AttributeStatusItem, DiceRollModal, StatusBarModal, ChangePictureModal } from 'main/components/molecules';
 import {
   CharacterInfoForm,
   InventoryList,
@@ -18,13 +18,7 @@ import { WrappedCard } from 'main/components/templates';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import {
-  ChangePictureModal,
-  CombatModal,
-  ConfirmationModal,
-  InventoryModal,
-  StatusBarModal,
-} from '../../components/modals';
+import { CombatModal, ConfirmationModal, InventoryModal } from '../../components/modals';
 import { prisma } from '../../database';
 import useModal from '../../hooks/useModal.hook';
 import * as characterActions from '../../redux/actions/character.actions';

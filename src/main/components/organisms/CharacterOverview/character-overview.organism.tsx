@@ -3,6 +3,7 @@ import React from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { getCharacterPicture } from 'common/helpers';
+import { Dice } from 'main/components/atoms';
 import { StatusBar } from 'main/components/molecules';
 
 import * as S from './character-overview.styles';
@@ -58,11 +59,11 @@ const CharacterOverview = ({ character, diceRollModal, hitPointsModal, sanityPoi
 
       {/* Dado para rolagem d100 */}
       <S.CenteredGrid item xs={6}>
-        <S.Dice
+        <Dice
           width={80}
           height={80}
-          alt='Dice roll'
-          src={'/assets/dice.png'}
+          image={'/assets/dice.png'}
+          altText='Dice roll'
           onClick={() => diceRollModal.appear()}
         />
       </S.CenteredGrid>

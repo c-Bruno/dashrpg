@@ -1,10 +1,11 @@
-import styled from '@emotion/styled';
+import { styled } from '@mui/material';
+import Image from 'next/image';
 
-export const Dice = styled('img')(() => ({
+export const Dice = styled(Image)(() => ({
   cursor: 'pointer',
   transition: '-webkit-transform .8s ease-in-out',
   transform: 'transform .8s ease-in-out',
-  marginRight: '8px',
+
   '&:hover': {
     transition: 'rotate(360deg)',
     transform: 'rotate(360deg)',

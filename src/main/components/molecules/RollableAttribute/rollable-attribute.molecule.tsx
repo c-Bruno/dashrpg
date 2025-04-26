@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Grid, TextField } from '@mui/material';
 import 'react-toastify/dist/ReactToastify.min.css';
 
+import { Dice } from 'main/components/atoms';
 import { DiceRollModal, InfoModal } from 'main/components/molecules';
 
 import useModal from '../../../../hooks/useModal.hook';
@@ -40,20 +41,16 @@ const RollableAttribute: React.FC<RollableAttributeProps> = ({ data, image, onIn
     />
   ));
 
+  const handleDiceClick = (data) => {
+    data.value ? diceRollModal.appear() : toast.error('Primeiro preencha o valor do atributo');
+  };
+
   return (
     <div>
       <Grid container direction='column' alignItems='center' justifyContent='center'>
         {/* Imagem do dado para rolagem no atributo */}
         <Grid item>
-          <S.Dice
-            width={40}
-            height={40}
-            src={image}
-            alt='Dice roll'
-            onClick={() => {
-              data.value ? diceRollModal.appear() : toast.error('Primeiro preencha o valor do atributo');
-            }}
-          />
+          <Dice width={40} height={40} image={image} altText='Dice roll' onClick={() => handleDiceClick(data)} />
         </Grid>
 
         {/* Nome do atributo com acionamento para o modal de informação */}
