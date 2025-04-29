@@ -1,7 +1,11 @@
-export { default as AddButtonBox } from './AddButtonBox/add-button-box.atom';
-export { default as CustomInputWithIcon } from './CustomInputWithIcon/custom-input-with-icon.molecule';
-export { default as Dice } from './Dice/dice.atom';
-export { default as RoundedImage } from './RoundedImage/rounded-image.atom';
-export { default as LabeledProgressBar } from './LabeledProgressBar/labeled-progress-bar.atom';
-export { default as Loader } from './Loader/loader.atom';
-export { default as Header } from './PageHeader/page-header.atom';
+// Common
+export { default as Dice } from './Common/Dice/dice.atom';
+export { default as RoundedImage } from './Common/RoundedImage/rounded-image.atom';
+export { default as Header } from './Common/PageHeader/page-header.atom';
+
+// Character dashboard
+export { default as LabeledProgressBar } from './CharacterDashboard/LabeledProgressBar/labeled-progress-bar.atom';
+export { default as Loader } from './CharacterDashboard/Loader/loader.atom';
+
+// Master dashboard
+export { default as AddButtonBox } from './MasterDashboard/AddButtonBox/add-button-box.atom';

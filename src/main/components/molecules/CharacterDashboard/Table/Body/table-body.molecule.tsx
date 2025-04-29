@@ -8,7 +8,7 @@ import { api } from 'common/libs';
 import { Dice } from 'main/components/atoms';
 import { ConfirmationModal, DiceRollModal } from 'main/components/molecules';
 
-import { CombatModal } from '../../../../../components/modals';
+import { CombatModal } from '../../../../../../components/modals';
 
 const TableBody: React.FC<any> = ({ character, handleCharacter, rows, rowsPerPage, page }) => {
   const diceRollModal = useModal(({ close, custom }) => <DiceRollModal amount={custom.amount} handleClose={close} />);

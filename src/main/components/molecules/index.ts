@@ -1,17 +1,20 @@
-export { default as AddEntityButton } from './AddEntityButton/add-entity-button.molecule';
-export { default as AttributeStatusItem } from './AttributeStatusItem/attribute-status-item.molecule';
-export { default as CreatureList } from './CreatureList/creature-list.molecule';
-export { default as CharacterSnapshotCard } from './CharacterSnapshotCard/character-snapshot-card.molecule';
-export { default as DefaultImageSelector } from './DefaultImageSelector/default-image-selector.molecule';
-export { default as EditableDataRow } from './EditableDataRow/editable-data-row.molecule';
-export { default as RollableAttribute } from './RollableAttribute/rollable-attribute.molecule';
-export { default as SkillAttributeList } from './SkillAttributeList/skill-attribute-list.molecule';
-export { default as StatusBar } from './StatusBar/status-bar.molecule';
+// Common
+export { default as AddEntityButton } from './Common/AddEntityButton/add-entity-button.molecule';
+export { default as DefaultImageSelector } from './Common/DefaultImageSelector/default-image-selector.molecule';
+export { default as EditableDataRow } from './Common/EditableDataRow/editable-data-row.molecule';
+export { default as RollableAttribute } from './Common/RollableAttribute/rollable-attribute.molecule';
 
-// Table
-export { default as TableBody } from './Table/Body/table-body.molecule';
-export { default as TableHead } from './Table/Head/table-head.molecule';
-export { default as TablePaginationActions } from './Table/PaginationActions/table-pagination-actions.molecule';
+// Character dashboard
+export { default as AttributeStatusItem } from './CharacterDashboard/AttributeStatusItem/attribute-status-item.molecule';
+export { default as StatusBar } from './CharacterDashboard/StatusBar/status-bar.molecule';
+export { default as TableBody } from './CharacterDashboard/Table/Body/table-body.molecule';
+export { default as TableHead } from './CharacterDashboard/Table/Head/table-head.molecule';
+export { default as TablePaginationActions } from './CharacterDashboard/Table/PaginationActions/table-pagination-actions.molecule';
+
+// Master dashboard
+export { default as CreatureList } from './MasterDashboard/CreatureList/creature-list.molecule';
+export { default as CharacterSnapshotCard } from './MasterDashboard/CharacterSnapshotCard/character-snapshot-card.molecule';
+export { default as SkillAttributeList } from './MasterDashboard/SkillAttributeList/skill-attribute-list.molecule';
 
 // Modals
 export { default as CreateCharacterModal } from './Modals/CreateCharacter/create-character.molecule';

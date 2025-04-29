@@ -4,10 +4,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Grid, TextField } from '@mui/material';
 import 'react-toastify/dist/ReactToastify.min.css';
 
+import { useModal } from 'common/hooks';
 import { Dice } from 'main/components/atoms';
 import { DiceRollModal, InfoModal } from 'main/components/molecules';
 
-import useModal from '../../../../hooks/useModal.hook';
 import * as S from './rollable-attribute.styles';
 
 interface RollableAttributeProps {

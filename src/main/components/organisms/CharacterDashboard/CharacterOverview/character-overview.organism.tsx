@@ -1,9 +1,8 @@
 import React from 'react';
 
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
+import { FormControlLabel, Switch } from '@mui/material';
 import { getCharacterPicture } from 'common/helpers';
-import { RoundedImage, Dice } from 'main/components/atoms';
+import { Dice } from 'main/components/atoms';
 import { StatusBar } from 'main/components/molecules';
 
 import * as S from './character-overview.styles';
@@ -13,13 +12,16 @@ const CharacterOverview = ({ character, diceRollModal, hitPointsModal, sanityPoi
     <S.CenteredGrid container item spacing={3}>
       {/* Imagem do personagem */}
       <S.CenteredGrid item xs={6}>
-        <RoundedImage
-          src={getCharacterPicture(character)}
-          altText='Imagem de jogador'
-          width={125}
-          height={125}
-          onClick={() => changePictureModal.appear()}
-        />
+        <S.ImageWrapper>
+          <S.GlowEffect />
+          <S.StyledRoundedImage
+            src={getCharacterPicture(character)}
+            altText='Imagem de jogador'
+            width={125}
+            height={125}
+            onClick={() => changePictureModal.appear()}
+          />
+        </S.ImageWrapper>
       </S.CenteredGrid>
 
       {/* Vida do personagem*/}
