@@ -14,10 +14,10 @@ interface AvailableItemsListProps {
 
 const AvailableItemsList: React.FC<AvailableItemsListProps> = ({ type, items, itemModal, confirmationModal }) => {
   return (
-    <S.ScrollTableBox item container xs={12} spacing={2}>
+    <S.ScrollTableBox item container xs={12} spacing={0.8}>
       {/* Para cada atributo existente, exiba as informações */}
       {items.map((item, index) => (
-        <Grid item xs={12} key={index}>
+        <Grid item xs={10} key={index}>
           <EditableDataRow
             data={item}
             editRow={(data) => {

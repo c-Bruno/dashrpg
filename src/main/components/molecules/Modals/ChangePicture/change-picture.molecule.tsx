@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { Button, Grid, Link, TextField, Typography } from '@mui/material';
+import { validateImageURL } from 'common/helpers';
 import { api } from 'common/libs';
 import { DefaultImageSelector } from 'main/components/molecules';
 import { ModalTemplate } from 'main/components/templates';
@@ -24,13 +25,6 @@ const ChangePictureModal: React.FC<ChangePictureModalProps> = ({ character, hand
       injured_character_picture_url: character.injured_character_picture_url,
     });
   }, [character]);
-
-  const validateImageURL = (url: string) => {
-    const allowedDomains = ['discord', 'imgur'];
-    const isValidDomain = allowedDomains.some((domain) => url.includes(domain));
-    const isPng = url.endsWith('.png');
-    return isValidDomain && isPng;
-  };
 
   const submit = () => {
     const { standard_character_picture_url, injured_character_picture_url } = pictureURLs;
@@ -57,11 +51,11 @@ const ChangePictureModal: React.FC<ChangePictureModalProps> = ({ character, hand
       });
   };
 
-  const handleDefaultImageSelect = (url: string) => {
-    setPictureURLs((prev) => ({
-      ...prev,
-      standard_character_picture_url: url,
-    }));
+  const handleDefaultImageSelect = (standard_character_picture_url: string, injured_character_picture_url: string) => {
+    setPictureURLs({
+      standard_character_picture_url,
+      injured_character_picture_url,
+    });
   };
 
   const actions = (

@@ -1,7 +1,7 @@
 const ENTITY_CONFIG = {
   avaliableCharacters: () => ({
     title: 'Fichas de personagem   ',
-    image: '/assets/characters.png',
+    image: '/assets/sectionIcons/avaliable-characters-list.png',
   }),
 
   characterOverview: () => ({
@@ -14,7 +14,7 @@ const ENTITY_CONFIG = {
 
   inventory: ({ character, modal, calcSpace }) => ({
     title: 'Inventário   ',
-    image: '/assets/Inventory.png',
+    image: '/assets/sectionIcons/inventory.png',
     onClick: () =>
       modal.appear({
         operation: 'create',
@@ -26,12 +26,12 @@ const ENTITY_CONFIG = {
 
   attribute: () => ({
     title: 'Atributos   ',
-    image: '/assets/atributes.png',
+    image: '/assets/sectionIcons/attributes.png',
   }),
 
   attributesList: ({ modal }) => ({
     title: 'Lista de atributos   ',
-    image: '/assets/atributes.png',
+    image: '/assets/sectionIcons/attributes.png',
     onClick: () =>
       modal.appear({
         operation: 'create',
@@ -41,7 +41,7 @@ const ENTITY_CONFIG = {
 
   combat: ({ character, modal }) => ({
     title: 'Combate   ',
-    image: '/assets/slash.png',
+    image: '/assets/sectionIcons/combat.png',
     onClick: () =>
       modal.appear({
         operation: 'create',
@@ -52,17 +52,17 @@ const ENTITY_CONFIG = {
 
   SpecialItem: () => ({
     title: 'Item especial   ',
-    image: '/assets/specialItem.png',
+    image: '/assets/sectionIcons/special-item.png',
   }),
 
   skills: () => ({
     title: 'Perícias   ',
-    image: '/assets/expertise.png',
+    image: '/assets/sectionIcons/skills.png',
   }),
 
   skillsList: ({ modal }) => ({
     title: 'Lista de pericias   ',
-    image: '/assets/expertise.png',
+    image: '/assets/sectionIcons/skills.png',
     onClick: () =>
       modal.appear({
         operation: 'create',

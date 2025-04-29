@@ -33,7 +33,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ character, inventoryModal
       </Grid>
 
       {/* Lista de itens */}
-      <S.ScrollableBox item container xs={12} spacing={2}>
+      <S.ScrollableBox item container xs={12} spacing={0.8}>
         {character.inventory.map((inventory, index) => (
           <Grid item xs={12} key={index}>
             <EditableDataRow

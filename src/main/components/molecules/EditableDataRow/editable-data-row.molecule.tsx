@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Delete as DeleteIcon, Create as EditIcon } from '@mui/icons-material';
-import { Button, Grid, TextField, Tooltip } from '@mui/material';
+import { Box, Grid, IconButton, TextField, Tooltip } from '@mui/material';
 
 interface EditableDataRowProps {
   data: any;
@@ -11,38 +11,50 @@ interface EditableDataRowProps {
 
 const EditableDataRow: React.FC<EditableDataRowProps> = ({ data, editRow, deleteRow }) => {
   return (
-    <div>
-      <Grid container>
+    <Box sx={{ py: 1, px: 1, borderBottom: '1px solid #4e4e4e' }}>
+      <Grid container spacing={2} alignItems='center'>
         {/* Descrição do item */}
-        <Grid item md={6} xs={12}>
-          <TextField disabled value={data.name || data.inventory.description} variant='standard' fullWidth />
+        <Grid item xs={6} md={6}>
+          <TextField
+            label='Descrição'
+            value={data.name || data.inventory.description}
+            variant='standard'
+            fullWidth
+            InputProps={{ disableUnderline: true, readOnly: true }}
+          />
         </Grid>
 
+        {/* Peso (se houver inventory) */}
         {data.inventory && (
-          <Grid item md={2} xs={12}>
-            <TextField disabled value={data.inventory.weight} variant='standard' fullWidth />
+          <Grid item xs={12} md={2}>
+            <TextField
+              label='Peso'
+              value={data.inventory.weight}
+              variant='standard'
+              fullWidth
+              InputProps={{ disableUnderline: true, readOnly: true }}
+            />
           </Grid>
         )}
 
-        {/* Remover Item */}
-        <Grid item md={2} xs={6}>
-          <Tooltip title='Remover item'>
-            <Button variant='outlined' onClick={() => deleteRow(data)}>
-              <DeleteIcon />
-            </Button>
+        {/* Ações: Editar / Remover */}
+        <Grid item xs={6} md={2}>
+          <Tooltip title='Editar informações'>
+            <IconButton color='primary' aria-label='Editar informações' onClick={() => editRow(data)}>
+              <EditIcon />
+            </IconButton>
           </Tooltip>
         </Grid>
 
-        {/* Editar Item */}
-        <Grid item md={2} xs={6}>
-          <Tooltip title='Editar indormações'>
-            <Button variant='outlined' onClick={() => editRow(data)}>
-              <EditIcon />
-            </Button>
+        <Grid item xs={6} md={2}>
+          <Tooltip title='Remover item'>
+            <IconButton color='primary' aria-label='Remover item' onClick={() => deleteRow(data)}>
+              <DeleteIcon />
+            </IconButton>
           </Tooltip>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 };
 
