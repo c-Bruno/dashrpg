@@ -14,7 +14,7 @@ const AvaliableDices = () => {
   return (
     <S.CenteredGrid item container xs={8} spacing={20}>
       <Grid item xs={12}>
-        {Object.values(DICES).map((item) => (
+        {Object.values(DICES.WITCH_DICES).map((item) => (
           <Dice
             width={80}
             height={80}

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 
 interface ModalTemplateProps {
   title?: string;
   children: React.ReactNode;
-  actions?: React.ReactNode;
   onClose: () => void;
+  onConfirm?: () => void;
   disableClose?: boolean;
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
 }
@@ -14,8 +14,8 @@ interface ModalTemplateProps {
 const ModalTemplate: React.FC<ModalTemplateProps> = ({
   title,
   children,
-  actions,
   onClose,
+  onConfirm,
   disableClose = false,
   maxWidth,
 }) => {
@@ -29,7 +29,16 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
     <Dialog open={true} onClose={handleClose} maxWidth={maxWidth} fullWidth>
       {title && <DialogTitle>{title}</DialogTitle>}
       <DialogContent dividers={!!title}>{children}</DialogContent>
-      {actions && <DialogActions>{actions}</DialogActions>}
+      <DialogActions sx={{ mt: 1.2, mb: 1.2, mr: 2 }}>
+        <Button onClick={handleClose} color='secondary' variant='outlined'>
+          Fechar
+        </Button>
+        {onConfirm && (
+          <Button onClick={onConfirm} variant='contained'>
+            Confirmar
+          </Button>
+        )}
+      </DialogActions>
     </Dialog>
   );
 };

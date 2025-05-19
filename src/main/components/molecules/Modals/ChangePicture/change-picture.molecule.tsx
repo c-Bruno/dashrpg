@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { Button, Grid, Link, TextField, Typography } from '@mui/material';
-import { validateImageURL } from 'common/helpers';
+import { Grid, Link, TextField, Typography } from '@mui/material';
+import { characterPicture } from 'common/helpers';
 import { api } from 'common/libs';
 import { DefaultImageSelector } from 'main/components/molecules';
 import { ModalTemplate } from 'main/components/templates';
@@ -34,7 +34,10 @@ const ChangePictureModal: React.FC<ChangePictureModalProps> = ({ character, hand
       return;
     }
 
-    if (!validateImageURL(standard_character_picture_url) || !validateImageURL(injured_character_picture_url)) {
+    if (
+      !characterPicture.validateImageURL(standard_character_picture_url) ||
+      !characterPicture.validateImageURL(injured_character_picture_url)
+    ) {
       toast.error('As imagens devem ser PNGs hospedadas no Discord ou Imgur.');
       return;
     }
@@ -58,20 +61,9 @@ const ChangePictureModal: React.FC<ChangePictureModalProps> = ({ character, hand
     });
   };
 
-  const actions = (
-    <>
-      <Button onClick={handleClose} color='secondary'>
-        Cancelar
-      </Button>
-      <Button onClick={submit} variant='contained'>
-        Alterar
-      </Button>
-    </>
-  );
-
   return (
-    <ModalTemplate title='👤 Alterar imagens do personagem' onClose={handleClose} actions={actions}>
-      <Grid container spacing={2}>
+    <ModalTemplate title='👤 Alterar imagens do personagem' onClose={handleClose} onConfirm={submit}>
+      <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography variant='body2'>
             Utilize imagens no tamanho <strong>420x600</strong> em formato <strong>PNG</strong>. Apenas links de imagens
@@ -84,7 +76,7 @@ const ChangePictureModal: React.FC<ChangePictureModalProps> = ({ character, hand
           </Typography>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={11}>
           <TextField
             fullWidth
             name='standard_character_picture_url'
@@ -95,7 +87,7 @@ const ChangePictureModal: React.FC<ChangePictureModalProps> = ({ character, hand
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={11}>
           <TextField
             fullWidth
             name='injured_character_picture_url'

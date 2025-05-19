@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DialogContentText, Button } from '@mui/material';
+import { DialogContentText } from '@mui/material';
 import { ModalTemplate } from 'main/components/templates';
 
 interface InfoModalProps {
@@ -10,14 +10,8 @@ interface InfoModalProps {
 }
 
 const InfoModal: React.FC<InfoModalProps> = ({ handleClose, title, text }) => {
-  const actions = (
-    <Button onClick={handleClose} color='secondary'>
-      Ok
-    </Button>
-  );
-
   return (
-    <ModalTemplate title={title} onClose={handleClose} actions={actions}>
+    <ModalTemplate title={title} onClose={handleClose}>
       <DialogContentText>{text || '*** Este item não possui informações adicionais ***'}</DialogContentText>
     </ModalTemplate>
   );

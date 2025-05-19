@@ -17,9 +17,13 @@ export { default as CharacterSnapshotCard } from './MasterDashboard/CharacterSna
 export { default as SkillAttributeList } from './MasterDashboard/SkillAttributeList/skill-attribute-list.molecule';
 
 // Modals
+export { default as AttributeModal } from './Modals/Attribute/attribute-modal.molecule';
 export { default as CreateCharacterModal } from './Modals/CreateCharacter/create-character.molecule';
+export { default as CombatModal } from './Modals/Combat/combat-modal.molecule';
 export { default as ConfirmationModal } from './Modals/Confirmation/confirmation-modal.molecule';
 export { default as ChangePictureModal } from './Modals/ChangePicture/change-picture.molecule';
 export { default as DiceRollModal } from './Modals/DiceRoll/dice-roll-modal.molecule';
 export { default as InfoModal } from './Modals/Info/info-modal.molecule';
+export { default as InventoryModal } from './Modals/Inventory/inventory-modal.molecule';
 export { default as StatusBarModal } from './Modals/StatusBar/statusbar.molecule';
+export { default as SkillModal } from './Modals/Skills/skill-modal.molecule';

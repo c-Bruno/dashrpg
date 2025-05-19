@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Grid, Button, Typography, Box, TextField } from '@mui/material';
+import { Grid, Typography, Box, TextField } from '@mui/material';
 import { ModalTemplate } from 'main/components/templates';
 
 interface StatusBarModalProps {
@@ -55,21 +55,10 @@ const StatusBarModal: React.FC<StatusBarModalProps> = ({ handleClose, onSubmit, 
     }
   };
 
-  const isSubmitDisabled = !newData.current || !newData.max;
-
-  const actions = (
-    <>
-      <Button onClick={handleClose} color='secondary' variant='outlined'>
-        Cancelar
-      </Button>
-      <Button onClick={submit} color='primary' variant='contained' disabled={isSubmitDisabled}>
-        Confirmar
-      </Button>
-    </>
-  );
+  // const isSubmitDisabled = !newData.current || !newData.max;
 
   return (
-    <ModalTemplate title={getTitle()} onClose={handleClose} actions={actions}>
+    <ModalTemplate title={getTitle()} onClose={handleClose} onConfirm={submit}>
       <Box sx={{ mb: 3, mt: 1 }}>
         <Typography variant='body2' color='text.secondary'>
           Atualize os valores conforme necessário. Não deixe campos em branco!

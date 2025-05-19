@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
 import { Button, Container, Grid } from '@mui/material';
+import { useModal } from 'common/hooks';
 import { api } from 'common/libs';
 import { Header } from 'main/components/atoms';
-import { ConfirmationModal } from 'main/components/molecules';
+import { ConfirmationModal, SkillModal, AttributeModal } from 'main/components/molecules';
 import { AttributesBySkill, AvailableItemsList, AvailableCharacters, AvailableDices } from 'main/components/organisms';
 import { WrappedCard } from 'main/components/templates';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import { AttributeModal, SkillModal } from '../../components/modals';
 import { prisma } from '../../database';
-import useModal from '../../hooks/useModal.hook';
 
 export const getServerSideProps = async () => {
   function parseConfigs(array) {

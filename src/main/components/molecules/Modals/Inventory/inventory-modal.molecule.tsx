@@ -1,21 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
-import {
-  TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Grid,
-  DialogTitle,
-  Button,
-  Snackbar,
-} from '@mui/material';
-
-import { toast, ToastContainer } from 'react-toastify';
-
+import { Grid, TextField } from '@mui/material';
 import { api } from 'common/libs';
+import { ModalTemplate } from 'main/components/templates';
 
-function InventoryModal({
+const InventoryModal: React.FC<any> = ({
   data,
   onSubmit,
   operation,
@@ -23,7 +13,7 @@ function InventoryModal({
   totalSpace,
   handleClose,
   fullCharacter,
-}) {
+}) => {
   const [updatedCharacter, setUpdatedCharacter] = useState(fullCharacter);
 
   const [inventory, setInventory] = useState({
@@ -73,8 +63,8 @@ function InventoryModal({
           //
           const responseID = await api.get(`/inventory/`);
 
-          let newIds = [];
-          responseID.data.forEach(val => {
+          const newIds: number[] = [];
+          (responseID.data as { id: number }[]).forEach((val) => {
             newIds.push(val.id);
           });
 
@@ -103,9 +93,7 @@ function InventoryModal({
         .put(`/inventory/${data.inventory_id}`, inventory)
         .then(() => {
           // Descobre o ID no inventario que vai ser atualizado e modifica essa posição na lista
-          const index = updatedCharacter.inventory.findIndex(
-            obj => obj.inventory_id === data.inventory_id,
-          );
+          const index = updatedCharacter.inventory.findIndex((obj) => obj.inventory_id === data.inventory_id);
           updatedCharacter.inventory[index].inventory = inventory;
           setUpdatedCharacter(updatedCharacter);
 
@@ -117,7 +105,7 @@ function InventoryModal({
 
           resetState();
         })
-        .catch(err => {
+        .catch((err) => {
           toast.error('Erro ao editar o item!');
           console.log(err);
         });
@@ -125,69 +113,60 @@ function InventoryModal({
   };
 
   return (
-    <Dialog open={true} onClose={handleClose}>
-      <DialogTitle>
-        {' '}
-        {operation === 'create' ? 'Adicionar um novo item' : 'Editar item'}
-      </DialogTitle>
-      <DialogContent>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <TextField
-              style={{
-                marginTop: '15px',
-              }}
-              autoFocus
-              label='Descrição'
-              type='text'
-              fullWidth
-              variant='standard'
-              defaultValue={data ? data.inventory.description : ''}
-              onChange={({ target }) => {
-                const value = target.value;
+    <ModalTemplate
+      title={operation === 'create' ? 'Adicionar um novo item' : 'Editar item'}
+      onClose={handleClose}
+      onConfirm={submit}
+    >
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <TextField
+            style={{
+              marginTop: '15px',
+            }}
+            autoFocus
+            label='Descrição'
+            type='text'
+            fullWidth
+            variant='standard'
+            defaultValue={data ? data.inventory.description : ''}
+            onChange={({ target }) => {
+              const value = target.value;
 
-                setInventory(prevState => ({
-                  ...prevState,
-                  description: value,
-                }));
-              }}
-              spellCheck={false}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              style={{
-                marginTop: '15px',
-              }}
-              label='Peso'
-              type='number'
-              fullWidth
-              multiline
-              variant='standard'
-              defaultValue={data ? data.inventory.weight : ''}
-              onChange={({ target }) => {
-                const value = Number(target.value);
-
-                setInventory(prevState => ({
-                  ...prevState,
-                  weight: value,
-                }));
-              }}
-              spellCheck={false}
-            />
-          </Grid>
+              setInventory((prevState) => ({
+                ...prevState,
+                description: value,
+              }));
+            }}
+            spellCheck={false}
+          />
         </Grid>
-      </DialogContent>
 
-      <DialogActions>
-        <Button onClick={handleClose} color='secondary'>
-          Cancelar
-        </Button>
-        <Button onClick={submit}>Confirmar</Button>
-      </DialogActions>
-    </Dialog>
+        <Grid item xs={12}>
+          <TextField
+            style={{
+              marginTop: '15px',
+            }}
+            label='Peso'
+            type='number'
+            fullWidth
+            multiline
+            variant='standard'
+            defaultValue={data ? data.inventory.weight : ''}
+            onChange={({ target }) => {
+              const value = Number(target.value);
+
+              setInventory((prevState) => ({
+                ...prevState,
+                weight: value,
+              }));
+            }}
+            spellCheck={false}
+          />
+        </Grid>
+      </Grid>
+    </ModalTemplate>
   );
-}
+};
 
 export default InventoryModal;

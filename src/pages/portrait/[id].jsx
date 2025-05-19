@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
+import { styled } from '@mui/material';
+import { characterPicture } from 'common/helpers';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import socket from '../../utils/socket';
-
 import { prisma } from '../../database';
-import { styled } from '@mui/material';
-import { getCharacterPicture } from 'common/helpers';
+import socket from '../../utils/socket';
 
 export const getServerSideProps = async ({ params }) => {
   const characterId = isNaN(params.id) ? null : Number(params.id);
@@ -62,7 +61,7 @@ function Portrait({ classes, character }) {
     max: 0,
   });
 
-  const updateHitPoints = data => {
+  const updateHitPoints = (data) => {
     if (data.current === 0) {
       setIsDead(true);
     } else {
@@ -80,8 +79,8 @@ function Portrait({ classes, character }) {
 
     const splitShowOptions = showOptions.split(',');
 
-    splitShowOptions.forEach(option => {
-      setShowOnly(prevState => ({
+    splitShowOptions.forEach((option) => {
+      setShowOnly((prevState) => ({
         ...prevState,
         [option]: true,
       }));
@@ -96,7 +95,7 @@ function Portrait({ classes, character }) {
   useEffect(() => {
     socket.emit('room:join', `portrait_character_${character.id}`);
 
-    socket.on('update_hit_points', data => {
+    socket.on('update_hit_points', (data) => {
       updateHitPoints(data);
     });
   }, [character]);
@@ -112,12 +111,16 @@ function Portrait({ classes, character }) {
       </Head>
       <Container>
         <div style={{ display: showOnly.picture ? 'block' : 'none' }}>
-          <StyledImage width={400} height={600} layout='fixed' src={getCharacterPicture(character)} alt='' />
+          <StyledImage
+            width={400}
+            height={600}
+            layout='fixed'
+            src={characterPicture.getCharacterPictureURL(character)}
+            alt=''
+          />
         </div>
         <div>
-          <CharacterName style={{ display: showOnly.name ? 'block' : 'none' }}>
-            {character.name}
-          </CharacterName>
+          <CharacterName style={{ display: showOnly.name ? 'block' : 'none' }}>{character.name}</CharacterName>
           <div style={{ display: showOnly.stats ? 'block' : 'none' }}>
             <CharacterHitPoints>
               {hitPoints.current}/{hitPoints.max}

@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
+import { styled } from '@mui/material';
 import Queue from 'js-queue';
 import Head from 'next/head';
 
-import socket from '../../utils/socket';
-
 import { prisma } from '../../database';
-import { styled } from '@mui/material';
+import socket from '../../utils/socket';
 
 export const getServerSideProps = async ({ params }) => {
   const characterId = isNaN(params.id) ? null : Number(params.id);
@@ -42,11 +41,9 @@ export const getServerSideProps = async ({ params }) => {
       character: serialized,
       config: {
         diceOnScreenTimeoutInMS: parseInt(
-          configs.find(config => config.name === 'DICE_ON_SCREEN_TIMEOUT_IN_MS').value,
+          configs.find((config) => config.name === 'DICE_ON_SCREEN_TIMEOUT_IN_MS').value,
         ),
-        timeBetweenDicesInMS: parseInt(
-          configs.find(config => config.name === 'TIME_BETWEEN_DICES_IN_MS').value,
-        ),
+        timeBetweenDicesInMS: parseInt(configs.find((config) => config.name === 'TIME_BETWEEN_DICES_IN_MS').value),
       },
     },
   };
@@ -77,8 +74,8 @@ function Dice({ classes, character, config }) {
 
     socket.emit('room:join', `dice_character_${character.id}`);
 
-    socket.on('dice_roll', data => {
-      data.rolls.forEach(roll => {
+    socket.on('dice_roll', (data) => {
+      data.rolls.forEach((roll) => {
         queue.add(showDiceOnScreen.bind(queue, roll));
       });
     });

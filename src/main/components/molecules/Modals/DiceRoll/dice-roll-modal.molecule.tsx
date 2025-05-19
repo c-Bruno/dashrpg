@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { rollDiceHelper } from 'common/helpers';
 import { ModalTemplate } from 'main/components/templates';
 import useSound from 'use-sound';
@@ -46,14 +46,8 @@ const DiceRollModal: React.FC<DiceRollModalProps> = ({ amount, atribute, handleC
     return () => clearTimeout(timer);
   }, []);
 
-  const actions = (
-    <Button onClick={handleClose} color='secondary'>
-      Fechar
-    </Button>
-  );
-
   return (
-    <ModalTemplate onClose={handleClose} actions={actions} maxWidth='xl'>
+    <ModalTemplate onClose={handleClose} maxWidth='xl'>
       <Grid container>
         <Grid item xs={12} container spacing={0} alignItems='center' justifyContent='center'>
           {/* Dado na tela */}

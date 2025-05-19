@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { Container, Grid } from '@mui/material';
+import { useModal } from 'common/hooks';
 import { api } from 'common/libs';
 import { Header } from 'main/components/atoms';
 import {
@@ -11,6 +12,8 @@ import {
   StatusBarModal,
   ChangePictureModal,
   ConfirmationModal,
+  InventoryModal,
+  CombatModal,
 } from 'main/components/molecules';
 import {
   CharacterInfoForm,
@@ -24,9 +27,7 @@ import { WrappedCard } from 'main/components/templates';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import { CombatModal, InventoryModal } from '../../components/modals';
 import { prisma } from '../../database';
-import useModal from '../../hooks/useModal.hook';
 import * as characterActions from '../../redux/actions/character.actions';
 import socket from '../../utils/socket';
 

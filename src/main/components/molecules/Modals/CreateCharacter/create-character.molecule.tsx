@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { TextField, Button, CircularProgress, Grid, Box, Typography } from '@mui/material';
+import { TextField, Grid, Box, Typography } from '@mui/material';
 import { api } from 'common/libs';
 import { ModalTemplate } from 'main/components/templates';
 
@@ -48,24 +48,24 @@ const CreateCharacterModal: React.FC<CreateCharacterModalProps> = ({ handleClose
     }
   };
 
-  const actions = (
-    <>
-      <Button onClick={handleClose} color='secondary' disabled={loading}>
-        Cancelar
-      </Button>
-      <Button
-        onClick={handleCreate}
-        disabled={!name.trim() || loading}
-        variant='contained'
-        startIcon={loading && <CircularProgress size={16} />}
-      >
-        Criar
-      </Button>
-    </>
-  );
+  // const actions = (
+  //   <Button
+  //     onClick={handleCreate}
+  //     disabled={!name.trim() || loading}
+  //     variant='contained'
+  //     startIcon={loading && <CircularProgress size={16} />}
+  //   >
+  //     Confirmar
+  //   </Button>
+  // );
 
   return (
-    <ModalTemplate title='🗿 Criar personagem' onClose={handleCloseModal} actions={actions} disableClose={loading}>
+    <ModalTemplate
+      title='🗿 Criar personagem'
+      onClose={handleCloseModal}
+      disableClose={loading}
+      onConfirm={handleCreate}
+    >
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Box sx={{ mb: 3, mt: 1 }}>

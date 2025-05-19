@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FormControlLabel, Switch } from '@mui/material';
-import { getCharacterPicture } from 'common/helpers';
+import { characterPicture } from 'common/helpers';
 import { Dice } from 'main/components/atoms';
 import { StatusBar } from 'main/components/molecules';
 
@@ -15,7 +15,7 @@ const CharacterOverview = ({ character, diceRollModal, hitPointsModal, sanityPoi
         <S.ImageWrapper>
           <S.GlowEffect />
           <S.StyledRoundedImage
-            src={getCharacterPicture(character)}
+            src={characterPicture.getCharacterPictureURL(character)}
             altText='Imagem de jogador'
             width={125}
             height={125}
