@@ -37,7 +37,7 @@ export default async function handler(req, res) {
       deleteCharacter,
     ]);
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, type: 'character', id: id });
   } else if (req.method === "GET") {
     const id = Number(req.query.id);
 

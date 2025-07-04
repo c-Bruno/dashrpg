@@ -1,36 +1,35 @@
 import React, { useState } from 'react';
 
 import { TextField, Grid, Box, Typography } from '@mui/material';
+import { useFetchMutation } from 'common/hooks';
 import { api } from 'common/libs';
+import { Character } from 'common/types';
 import { ModalTemplate } from 'main/components/templates';
+import { useDashboardStore } from 'main/store';
 
 interface CreateCharacterModalProps {
   handleClose: () => void;
-  onCharacterCreated: () => void;
 }
 
-const CreateCharacterModal: React.FC<CreateCharacterModalProps> = ({ handleClose, onCharacterCreated }) => {
+const CreateCharacterModal: React.FC<CreateCharacterModalProps> = ({ handleClose }) => {
+  const { addCharacter } = useDashboardStore();
+
   const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+
+  const resetModal = () => {
+    setName('');
+    handleClose();
+  };
+
+  const createCharacter = useFetchMutation((payload: { name: string }) => api.post<Character>('/character', payload), {
+    onSuccess: (data: Character) => {
+      addCharacter(data);
+      resetModal();
+    },
+  });
 
   const handleCreate = async () => {
-    if (!name.trim()) {
-      setError('Nome é obrigatório!');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      await api.post('/character', { name: name.trim() });
-      onCharacterCreated();
-      handleClose();
-      setName('');
-    } catch (error) {
-      setError('Erro ao criar o personagem!');
-    } finally {
-      setLoading(false);
-    }
+    createCharacter.trigger({ name: name.trim() });
   };
 
   const handleKeyPress = (e) => {
@@ -40,31 +39,13 @@ const CreateCharacterModal: React.FC<CreateCharacterModalProps> = ({ handleClose
     }
   };
 
-  const handleCloseModal = () => {
-    if (!loading) {
-      setName('');
-      setError('');
-      handleClose();
-    }
-  };
-
-  // const actions = (
-  //   <Button
-  //     onClick={handleCreate}
-  //     disabled={!name.trim() || loading}
-  //     variant='contained'
-  //     startIcon={loading && <CircularProgress size={16} />}
-  //   >
-  //     Confirmar
-  //   </Button>
-  // );
-
   return (
     <ModalTemplate
       title='🗿 Criar personagem'
-      onClose={handleCloseModal}
-      disableClose={loading}
+      onClose={resetModal}
       onConfirm={handleCreate}
+      disableConfirm={!name.trim()}
+      disableClose={createCharacter.isLoading}
     >
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -77,17 +58,12 @@ const CreateCharacterModal: React.FC<CreateCharacterModalProps> = ({ handleClose
             <TextField
               autoFocus
               label='Nome'
-              type='text'
               fullWidth
-              variant='standard'
               value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                if (error) setError(''); // limpar erro ao digitar
-              }}
-              error={!!error}
-              helperText={error}
+              variant='standard'
               onKeyPress={handleKeyPress}
+              helperText={!name.trim() && 'Nome é obrigatório!'}
+              onChange={(e) => setName(e.target.value)}
             />
           </Box>
         </Grid>

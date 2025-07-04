@@ -7,24 +7,16 @@ import { CharacterSnapshotCard, CreateCharacterModal } from 'main/components/mol
 
 interface AvailableCharactersProps {
   characters: any[];
-  refreshData: () => Promise<boolean>;
   confirmationModal: any;
 }
 
-const AvailableCharacters: React.FC<AvailableCharactersProps> = ({ characters, refreshData, confirmationModal }) => {
-  const createCharacterModal = useModal(({ close }) => (
-    <CreateCharacterModal
-      handleClose={close}
-      onCharacterCreated={() => {
-        refreshData();
-      }}
-    />
-  ));
+const AvailableCharacters: React.FC<AvailableCharactersProps> = ({ characters, confirmationModal }) => {
+  const createCharacterModal = useModal(({ close }) => <CreateCharacterModal handleClose={close} />);
 
   return (
     <Grid item container xs={12} spacing={3}>
-      {characters.map((character, index) => (
-        <Grid item xs={12} md={4} key={index}>
+      {characters.map((character) => (
+        <Grid item xs={12} md={4} key={character.id}>
           <CharacterSnapshotCard
             character={character}
             deleteCharacter={() =>

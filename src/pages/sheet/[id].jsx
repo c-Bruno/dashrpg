@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { Container, Grid } from '@mui/material';
 import { useModal } from 'common/hooks';
 import { api } from 'common/libs';
+import { socket } from 'common/libs';
 import { Header } from 'main/components/atoms';
 import {
   AttributeStatusItem,
@@ -29,7 +30,6 @@ import { useRouter } from 'next/router';
 
 import { prisma } from '../../database';
 import * as characterActions from '../../redux/actions/character.actions';
-import socket from '../../utils/socket';
 
 export const getServerSideProps = async ({ params }) => {
   const characterId = isNaN(params.id) ? null : Number(params.id);

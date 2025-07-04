@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { styled } from '@mui/material';
+import { socket } from 'common/libs';
 import Queue from 'js-queue';
 import Head from 'next/head';
 
 import { prisma } from '../../database';
-import socket from '../../utils/socket';
 
 export const getServerSideProps = async ({ params }) => {
   const characterId = isNaN(params.id) ? null : Number(params.id);

@@ -5,7 +5,7 @@ import { SkillAttributeList } from 'main/components/molecules';
 
 interface Attribute {
   name: string;
-  skill_id: number;
+  skill_id?: number;
 }
 
 interface Skill {

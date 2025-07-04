@@ -11,7 +11,15 @@ interface WrappedCardProps {
   character: any | null;
   modal?: any;
   children: React.ReactNode;
-  entityType: 'combat' | 'inventory' | 'skill' | 'attribute' | 'dices';
+  entityType:
+    | 'combat'
+    | 'inventory'
+    | 'skill'
+    | 'attribute'
+    | 'dices'
+    | 'avaliableCharacters'
+    | 'attributesList'
+    | 'skillsList';
 }
 
 const WrappedCard: React.FC<WrappedCardProps> = ({ character, modal, children, entityType }) => {

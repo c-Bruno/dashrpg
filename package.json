@@ -28,6 +28,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "formik": "^2.2.9",
+    "http-status": "^2.1.0",
     "js-queue": "^2.0.2",
     "moment": "^2.30.1",
     "next": "^12.1.5",
@@ -44,7 +45,8 @@
     "socket.io-client": "^4.3.2",
     "use-sound": "^4.0.3",
     "yarn": "^1.22.22",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "zustand": "^4.5.7"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.33.0",
