@@ -1,5 +1,12 @@
-export interface RemoveItem {
+interface RemoveItem {
   id: number;
-  type: string;
   success?: boolean;
+}
+
+export interface RemoveItemRequest extends RemoveItem {
+  type: string;
+}
+
+export interface RemoveItemResponse extends RemoveItem {
+  callback: string;
 }

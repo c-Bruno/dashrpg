@@ -3,7 +3,9 @@ import { toast } from 'react-toastify';
 
 import { FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import { api } from 'common/libs';
+import { Attribute } from 'common/types';
 import { ModalTemplate } from 'main/components/templates';
+import { useDashboardStore } from 'main/store';
 
 import * as S from './attribute-modal.styles';
 
@@ -11,7 +13,7 @@ interface AttributeModalProps {
   data: any;
   onSubmit: any;
   operation: string;
-  attributes: any;
+  attributes: Attribute[] | any;
   handleClose: () => void;
   attributeSkill: any;
 }
@@ -24,6 +26,7 @@ const AttributeModal: React.FC<AttributeModalProps> = ({
   handleClose,
   attributeSkill,
 }) => {
+  const { addAttribute, removeAttribute } = useDashboardStore();
   const [updatedAttributes, setUpdatedAttributes] = useState(attributes);
 
   const [attribute, setAttribute] = useState({

@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Button, Container, Grid } from '@mui/material';
-import { useFetchMutation, useModal } from 'common/hooks';
-import { api } from 'common/libs';
-import { RemoveItem } from 'core/services/Master/dashboard.interface';
+import { useModal } from 'common/hooks';
 import { Header } from 'main/components/atoms';
 import { ConfirmationModal, SkillModal, AttributeModal } from 'main/components/molecules';
 import { AttributesBySkill, AvailableItemsList, AvailableCharacters, AvailableDices } from 'main/components/organisms';
@@ -14,18 +12,7 @@ import Head from 'next/head';
 import { runInitialSetup } from './master-dashboard.helper';
 
 const Dashboard: React.FC<any> = ({ configs, initialSkills, initialCharacters, initialAttributes }) => {
-  const {
-    characters,
-    setCharacters,
-    attributes,
-    setAttributes,
-    skills,
-    setSkills,
-    setConfig,
-    removeAttribute,
-    removeSkill,
-    removeCharacter,
-  } = useDashboardStore();
+  const { characters, setCharacters, attributes, setAttributes, skills, setSkills, setConfig } = useDashboardStore();
 
   useEffect(() => {
     setSkills(initialSkills);
@@ -41,23 +28,8 @@ const Dashboard: React.FC<any> = ({ configs, initialSkills, initialCharacters, i
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialCharacters, initialAttributes, initialSkills, configs]);
 
-  const removeItem = useFetchMutation((params: RemoveItem) => api.delete(`/${params.type}/${params.id}`), {
-    onSuccess: (data: RemoveItem) => {
-      if (data.type === 'attribute') removeAttribute(data.id);
-      if (data.type === 'skill') removeSkill(data.id);
-      if (data.type === 'character') removeCharacter(data.id);
-    },
-    onError: () => alert('Erro ao remover item!'),
-  });
-
   const confirmationModal = useModal(({ close, custom }) => (
-    <ConfirmationModal
-      title={custom.title}
-      text={custom.text}
-      data={custom.data}
-      handleClose={close}
-      onConfirmation={(data) => removeItem.trigger({ type: data.type, id: data.id })}
-    />
+    <ConfirmationModal title={custom.title} text={custom.text} data={custom.data} handleClose={close} />
   ));
 
   const attributeModal = useModal(({ close, custom }) => {

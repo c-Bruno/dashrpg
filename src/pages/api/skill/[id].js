@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
     await prisma.$transaction([deleteFromCharacterSkills, deleteSkill]);
 
-    return res.status(200).json({ success: true, type: 'skill', id });
+    return res.status(200).json({ success: true, callback: 'removeSkill', id });
   } else if (req.method === 'PUT') {
     const { body } = req;
 

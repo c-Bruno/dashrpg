@@ -1,4 +1,4 @@
-import { Character, Attribute, Skill, Config } from 'common/types';
+import { Character, Attribute, Skill } from 'common/types';
 import { create } from 'zustand';
 
 type useDashboardStoreType = {
@@ -13,6 +13,7 @@ type useDashboardStoreType = {
 
   setAttributes: (a: Attribute[]) => void;
   removeAttribute: (id: number) => void;
+  addAttribute: (a: Attribute) => void;
 
   setSkills: (s: Skill[]) => void;
   removeSkill: (id: number) => void;
@@ -42,6 +43,10 @@ const useDashboardStore = create<useDashboardStoreType>((set) => ({
   removeAttribute: (id) =>
     set((state) => ({
       attributes: state.attributes.filter((a) => a.id !== id),
+    })),
+  addAttribute: (newAttribute) =>
+    set((state) => ({
+      attributes: [...state.attributes, newAttribute],
     })),
 
   // Skills config in the master dashboard

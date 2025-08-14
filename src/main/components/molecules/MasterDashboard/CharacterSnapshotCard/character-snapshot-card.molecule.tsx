@@ -30,9 +30,7 @@ const CharacterSnapshotCard: React.FC<CharacterSnapshotCardProps> = ({ character
       />
       <S.CharacterDetails>
         {/* Nome do personagem */}
-        <S.CharacterTitle>
-          {character.name} (ID: {character.id})
-        </S.CharacterTitle>
+        <S.CharacterTitle>{character.name}</S.CharacterTitle>
 
         <div>
           {/* Vida resumida */}

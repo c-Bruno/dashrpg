@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
     await prisma.$transaction([deleteFromCharacterAttributes, deleteAttribute]);
 
-    return res.status(200).json({ success: true, type: 'attribute', id });
+    return res.status(200).json({ success: true, callback: 'removeAttribute', id });
   } else if (req.method === 'PUT') {
     const { body } = req;
 
