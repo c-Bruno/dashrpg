@@ -1,7 +1,7 @@
 // src/components/organisms/InventoryList/InventoryList.tsx
 
 
-import { Grid, TextField } from '@mui/material';
+import {   Grid, TextField   } from '@mui/material';
 import { calcSpaceInventory } from 'common/helpers';
 import { EditableDataRow } from 'main/components/molecules';
 
@@ -18,23 +18,23 @@ const InventoryList = ({ character, inventoryModal, confirmationModal }: Invento
     <>
       {/* Cabeçalho das informações de inventário */}
       <Grid container style={{ paddingBottom: '16px' }}>
-        <Grid item md={6} xs={12}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <TextField disabled label='ITEM' variant='standard' fullWidth />
         </Grid>
 
-        <Grid item md={3} xs={12}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <TextField disabled label='ESPAÇOS' variant='standard' fullWidth />
         </Grid>
 
-        <Grid item md={3} xs={12}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <TextField disabled label={`(${calcSpaceInventory(character)} LIVRE)`} variant='standard' fullWidth />
         </Grid>
       </Grid>
 
       {/* Lista de itens */}
-      <S.ScrollableBox item container xs={12} spacing={0.8}>
+      <S.ScrollableBox container size={12} spacing={0.8}>
         {character.inventory.map((inventory, index) => (
-          <Grid item xs={12} key={index}>
+          <Grid key={index} size={12}>
             <EditableDataRow
               data={inventory}
               editRow={(data) =>

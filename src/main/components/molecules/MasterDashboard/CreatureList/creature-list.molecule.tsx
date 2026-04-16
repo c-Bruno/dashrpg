@@ -2,8 +2,8 @@ import { Grid } from '@mui/material';
 
 const CreatureList = () => {
   return (
-    <Grid container spacing={2} marginTop={30} alignItems='center' justifyContent='center'>
-      <Grid item>
+    <Grid container spacing={2} sx={{ justifyContent: "center", alignItems: "center", marginTop: 30 }}>
+      <Grid>
         <a target='_blank' rel='noreferrer' href='https://www.mythrillfiction.com/the-dark-rider'>
           <div className='card'>
             <div className='wrapper'>
@@ -27,7 +27,7 @@ const CreatureList = () => {
         </a>
       </Grid>
 
-      <Grid item>
+      <Grid>
         <a target='_blank' rel='noreferrer' href='https://www.mythrillfiction.com/force-mage'>
           <div className='card'>
             <div className='wrapper'>

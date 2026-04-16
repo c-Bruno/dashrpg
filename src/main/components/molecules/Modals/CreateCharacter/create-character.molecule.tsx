@@ -45,10 +45,9 @@ const CreateCharacterModal = ({ handleClose }: CreateCharacterModalProps) => {
       onClose={resetModal}
       onConfirm={handleCreate}
       disableConfirm={!name.trim()}
-      disableClose={createCharacter.isLoading}
-    >
+      disableClose={createCharacter.isLoading}>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Box sx={{ mb: 3, mt: 1 }}>
             <Typography variant='body2' color='text.secondary'>
               Preencha os campos abaixo para criar um novo personagem

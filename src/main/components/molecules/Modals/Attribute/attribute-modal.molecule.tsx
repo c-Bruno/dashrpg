@@ -119,10 +119,9 @@ const AttributeModal = ({
     <ModalTemplate
       title={operation === 'create' ? 'Criar novo atributo' : 'Editar atributo'}
       onClose={handleClose}
-      onConfirm={submit}
-    >
+      onConfirm={submit}>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           {/* Nome do atributo */}
           <S.AttributeName
             autoFocus
@@ -143,7 +142,7 @@ const AttributeModal = ({
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           {/* Descrição do atributo */}
           <S.AttributeName
             autoFocus
@@ -165,7 +164,7 @@ const AttributeModal = ({
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormControl fullWidth>
             <InputLabel id='demo-simple-select-label'>Perícia</InputLabel>
             <Select
@@ -180,8 +179,7 @@ const AttributeModal = ({
                   ...prevState,
                   skill_id: value,
                 }));
-              }}
-            >
+              }}>
               {attributeSkill.map((skill, index) => (
                 <MenuItem key={skill.id} value={skill.id}>
                   {skill.name}

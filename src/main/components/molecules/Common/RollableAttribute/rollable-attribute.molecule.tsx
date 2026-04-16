@@ -1,7 +1,7 @@
 import { ToastContainer, toast } from 'react-toastify';
 
-import { Grid, TextField } from '@mui/material';
-import 'react-toastify/dist/ReactToastify.min.css';
+import {   Grid, TextField   } from '@mui/material';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useModal } from 'common/hooks';
 import { Dice } from 'main/components/atoms';
@@ -46,14 +46,14 @@ const RollableAttribute = ({ data, image, onInput, onValueChange }: RollableAttr
 
   return (
     <div>
-      <Grid container direction='column' alignItems='center' justifyContent='center'>
+      <Grid container sx={{ justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
         {/* Imagem do dado para rolagem no atributo */}
-        <Grid item>
+        <Grid>
           <Dice width={40} height={40} image={image} altText='Dice roll' onClick={() => handleDiceClick(data)} />
         </Grid>
 
         {/* Nome do atributo com acionamento para o modal de informação */}
-        <S.AttributeName item>
+        <S.AttributeName>
           <S.AttributeTextName onClick={() => infoModal.appear()}>{data.name}</S.AttributeTextName>
         </S.AttributeName>
 
@@ -63,10 +63,12 @@ const RollableAttribute = ({ data, image, onInput, onValueChange }: RollableAttr
             value={data.value ?? ''}
             variant='standard'
             fullWidth
-            inputProps={{
-              style: {
-                padding: 8,
-                textAlign: 'center',
+            slotProps={{
+              htmlInput: {
+                style: {
+                  padding: 8,
+                  textAlign: 'center',
+                },
               },
             }}
             onBlur={(event) => onValueChange(event.target.value)}

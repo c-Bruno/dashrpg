@@ -25,8 +25,16 @@ io.on('connect', socket => {
 });
 
 nextApp.prepare().then(() => {
-    app.all('*', (req, res) => {
+    // Express v5 no longer accepts '*' wildcard - use catch-all middleware
+    app.use(async (req, res) => {
         return nextHandler(req, res);
+    });
+
+    // Express v5 handles promise rejections automatically
+    // but we add explicit error handler for clarity
+    app.use((err, req, res, next) => {
+        console.error('[Server] Error:', err);
+        res.status(500).json({ error: 'Internal server error' });
     });
 
     server.listen(process.env.PORT || 3000, err => {

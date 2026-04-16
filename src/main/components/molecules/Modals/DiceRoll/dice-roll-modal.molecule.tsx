@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Box, Grid } from '@mui/material';
+import {   Box, Grid   } from '@mui/material';
 import { rollDiceHelper } from 'common/helpers';
 import { ModalTemplate } from 'main/components/templates';
 import useSound from 'use-sound';
@@ -49,7 +49,7 @@ const DiceRollModal = ({ amount, atribute, handleClose }: DiceRollModalProps) =>
   return (
     <ModalTemplate onClose={handleClose} maxWidth='xl'>
       <Grid container>
-        <Grid item xs={12} container spacing={0} alignItems='center' justifyContent='center'>
+        <Grid container spacing={0} size={12} sx={{ justifyContent: "center", alignItems: "center" }}>
           {/* Dado na tela */}
           <S.RotatingDiceImage
             width={40}
@@ -63,7 +63,7 @@ const DiceRollModal = ({ amount, atribute, handleClose }: DiceRollModalProps) =>
         {/* Valor/numero retornado na rolagem */}
         {showGrids && (
           <>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Box
                 sx={{
                   width: 500,
@@ -85,7 +85,7 @@ const DiceRollModal = ({ amount, atribute, handleClose }: DiceRollModalProps) =>
 
             {/* Tipo de resultado obtido */}
             {atribute ? (
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Box
                   sx={{
                     width: 500,

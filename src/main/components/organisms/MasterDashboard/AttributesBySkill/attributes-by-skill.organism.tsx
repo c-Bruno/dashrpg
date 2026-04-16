@@ -31,10 +31,10 @@ const AttributesBySkill = ({ skills, attributes }: AttributesBySkillProps) => {
   }, [attributes]);
 
   return (
-    <Grid item container xs={12} spacing={2}>
-      <Grid container spacing={2} justifyContent='center' alignItems='center'>
+    <Grid container spacing={2} size={12}>
+      <Grid container spacing={2} sx={{ justifyContent: "center", alignItems: "center" }}>
         {skills.map((skill) => (
-          <Grid item key={skill.id}>
+          <Grid key={skill.id}>
             <SkillAttributeList title={skill.name} items={attributesBySkillId[skill.id] || []} />
           </Grid>
         ))}

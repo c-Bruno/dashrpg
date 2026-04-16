@@ -1,4 +1,4 @@
-import { Grid, styled } from '@mui/material';
+import {    Grid, styled    } from '@mui/material';
 
 export const ScrollTableBox = styled(Grid)(() => ({
   overflow: 'auto',

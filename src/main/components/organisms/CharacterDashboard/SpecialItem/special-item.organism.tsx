@@ -34,7 +34,7 @@ const SpecialItem = ({ character }: SpecialItemProps) => {
   }, []);
 
   return (
-    <Grid item xs={12}>
+    <Grid size={12}>
       <TextField
         rows={6}
         name='specialItem'

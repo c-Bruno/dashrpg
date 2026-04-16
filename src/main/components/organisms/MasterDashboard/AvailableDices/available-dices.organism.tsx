@@ -12,8 +12,8 @@ const AvaliableDices = () => {
   const diceRollModal = useModal(({ close, custom }) => <DiceRollModal amount={custom.amount} handleClose={close} />);
 
   return (
-    <S.CenteredGrid item container xs={8} spacing={20}>
-      <Grid item xs={12}>
+    <S.CenteredGrid container size={8} spacing={20}>
+      <Grid size={12}>
         {Object.values(DICES.WITCH_DICES).map((item) => (
           <Dice
             width={80}

@@ -21,9 +21,9 @@ const AttributeStatusItem = ({ character, setCharacter }: any) => {
   };
 
   return (
-    <Grid container spacing={2} justifyContent='center'>
+    <Grid container spacing={2} sx={{ justifyContent: "center" }}>
       {character.attributes.map((item, index) => (
-        <Grid item xs={2} key={index}>
+        <Grid key={index} size={2}>
           <RollableAttribute
             image='/assets/dice.png'
             data={{

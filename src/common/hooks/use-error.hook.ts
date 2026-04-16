@@ -1,16 +1,22 @@
-import axios, { AxiosError } from 'axios';
 import { DefaultResponse, UnauthorizedResponse, ValidationResponse } from 'common/types';
-import httpStatus from 'http-status';
+
+type FetchError = Error & {
+  response?: {
+    data: any;
+    status: number;
+    statusText: string;
+  };
+};
 
 const useError = <T = string>() => {
   const DEFAULT_ERROR_MESSAGE = 'Ocorreu um erro desconhecido, tente novamente mais tarde.';
 
   type IHandleError = (
-    error: AxiosError | Error,
+    error: FetchError | Error,
     customMessage?: string,
   ) => {
     message: string;
-    error: AxiosError | Error;
+    error: FetchError | Error;
     errors: {
       validationError?: DefaultResponse<ValidationResponse<T>>;
       unauthorizedError?: DefaultResponse<UnauthorizedResponse>;
@@ -25,17 +31,18 @@ const useError = <T = string>() => {
 
     console.error(error);
 
-    if (axios.isAxiosError(error)) {
-      const data = error.response?.data;
-      const status = error.response?.status;
+    const fetchError = error as FetchError;
+    if (fetchError.response) {
+      const data = fetchError.response.data;
+      const status = fetchError.response.status;
 
       // validation erros
-      if (status === httpStatus.BAD_REQUEST || status === httpStatus.UNPROCESSABLE_ENTITY) {
+      if (status === 400 || status === 422) {
         validationError = data as DefaultResponse<ValidationResponse<T>>;
       }
 
       // unauthorized errors
-      if (status === httpStatus.UNAUTHORIZED || status === httpStatus.FORBIDDEN) {
+      if (status === 401 || status === 403) {
         unauthorizedError = data as DefaultResponse<UnauthorizedResponse>;
       }
     }

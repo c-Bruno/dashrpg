@@ -25,17 +25,15 @@ const Skills = ({ character, setCharacter }) => {
   return (
     <Grid
       container
-      item
-      xs={12}
       spacing={3}
-      style={{
+      sx={{
         display: 'flex',
-        flexFlow: 'row wap',
+        flexFlow: 'row wrap',
         justifyContent: 'center',
       }}
-    >
+      size={12}>
       {character.skills.map((each, index) => (
-        <Grid item xs={2} key={index}>
+        <Grid key={index} size={2}>
           <RollableAttribute
             image='/assets/expertiseRoll.png'
             data={{

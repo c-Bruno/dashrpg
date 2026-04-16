@@ -1,23 +1,35 @@
 import { useState } from 'react';
 
-import { AxiosError, AxiosResponse } from 'axios';
 import { DefaultResponse, UnauthorizedResponse, ValidationResponse } from 'common/types';
 
 import useError from './use-error.hook';
 
+type ApiResponse<T = any> = {
+  data: T;
+  status: number;
+  statusText: string;
+};
+
+type FetchError = Error & {
+  response?: {
+    data: any;
+    status: number;
+  };
+};
+
 export type ErrorsResponse<T = unknown> = {
-  error: AxiosError<T> | Error;
+  error: FetchError | Error;
   validationError?: DefaultResponse<ValidationResponse<T>>;
   unauthorizedError?: DefaultResponse<UnauthorizedResponse>;
 };
 
 export type FetchMutationOptions<P = unknown, R = unknown> = {
-  onSuccess?: (data: R, response?: AxiosResponse<R>) => void;
+  onSuccess?: (data: R, response?: ApiResponse<R>) => void;
   onError?: (params: ErrorsResponse<P>) => void;
 };
 
 const useFetchMutation = <P = unknown, R = unknown>(
-  fetcher: (args?: P) => Promise<AxiosResponse<R>>,
+  fetcher: (args?: P) => Promise<ApiResponse<R>>,
   options?: FetchMutationOptions<P, R>,
 ) => {
   const { handleError } = useError<P>();

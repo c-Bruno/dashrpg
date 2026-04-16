@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { Grid, TextField } from '@mui/material';
+import {   Grid, TextField   } from '@mui/material';
 import { api } from 'common/libs';
 import { ModalTemplate } from 'main/components/templates';
 
@@ -106,7 +106,7 @@ const SkillModal = ({ data, skills, onSubmit, operation, handleClose }: SkillMod
       onConfirm={submit}
     >
       <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             style={{
               marginTop: '15px',
@@ -128,7 +128,7 @@ const SkillModal = ({ data, skills, onSubmit, operation, handleClose }: SkillMod
             spellCheck={false}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             style={{
               marginTop: '15px',

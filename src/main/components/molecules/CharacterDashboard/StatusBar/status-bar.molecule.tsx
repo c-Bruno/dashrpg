@@ -1,5 +1,5 @@
 
-import { Box, Grid } from '@mui/material';
+import {   Box, Grid   } from '@mui/material';
 import { LabeledProgressBar } from 'main/components/atoms';
 
 import * as S from './status-bar.styles';
@@ -18,12 +18,12 @@ const StatusBar = ({ max, label, title, current, onClick, primaryColor, secondar
   const normalise = (current, max) => ((current - 0) * 100) / (max - 0);
 
   return (
-    <Grid container item xs={12} marginBottom={2}>
-      <S.BarTitle item xs={12}>
+    <Grid container size={12} sx={{ marginBottom: 2 }}>
+      <S.BarTitle size={12}>
         <span>Sanidade</span>
       </S.BarTitle>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Box sx={{ width: '100%' }}>
           <LabeledProgressBar
             value={normalise(current, max)}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { Grid, Link, TextField, Typography } from '@mui/material';
+import {   Grid, Link, TextField, Typography   } from '@mui/material';
 import { characterPicture } from 'common/helpers';
 import { api } from 'common/libs';
 import { DefaultImageSelector } from 'main/components/molecules';
@@ -64,7 +64,7 @@ const ChangePictureModal = ({ character, handleClose, onPictureChange }: ChangeP
   return (
     <ModalTemplate title='👤 Alterar imagens do personagem' onClose={handleClose} onConfirm={submit}>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant='body2'>
             Utilize imagens no tamanho <strong>420x600</strong> em formato <strong>PNG</strong>. Apenas links de imagens
             hospedadas no
@@ -76,7 +76,7 @@ const ChangePictureModal = ({ character, handleClose, onPictureChange }: ChangeP
           </Typography>
         </Grid>
 
-        <Grid item xs={11}>
+        <Grid size={11}>
           <TextField
             fullWidth
             name='standard_character_picture_url'
@@ -87,7 +87,7 @@ const ChangePictureModal = ({ character, handleClose, onPictureChange }: ChangeP
           />
         </Grid>
 
-        <Grid item xs={11}>
+        <Grid size={11}>
           <TextField
             fullWidth
             name='injured_character_picture_url'
@@ -98,7 +98,7 @@ const ChangePictureModal = ({ character, handleClose, onPictureChange }: ChangeP
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <DefaultImageSelector onSelect={handleDefaultImageSelect} />
         </Grid>
       </Grid>

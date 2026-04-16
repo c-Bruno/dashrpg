@@ -4,7 +4,7 @@ import { styled } from '@mui/material';
 import { prisma } from 'common/libs/prisma.lib';
 import { socket } from 'common/libs';
 import type { Character } from 'common/types';
-import Queue from 'js-queue';
+import { Queue } from 'common/helpers/queue.helper';
 import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 

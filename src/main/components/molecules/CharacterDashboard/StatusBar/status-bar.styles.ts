@@ -1,4 +1,4 @@
-import { Grid, styled } from '@mui/material';
+import {    Grid, styled    } from '@mui/material';
 
 export const BarTitle = styled(Grid)(({ theme }) => ({
   marginBottom: '2px',

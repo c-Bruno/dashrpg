@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Button, Container, Grid } from '@mui/material';
+import {   Button, Container, Grid   } from '@mui/material';
 import { useModal } from 'common/hooks';
 import { Header } from 'main/components/atoms';
 import { ConfirmationModal, SkillModal, AttributeModal } from 'main/components/molecules';
@@ -71,18 +71,18 @@ const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttribute
         <title>Mestre | RPG</title>
       </Head>
 
-      <Grid container item spacing={3}>
+      <Grid container spacing={3}>
         <Header title='Dashboard do Mestre' />
 
         {configs.length > 0 ? (
           <>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <WrappedCard entityType='avaliableCharacters' character={null}>
                 <AvailableCharacters characters={characters} confirmationModal={confirmationModal} />
               </WrappedCard>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <WrappedCard entityType='attributesList' character={null} modal={attributeModal}>
                 <AvailableItemsList
                   type='attribute'
@@ -93,7 +93,7 @@ const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttribute
               </WrappedCard>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <WrappedCard entityType='skillsList' character={null} modal={skillModal}>
                 <AvailableItemsList
                   type='skill'
@@ -104,20 +104,20 @@ const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttribute
               </WrappedCard>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
               <WrappedCard entityType='attribute' character={null}>
                 <AttributesBySkill attributes={attributes} skills={skills} />
               </WrappedCard>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
               <WrappedCard entityType='dices' character={null}>
                 <AvailableDices />
               </WrappedCard>
             </Grid>
           </>
         ) : (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Button variant='contained' onClick={runInitialSetup} fullWidth>
               REALIZAR CONFIGURAÇÃO INICIAL
             </Button>

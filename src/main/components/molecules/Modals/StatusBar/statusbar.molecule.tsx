@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Grid, Typography, Box, TextField } from '@mui/material';
+import {   Grid, Typography, Box, TextField   } from '@mui/material';
 import { ModalTemplate } from 'main/components/templates';
 
 interface StatusBarModalProps {
@@ -67,7 +67,7 @@ const StatusBarModal = ({ handleClose, onSubmit, data, type }: StatusBarModalPro
 
       <Box sx={{ mb: 3 }}>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <TextField
               fullWidth
               type='number'
@@ -78,7 +78,7 @@ const StatusBarModal = ({ handleClose, onSubmit, data, type }: StatusBarModalPro
               onChange={(e) => handleInputChange('current', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <TextField
               fullWidth
               name='max'

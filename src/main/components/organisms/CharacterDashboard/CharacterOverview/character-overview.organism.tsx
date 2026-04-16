@@ -9,9 +9,9 @@ import * as S from './character-overview.styles';
 
 const CharacterOverview = ({ character, diceRollModal, hitPointsModal, sanityPointsModal, changePictureModal }) => {
   return (
-    <S.CenteredGrid container item spacing={3}>
+    <S.CenteredGrid container spacing={3}>
       {/* Imagem do personagem */}
-      <S.CenteredGrid item xs={6}>
+      <S.CenteredGrid size={6}>
         <S.ImageWrapper>
           <S.GlowEffect />
           <S.StyledRoundedImage
@@ -25,7 +25,7 @@ const CharacterOverview = ({ character, diceRollModal, hitPointsModal, sanityPoi
       </S.CenteredGrid>
 
       {/* Vida do personagem*/}
-      <S.CenteredGrid item xs={12}>
+      <S.CenteredGrid size={12}>
         <StatusBar
           title='Vida'
           current={character.current_hit_points} // Vida Atual
@@ -40,7 +40,7 @@ const CharacterOverview = ({ character, diceRollModal, hitPointsModal, sanityPoi
       </S.CenteredGrid>
 
       {/* Sanidade do personagem*/}
-      <S.CenteredGrid item xs={12}>
+      <S.CenteredGrid size={12}>
         <StatusBar
           title='Sanidade'
           current={character.current_sanity_points} // Sanidade Atual
@@ -54,13 +54,13 @@ const CharacterOverview = ({ character, diceRollModal, hitPointsModal, sanityPoi
         />
       </S.CenteredGrid>
 
-      <S.CenteredGrid item xs={12}>
+      <S.CenteredGrid size={12}>
         <FormControlLabel control={<Switch color='secondary' />} label='Traumatizado' />
         <FormControlLabel control={<Switch color='secondary' />} label='Morrendo' />
       </S.CenteredGrid>
 
       {/* Dado para rolagem d100 */}
-      <S.CenteredGrid item xs={6}>
+      <S.CenteredGrid size={6}>
         <Dice width={80} height={80} altText='Dice roll' onClick={() => diceRollModal.appear()} />
       </S.CenteredGrid>
     </S.CenteredGrid>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { Container, Grid } from '@mui/material';
+import {   Container, Grid   } from '@mui/material';
 import { useModal } from 'common/hooks';
 import { api, socket } from 'common/libs';
 import { prisma } from 'common/libs/prisma.lib';
@@ -252,12 +252,12 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
         <title>{`${character?.name ?? ''} | RPG`}</title>
       </Head>
 
-      <Grid container item spacing={3}>
+      <Grid container spacing={3}>
         <Header title={`${character?.name}`} />
 
-        <Grid container item xs={12} spacing={3}>
+        <Grid container spacing={3} size={12}>
           {/* Overview: imagem, vida e sanidade */}
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <WrappedCard entityType='characterOverview' character={character}>
               <CharacterOverview
                 character={character}
@@ -270,14 +270,14 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
           </Grid>
 
           {/* Dados pessoais do personagem */}
-          <Grid item xs={12} md={8}>
+          <Grid size={{ xs: 12, md: 8 }}>
             <WrappedCard entityType='characterInfoForm' character={character}>
               <CharacterInfoForm initialValues={character} onSubmit={onCharacterInfoSubmit} />
             </WrappedCard>
           </Grid>
 
           {/* Inventário */}
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <WrappedCard entityType='inventory' character={character} modal={inventoryModal}>
               <InventoryList
                 character={character}
@@ -288,14 +288,14 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
           </Grid>
 
           {/* Atributos */}
-          <Grid item xs={12} md={8}>
+          <Grid size={{ xs: 12, md: 8 }}>
             <WrappedCard entityType='attribute' character={character}>
               <AttributeStatusItem character={character} setCharacter={setCharacter} />
             </WrappedCard>
           </Grid>
 
           {/* Ações de combate */}
-          <Grid item xs={12}>
+          <Grid size={12}>
             <WrappedCard entityType='combat' character={character} modal={combatModal}>
               <WeaponStatusList
                 character={character}
@@ -305,14 +305,14 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
           </Grid>
 
           {/* Item especial */}
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <WrappedCard entityType='SpecialItem' character={character}>
               <SpecialItem character={character} />
             </WrappedCard>
           </Grid>
 
           {/* Perícias */}
-          <Grid item xs={8}>
+          <Grid size={8}>
             <WrappedCard entityType='skills' character={character}>
               <SkillsList character={character} setCharacter={setCharacter} />
             </WrappedCard>

@@ -11,33 +11,33 @@ interface EditableDataRowProps {
 const EditableDataRow = ({ data, editRow, deleteRow }: EditableDataRowProps) => {
   return (
     <Box sx={{ py: 1, px: 1, borderBottom: '1px solid #4e4e4e' }}>
-      <Grid container spacing={2} alignItems='center'>
+      <Grid container spacing={2} sx={{ alignItems: "center" }}>
         {/* Descrição do item */}
-        <Grid item xs={6} md={6}>
+        <Grid size={{ xs: 6, md: 6 }}>
           <TextField
             label='Descrição'
             value={data.name || data.inventory.description}
             variant='standard'
             fullWidth
-            InputProps={{ disableUnderline: true, readOnly: true }}
+            slotProps={{ input: { disableUnderline: true, readOnly: true } }}
           />
         </Grid>
 
         {/* Peso (se houver inventory) */}
         {data.inventory && (
-          <Grid item xs={12} md={2}>
+          <Grid size={{ xs: 12, md: 2 }}>
             <TextField
               label='Peso'
               value={data.inventory.weight}
               variant='standard'
               fullWidth
-              InputProps={{ disableUnderline: true, readOnly: true }}
+              slotProps={{ input: { disableUnderline: true, readOnly: true } }}
             />
           </Grid>
         )}
 
         {/* Ações: Editar / Remover */}
-        <Grid item xs={6} md={2}>
+        <Grid size={{ xs: 6, md: 2 }}>
           <Tooltip title='Editar informações'>
             <IconButton color='primary' aria-label='Editar informações' onClick={() => editRow(data)}>
               <EditIcon />
@@ -45,7 +45,7 @@ const EditableDataRow = ({ data, editRow, deleteRow }: EditableDataRowProps) => 
           </Tooltip>
         </Grid>
 
-        <Grid item xs={6} md={2}>
+        <Grid size={{ xs: 6, md: 2 }}>
           <Tooltip title='Remover item'>
             <IconButton color='primary' aria-label='Remover item' onClick={() => deleteRow(data)}>
               <DeleteIcon />

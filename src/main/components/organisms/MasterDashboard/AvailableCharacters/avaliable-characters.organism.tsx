@@ -13,9 +13,9 @@ const AvailableCharacters = ({ characters, confirmationModal }: AvailableCharact
   const createCharacterModal = useModal(({ close }) => <CreateCharacterModal handleClose={close} />);
 
   return (
-    <Grid item container xs={12} spacing={3}>
+    <Grid container spacing={3} size={12}>
       {characters.map((character) => (
-        <Grid item xs={12} md={4} key={character.id}>
+        <Grid key={character.id} size={{ xs: 12, md: 4 }}>
           <CharacterSnapshotCard
             character={character}
             deleteCharacter={() =>
@@ -29,7 +29,7 @@ const AvailableCharacters = ({ characters, confirmationModal }: AvailableCharact
         </Grid>
       ))}
 
-      <Grid item xs={12} md={4}>
+      <Grid size={{ xs: 12, md: 4 }}>
         <AddButtonBox onClick={() => createCharacterModal.appear()} />
       </Grid>
     </Grid>

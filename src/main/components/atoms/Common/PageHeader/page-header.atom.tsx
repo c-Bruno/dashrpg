@@ -7,8 +7,8 @@ interface HeaderProps {
 
 const Header = ({ title }: HeaderProps) => {
   return (
-    <S.HeaderContainer item xs={12} justifyContent='center'>
-      <S.Title variant='h4' marginTop={10}>
+    <S.HeaderContainer size={12} sx={{ justifyContent: 'center' }}>
+      <S.Title variant='h4' sx={{ marginTop: 10 }}>
         {title}
       </S.Title>
     </S.HeaderContainer>

@@ -9,11 +9,11 @@ interface DefaultImageSelectorProps {
 
 const DefaultImageSelector = ({ onSelect }: DefaultImageSelectorProps) => {
   return (
-    <Box mt={3}>
+    <Box sx={{ mt: 3 }}>
       <Typography variant='subtitle1' gutterBottom>
         Ou escolha uma imagem padrão:
       </Typography>
-      <Box mt={2.5} mb={2.5} display='flex' gap={3} flexWrap='wrap'>
+      <Box sx={{ mt: 2.5, mb: 2.5, display: 'flex', gap: 3, flexWrap: 'wrap' }}>
         {IMAGE_PLACEHOLDERS.map(({ standard_character_picture_url, injured_character_picture_url }, idx) => (
           <RoundedImage
             key={idx}

@@ -1,11 +1,11 @@
 import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Grid, TextField } from '@mui/material';
 import { CHARACTER_FORM_FIELDS } from 'common/constants';
 import { CharacterInfoSchema } from 'core/validations';
 import { Loader } from 'main/components/atoms';
-import { Controller, useForm } from 'react-hook-form';
 
 interface CharacterInfoFormProps {
   initialValues: any;
@@ -13,7 +13,7 @@ interface CharacterInfoFormProps {
 }
 
 /**
- * Character info form — driven by React Hook Form + Yup validation.
+ * Character info form — driven by React Hook Form + Zod validation.
  *
  * Uses `Controller` to bridge RHF's uncontrolled approach with MUI's
  * controlled `TextField`, giving us type-safe field registration and
@@ -36,14 +36,14 @@ const CharacterInfoForm = ({ initialValues, onSubmit }: CharacterInfoFormProps) 
       occupation: initialValues.occupation ?? '',
       player_name: initialValues.player_name ?? '',
     },
-    resolver: yupResolver(CharacterInfoSchema),
+    resolver: zodResolver(CharacterInfoSchema),
   });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
-      <Grid container item xs={12} spacing={3}>
+      <Grid container spacing={3} size={12}>
         {CHARACTER_FORM_FIELDS.map(({ id, label, name, xs, type }) => (
-          <Grid key={`${id}-${name}`} item xs={xs}>
+          <Grid key={`${id}-${name}`} size={{ xs: xs }}>
             <Controller
               name={name as any}
               control={control}
@@ -64,7 +64,7 @@ const CharacterInfoForm = ({ initialValues, onSubmit }: CharacterInfoFormProps) 
           </Grid>
         ))}
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div className='save-button'>
             {isSubmitting && <Loader className='loader-save-button' size={20} />}
             <Button variant='contained' type='submit' disabled={isSubmitting}>

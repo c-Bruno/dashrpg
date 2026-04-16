@@ -1,4 +1,4 @@
-import { Grid, styled } from '@mui/material';
+import {    Grid, styled    } from '@mui/material';
 import { RoundedImage } from 'main/components/atoms';
 
 export const CenteredGrid = styled(Grid)(() => ({

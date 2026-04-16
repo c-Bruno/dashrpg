@@ -13,10 +13,10 @@ interface AvailableItemsListProps {
 
 const AvailableItemsList = ({ type, items, itemModal, confirmationModal }: AvailableItemsListProps) => {
   return (
-    <S.ScrollTableBox item container xs={12} spacing={0.8}>
+    <S.ScrollTableBox container size={12} spacing={0.8}>
       {/* Para cada atributo existente, exiba as informações */}
       {items.map((item, index) => (
-        <Grid item xs={10} key={index}>
+        <Grid key={index} size={10}>
           <EditableDataRow
             data={item}
             editRow={(data) => {
