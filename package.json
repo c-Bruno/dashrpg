@@ -6,9 +6,9 @@
     "node": ">=24.15.0"
   },
   "scripts": {
-    "dev": "NEXT_TURBOPACK=0 node src/server.js",
+    "dev": "rm -rf .next/dev/cache/turbopack && NEXT_TURBOPACK=0 node src/server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node src/server.js",
+    "start": "node src/server.js",
     "lint": "next lint",
     "heroku-postbuild": "npx prisma migrate deploy && next build"
   },
