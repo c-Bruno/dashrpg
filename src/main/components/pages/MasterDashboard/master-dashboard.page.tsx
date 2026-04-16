@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Button, Container, Grid } from '@mui/material';
 import { useModal } from 'common/hooks';
@@ -11,7 +11,7 @@ import Head from 'next/head';
 
 import { runInitialSetup } from './master-dashboard.helper';
 
-const Dashboard: React.FC<any> = ({ configs, initialSkills, initialCharacters, initialAttributes }) => {
+const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttributes }: any) => {
   const { characters, setCharacters, attributes, setAttributes, skills, setSkills, setConfig } = useDashboardStore();
 
   useEffect(() => {

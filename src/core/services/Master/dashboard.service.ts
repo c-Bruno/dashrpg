@@ -5,7 +5,7 @@ const parseConfigs = (configs: { name: string; value: string }[]) => {
     if (config.name === 'DICE_ON_SCREEN_TIMEOUT_IN_MS' || config.name === 'TIME_BETWEEN_DICES_IN_MS') {
       return {
         ...config,
-        value: (parseInt(config.value) / 1000).toString(),
+        value: (Number.parseInt(config.value) / 1000).toString(),
       };
     }
     return config;

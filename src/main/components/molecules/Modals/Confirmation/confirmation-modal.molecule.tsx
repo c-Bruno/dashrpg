@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { DialogContentText } from '@mui/material';
 import { useFetchMutation } from 'common/hooks';
@@ -15,7 +14,7 @@ interface ConfirmationModalProps {
   onConfirmation?: (data: any) => void;
 }
 
-const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ data, text, title, handleClose, onConfirmation }) => {
+const ConfirmationModal = ({ data, text, title, handleClose, onConfirmation }: ConfirmationModalProps) => {
   const { removeAttribute, removeSkill, removeCharacter } = useDashboardStore();
   const removeItemMap = { removeAttribute, removeSkill, removeCharacter };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { Grid, TextField } from '@mui/material';
@@ -13,7 +13,7 @@ interface SkillModalProps {
   handleClose: () => void;
 }
 
-const SkillModal: React.FC<SkillModalProps> = ({ data, skills, onSubmit, operation, handleClose }) => {
+const SkillModal = ({ data, skills, onSubmit, operation, handleClose }: SkillModalProps) => {
   const [updatedSkills, setUpdatedSkills] = useState(skills);
 
   const [skill, setSkill] = useState({

@@ -1,8 +1,6 @@
-import React from 'react';
-
 import { Grid } from '@mui/material';
 
-const CreatureList: React.FC = () => {
+const CreatureList = () => {
   return (
     <Grid container spacing={2} marginTop={30} alignItems='center' justifyContent='center'>
       <Grid item>

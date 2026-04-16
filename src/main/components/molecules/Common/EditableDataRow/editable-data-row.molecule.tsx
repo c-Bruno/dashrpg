@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { Delete as DeleteIcon, Create as EditIcon } from '@mui/icons-material';
 import { Box, Grid, IconButton, TextField, Tooltip } from '@mui/material';
@@ -9,7 +8,7 @@ interface EditableDataRowProps {
   deleteRow: (data: any) => void;
 }
 
-const EditableDataRow: React.FC<EditableDataRowProps> = ({ data, editRow, deleteRow }) => {
+const EditableDataRow = ({ data, editRow, deleteRow }: EditableDataRowProps) => {
   return (
     <Box sx={{ py: 1, px: 1, borderBottom: '1px solid #4e4e4e' }}>
       <Grid container spacing={2} alignItems='center'>

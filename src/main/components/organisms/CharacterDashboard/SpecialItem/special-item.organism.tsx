@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { KeyboardEvent, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 
 import { Grid, TextField } from '@mui/material';
@@ -8,10 +8,10 @@ interface SpecialItemProps {
   character: any;
 }
 
-const SpecialItem: React.FC<SpecialItemProps> = ({ character }) => {
+const SpecialItem = ({ character }: SpecialItemProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleUpdate = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleUpdate = (event: KeyboardEvent<HTMLDivElement>) => {
     const value = (event.target as HTMLInputElement).value;
 
     if (timeoutRef.current) clearTimeout(timeoutRef.current);

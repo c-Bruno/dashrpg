@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { Grid, TextField } from '@mui/material';
 import { api } from 'common/libs';
 import { ModalTemplate } from 'main/components/templates';
 
-const InventoryModal: React.FC<any> = ({
-  data,
-  onSubmit,
-  operation,
-  character,
-  totalSpace,
-  handleClose,
-  fullCharacter,
-}) => {
+const InventoryModal = ({ data, onSubmit, operation, character, totalSpace, handleClose, fullCharacter }: any) => {
   const [updatedCharacter, setUpdatedCharacter] = useState(fullCharacter);
 
   const [inventory, setInventory] = useState({

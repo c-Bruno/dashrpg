@@ -1,6 +1,5 @@
 // src/components/organisms/InventoryList/InventoryList.tsx
 
-import React from 'react';
 
 import { Grid, TextField } from '@mui/material';
 import { calcSpaceInventory } from 'common/helpers';
@@ -14,7 +13,7 @@ interface InventoryListProps {
   confirmationModal: any;
 }
 
-const InventoryList: React.FC<InventoryListProps> = ({ character, inventoryModal, confirmationModal }) => {
+const InventoryList = ({ character, inventoryModal, confirmationModal }: InventoryListProps) => {
   return (
     <>
       {/* Cabeçalho das informações de inventário */}

@@ -1,11 +1,10 @@
-import React from 'react';
 import { toast } from 'react-toastify';
 
 import { Grid } from '@mui/material';
 import { api } from 'common/libs';
 import { RollableAttribute } from 'main/components/molecules';
 
-const AttributeStatusItem: React.FC<any> = ({ character, setCharacter }) => {
+const AttributeStatusItem = ({ character, setCharacter }: any) => {
   const updateCharacterAttributeValue = (attribute, value) => {
     const index = character.attributes.findIndex((a) => a.attribute_id === attribute.attribute_id);
     const newArray = character.attributes;

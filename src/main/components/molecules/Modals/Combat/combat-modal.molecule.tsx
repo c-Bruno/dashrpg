@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
@@ -21,18 +21,11 @@ interface CombatModalProps {
   fullCharacter: any;
 }
 
-const CombatModal: React.FC<CombatModalProps> = ({
-  data,
-  onSubmit,
-  operation,
-  character,
-  handleClose,
-  fullCharacter,
-}) => {
+const CombatModal = ({ data, onSubmit, operation, character, handleClose, fullCharacter }: CombatModalProps) => {
   const [updatedCharacter, setUpdatedCharacter] = useState(fullCharacter);
 
   // Tipo de armas
-  const [type, setType] = React.useState('');
+  const [type, setType] = useState('');
   const handleChange = (event) => {
     setType(event.target.value);
   };

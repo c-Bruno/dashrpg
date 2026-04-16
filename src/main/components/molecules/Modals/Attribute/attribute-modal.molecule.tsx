@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
@@ -18,14 +18,14 @@ interface AttributeModalProps {
   attributeSkill: any;
 }
 
-const AttributeModal: React.FC<AttributeModalProps> = ({
+const AttributeModal = ({
   data,
   onSubmit,
   operation,
   attributes,
   handleClose,
   attributeSkill,
-}) => {
+}: AttributeModalProps) => {
   const { addAttribute, removeAttribute } = useDashboardStore();
   const [updatedAttributes, setUpdatedAttributes] = useState(attributes);
 

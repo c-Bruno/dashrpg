@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { Grid } from '@mui/material';
 import { EditableDataRow } from 'main/components/molecules';
@@ -12,7 +11,7 @@ interface AvailableItemsListProps {
   confirmationModal: any;
 }
 
-const AvailableItemsList: React.FC<AvailableItemsListProps> = ({ type, items, itemModal, confirmationModal }) => {
+const AvailableItemsList = ({ type, items, itemModal, confirmationModal }: AvailableItemsListProps) => {
   return (
     <S.ScrollTableBox item container xs={12} spacing={0.8}>
       {/* Para cada atributo existente, exiba as informações */}

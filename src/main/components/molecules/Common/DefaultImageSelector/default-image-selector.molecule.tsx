@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { Box, Typography } from '@mui/material';
 import { IMAGE_PLACEHOLDERS } from 'common/constants';
@@ -8,7 +7,7 @@ interface DefaultImageSelectorProps {
   onSelect: (standard_character_picture_url: string, injured_character_picture_url: string) => void;
 }
 
-const DefaultImageSelector: React.FC<DefaultImageSelectorProps> = ({ onSelect }) => {
+const DefaultImageSelector = ({ onSelect }: DefaultImageSelectorProps) => {
   return (
     <Box mt={3}>
       <Typography variant='subtitle1' gutterBottom>

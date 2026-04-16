@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 
 import * as S from './dice.styles';
 
@@ -10,8 +10,8 @@ interface DiceProps {
   altText?: string;
 }
 
-const Dice: React.FC<DiceProps> = ({ width, height, image = '/assets/dice.png', onClick, altText }) => {
+const Dice = ({ width, height, image = '/assets/dice.png', onClick, altText }: DiceProps) => {
   return <S.Dice width={width} height={height} src={image} alt={altText || 'Dice roll'} onClick={onClick} />;
 };
 
-export default React.memo(Dice);
+export default memo(Dice);

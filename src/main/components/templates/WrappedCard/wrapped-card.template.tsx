@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { ENTITY_CONFIG } from 'common/constants';
 import { calcSpaceInventory } from 'common/helpers';
@@ -8,21 +8,24 @@ import Image from 'next/image';
 import * as S from './wrapped-card.styles';
 
 interface WrappedCardProps {
-  character: any | null;
+  character: any;
   modal?: any;
-  children: React.ReactNode;
+  children: ReactNode;
   entityType:
     | 'combat'
     | 'inventory'
-    | 'skill'
+    | 'skills'
     | 'attribute'
     | 'dices'
     | 'avaliableCharacters'
     | 'attributesList'
-    | 'skillsList';
+    | 'skillsList'
+    | 'characterOverview'
+    | 'characterInfoForm'
+    | 'SpecialItem';
 }
 
-const WrappedCard: React.FC<WrappedCardProps> = ({ character, modal, children, entityType }) => {
+const WrappedCard = ({ character, modal, children, entityType }: WrappedCardProps) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -32,7 +35,13 @@ const WrappedCard: React.FC<WrappedCardProps> = ({ character, modal, children, e
   const config = useMemo(() => ENTITY_CONFIG[entityType], [entityType]);
   if (!config) return null;
 
-  const { title, subtitle, image, onClick, tooltip } = config({ character, modal, calcSpace: calcSpaceInventory });
+  const { title, subtitle, image, onClick, tooltip } = config({ character, modal, calcSpace: calcSpaceInventory }) as {
+    title?: string;
+    subtitle?: string;
+    image?: string;
+    onClick?: () => void;
+    tooltip?: string;
+  };
 
   return (
     <S.SectionContainer>

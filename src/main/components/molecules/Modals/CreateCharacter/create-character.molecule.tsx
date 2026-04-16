@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { TextField, Grid, Box, Typography } from '@mui/material';
 import { useFetchMutation } from 'common/hooks';
@@ -11,7 +11,7 @@ interface CreateCharacterModalProps {
   handleClose: () => void;
 }
 
-const CreateCharacterModal: React.FC<CreateCharacterModalProps> = ({ handleClose }) => {
+const CreateCharacterModal = ({ handleClose }: CreateCharacterModalProps) => {
   const { addCharacter } = useDashboardStore();
 
   const [name, setName] = useState('');

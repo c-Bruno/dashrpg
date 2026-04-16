@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Box, Grid } from '@mui/material';
 import { rollDiceHelper } from 'common/helpers';
@@ -19,7 +19,7 @@ interface DiceRollModalProps {
   handleClose: () => void;
 }
 
-const DiceRollModal: React.FC<DiceRollModalProps> = ({ amount, atribute, handleClose }) => {
+const DiceRollModal = ({ amount, atribute, handleClose }: DiceRollModalProps) => {
   const [showGrids, setShowGrids] = useState(false); // Hook para carregar os grids apenas após a rolagem dos dados
   const [stopRotation, setStopRotation] = useState(false); // Hook para definir a rotação do dado em tela
   const [play] = useSound('/sounds/DiceRollingOnTable.mp3');

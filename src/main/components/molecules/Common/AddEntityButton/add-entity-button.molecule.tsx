@@ -1,17 +1,17 @@
 // src/components/molecules/AddEntityButton.tsx
 
-import React from 'react';
+import { CSSProperties } from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
 import { Button, Tooltip } from '@mui/material';
 
 interface AddEntityButtonProps {
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   onClick: () => void;
   tooltip: string;
 }
 
-const AddEntityButton: React.FC<AddEntityButtonProps> = ({ style, onClick, tooltip }) => {
+const AddEntityButton = ({ style, onClick, tooltip }: AddEntityButtonProps) => {
   return (
     <Tooltip title={tooltip}>
       <Button

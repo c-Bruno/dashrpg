@@ -1,45 +1,45 @@
-import * as React from 'react';
+import { ChangeEvent, useMemo, useState } from 'react';
 
 import { Paper, Table, TableContainer, TableRow, TableFooter, TablePagination } from '@mui/material';
 import { TableBody, TableHead, TablePaginationActions } from 'main/components/molecules';
 
-// Cria cada linha da coluna
+// Builds each table row — all nullable fields are typed as string to match the Prisma model
 const createData = (
-  id: string,
+  id: number,
   weapon: string,
-  type: string,
-  damage: number,
-  current_load: number,
-  total_load: number,
+  type?: string,
+  damage?: string,
+  current_load?: string,
+  total_load?: string,
 ) => {
   return { id, weapon, type, damage, current_load, total_load };
 };
 
 type CombatItem = {
-  combat_id: string;
+  combat_id: number;
   combat: {
     weapon: string;
-    type: string;
-    damage: number;
-    current_load: number;
-    total_load: number;
+    type?: string;
+    damage?: string;
+    current_load?: string;
+    total_load?: string;
   };
 };
 
 interface WeaponStatusListProps {
   character: {
-    combat: CombatItem[];
-    id: string;
+    combat?: CombatItem[];
+    id?: number;
     [key: string]: any;
   };
-  handleCharacter: (updateFn: (prev: any) => any) => void;
+  handleCharacter: (newCharacter: any) => void;
 }
 
-const WeaponStatusList: React.FC<WeaponStatusListProps> = ({ character, handleCharacter }) => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+const WeaponStatusList = ({ character, handleCharacter }: WeaponStatusListProps) => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const combatRows = React.useMemo(() => {
+  const combatRows = useMemo(() => {
     return character.combat
       .map((item) =>
         createData(
@@ -58,8 +58,8 @@ const WeaponStatusList: React.FC<WeaponStatusListProps> = ({ character, handleCh
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setRowsPerPage(Number.parseInt(event.target.value, 10));
     setPage(0);
   };
 

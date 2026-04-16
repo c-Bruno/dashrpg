@@ -11,7 +11,7 @@ interface TablePaginationActionsProps {
   onPageChange: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, newPage: number) => void;
 }
 
-const TablePaginationActions: React.FC<TablePaginationActionsProps> = ({ count, page, rowsPerPage, onPageChange }) => {
+const TablePaginationActions = ({ count, page, rowsPerPage, onPageChange }: TablePaginationActionsProps) => {
   const theme = useTheme();
 
   const handleFirstPageButtonClick = (event) => {

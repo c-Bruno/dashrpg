@@ -1,6 +1,5 @@
 datasource db {
-  provider = "mysql"
-  url      = env("DB_PROVIDER_URL")
+  provider = "postgresql"
 }
 generator client {
   provider = "prisma-client-js"
@@ -49,6 +48,8 @@ model CharacterInventory {
   value String?
 
   @@id([character_id, inventory_id])
+  // Secondary index: enables fast DELETE by inventory_id without leading character_id
+  @@index([inventory_id])
   @@map("character_inventory")
 } 
 
@@ -72,6 +73,8 @@ model CharacterAttributes {
   value String?
 
   @@id([character_id, attribute_id])
+  // Secondary index: enables fast DELETE by attribute_id without leading character_id
+  @@index([attribute_id])
   @@map("character_attributes")
 }
 
@@ -95,6 +98,8 @@ model CharacterCombat {
   value String?
 
   @@id([character_id, combat_id])
+  // Secondary index: enables fast DELETE by combat_id without leading character_id
+  @@index([combat_id])
   @@map("character_combat")
 }
 
@@ -121,6 +126,8 @@ model CharacterSkills {
   value String?
 
   @@id([character_id, skill_id])
+  // Secondary index: enables fast DELETE by skill_id without leading character_id
+  @@index([skill_id])
   @@map("character_skills")
 }
 
@@ -144,7 +151,9 @@ model Roll {
   character_id Int
 
   rolled_at DateTime @default(now())
-  
+
+  // Index: enables fast deleteMany({ where: { character_id } }) on character removal
+  @@index([character_id])
   @@map("roll")
 }
 

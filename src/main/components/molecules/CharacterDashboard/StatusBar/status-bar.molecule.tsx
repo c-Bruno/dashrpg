@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { Box, Grid } from '@mui/material';
 import { LabeledProgressBar } from 'main/components/atoms';
@@ -15,7 +14,7 @@ interface StatusBarProps {
   secondaryColor?: string;
 }
 
-const StatusBar: React.FC<StatusBarProps> = ({ max, label, title, current, onClick, primaryColor, secondaryColor }) => {
+const StatusBar = ({ max, label, title, current, onClick, primaryColor, secondaryColor }: StatusBarProps) => {
   const normalise = (current, max) => ((current - 0) * 100) / (max - 0);
 
   return (

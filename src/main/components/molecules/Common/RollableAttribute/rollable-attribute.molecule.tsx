@@ -1,4 +1,3 @@
-import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
 import { Grid, TextField } from '@mui/material';
@@ -17,7 +16,7 @@ interface RollableAttributeProps {
   onValueChange: (value: string) => void;
 }
 
-const RollableAttribute: React.FC<RollableAttributeProps> = ({ data, image, onInput, onValueChange }) => {
+const RollableAttribute = ({ data, image, onInput, onValueChange }: RollableAttributeProps) => {
   const infoModal = useModal(({ close }) => (
     <InfoModal title={data.name} text={data.description} handleClose={close} />
   ));

@@ -1,4 +1,3 @@
-import React from 'react';
 import { toast } from 'react-toastify';
 
 import { Delete, Edit } from '@mui/icons-material';
@@ -8,7 +7,7 @@ import { api } from 'common/libs';
 import { Dice } from 'main/components/atoms';
 import { CombatModal, ConfirmationModal, DiceRollModal } from 'main/components/molecules';
 
-const TableBody: React.FC<any> = ({ character, handleCharacter, rows, rowsPerPage, page }) => {
+const TableBody = ({ character, handleCharacter, rows, rowsPerPage, page }: any) => {
   const diceRollModal = useModal(({ close, custom }) => <DiceRollModal amount={custom.amount} handleClose={close} />);
 
   const confirmationModal = useModal(({ close, custom }) => (

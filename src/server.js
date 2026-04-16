@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const app = require('express')();
-const server = require('http').Server(app);
+const server = require('node:http').Server(app);
 const io = require('socket.io')(server);
 const next = require('next');
 
@@ -36,4 +36,7 @@ nextApp.prepare().then(() => {
 
         console.log('[Server] Successfully started on port', process.env.PORT || 3000);
     });
-})
+}).catch(err => {
+    console.error('[Server] Failed to start:', err);
+    process.exit(1);
+});

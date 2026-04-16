@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { Grid } from '@mui/material';
 import { useModal } from 'common/hooks';
@@ -10,7 +9,7 @@ interface AvailableCharactersProps {
   confirmationModal: any;
 }
 
-const AvailableCharacters: React.FC<AvailableCharactersProps> = ({ characters, confirmationModal }) => {
+const AvailableCharacters = ({ characters, confirmationModal }: AvailableCharactersProps) => {
   const createCharacterModal = useModal(({ close }) => <CreateCharacterModal handleClose={close} />);
 
   return (

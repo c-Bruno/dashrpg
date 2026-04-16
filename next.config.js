@@ -1,6 +1,11 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['i.imgur.com', 'media.discordapp.net', 'cdn.discordapp.com', 'data:image'],
+    // Allowlist of external hostnames permitted to serve optimised images
+    remotePatterns: [
+      { protocol: 'https', hostname: 'i.imgur.com' },
+      { protocol: 'https', hostname: 'media.discordapp.net' },
+      { protocol: 'https', hostname: 'cdn.discordapp.com' },
+    ],
   },
 };

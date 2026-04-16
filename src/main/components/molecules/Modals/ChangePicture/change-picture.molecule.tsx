@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { Grid, Link, TextField, Typography } from '@mui/material';
@@ -13,7 +13,7 @@ interface ChangePictureModalProps {
   onPictureChange: () => void;
 }
 
-const ChangePictureModal: React.FC<ChangePictureModalProps> = ({ character, handleClose, onPictureChange }) => {
+const ChangePictureModal = ({ character, handleClose, onPictureChange }: ChangePictureModalProps) => {
   const [pictureURLs, setPictureURLs] = useState({
     standard_character_picture_url: '',
     injured_character_picture_url: '',

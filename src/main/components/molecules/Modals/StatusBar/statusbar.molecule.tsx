@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Grid, Typography, Box, TextField } from '@mui/material';
 import { ModalTemplate } from 'main/components/templates';
@@ -10,7 +10,7 @@ interface StatusBarModalProps {
   type: string;
 }
 
-const StatusBarModal: React.FC<StatusBarModalProps> = ({ handleClose, onSubmit, data, type }) => {
+const StatusBarModal = ({ handleClose, onSubmit, data, type }: StatusBarModalProps) => {
   const [newData, setNewData] = useState({ current: '', max: '' });
 
   useEffect(() => {

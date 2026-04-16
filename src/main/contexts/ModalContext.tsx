@@ -1,5 +1,4 @@
-import React from 'react';
-import { createContext, ReactNode, useState, FC, ReactElement, useCallback } from 'react';
+import { ReactElement, ReactNode, createContext, useCallback, useState } from 'react';
 
 import { Backdrop } from '@mui/material';
 
@@ -14,7 +13,7 @@ type ModalProps = {
   component: ReactElement;
 };
 
-const Modal: FC<ModalProps> = ({ component }) => {
+const Modal = ({ component }: ModalProps) => {
   return (
     <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true} onClick={() => {}}>
       {component}
@@ -26,7 +25,7 @@ type ModalProviderProps = {
   children: ReactNode;
 };
 
-export const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
+export const ModalProvider = ({ children }: ModalProviderProps) => {
   const [modalComponent, setModalComponent] = useState<ReactElement | null>(null);
 
   const modalFunction: ModalFunction = useCallback((component) => {

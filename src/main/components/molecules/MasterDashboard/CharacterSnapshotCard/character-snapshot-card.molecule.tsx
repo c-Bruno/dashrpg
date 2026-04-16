@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   Delete as DeleteIcon,
   Favorite as HeartIcon,
@@ -19,7 +17,7 @@ interface CharacterSnapshotCardProps {
   [key: string]: any; // Permite passar props adicionais
 }
 
-const CharacterSnapshotCard: React.FC<CharacterSnapshotCardProps> = ({ character, deleteCharacter, ...rest }) => {
+const CharacterSnapshotCard = ({ character, deleteCharacter, ...rest }: CharacterSnapshotCardProps) => {
   return (
     <S.CharacterCardContainer {...rest}>
       <RoundedImage

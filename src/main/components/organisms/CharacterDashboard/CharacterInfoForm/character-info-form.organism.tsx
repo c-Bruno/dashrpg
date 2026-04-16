@@ -1,19 +1,31 @@
 import React from 'react';
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Grid, TextField } from '@mui/material';
 import { CHARACTER_FORM_FIELDS } from 'common/constants';
 import { CharacterInfoSchema } from 'core/validations';
-import { Form, Formik } from 'formik';
 import { Loader } from 'main/components/atoms';
+import { Controller, useForm } from 'react-hook-form';
 
 interface CharacterInfoFormProps {
   initialValues: any;
   onSubmit: (values: any) => Promise<void>;
 }
 
-const CharacterInfoForm: React.FC<CharacterInfoFormProps> = ({ initialValues, onSubmit }) => (
-  <Formik
-    initialValues={{
+/**
+ * Character info form — driven by React Hook Form + Yup validation.
+ *
+ * Uses `Controller` to bridge RHF's uncontrolled approach with MUI's
+ * controlled `TextField`, giving us type-safe field registration and
+ * validation without the render-prop overhead of Formik.
+ */
+const CharacterInfoForm = ({ initialValues, onSubmit }: CharacterInfoFormProps) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
       age: initialValues.age ?? null,
       name: initialValues.name ?? '',
       fear: initialValues.fear ?? '',
@@ -21,46 +33,48 @@ const CharacterInfoForm: React.FC<CharacterInfoFormProps> = ({ initialValues, on
       weight: initialValues.weight ?? '',
       gender: initialValues.gender ?? '',
       birthplace: initialValues.birthplace ?? '',
-      // background: initialValues.background ?? '',
       occupation: initialValues.occupation ?? '',
       player_name: initialValues.player_name ?? '',
-    }}
-    onSubmit={(values, { setSubmitting }) => {
-      onSubmit(values).then(() => setSubmitting(false));
-    }}
-    validationSchema={CharacterInfoSchema}
-  >
-    {({ values, errors, handleChange, handleSubmit, isSubmitting }) => (
-      // Formulario contendo os dados da ficha de um jogador
-      <Form onSubmit={handleSubmit} autoComplete='off'>
-        <Grid container item xs={12} spacing={3}>
-          {CHARACTER_FORM_FIELDS.map(({ id, label, name, xs, type }) => (
-            <Grid key={`${id}-${name}`} item xs={xs}>
-              <TextField
-                fullWidth
-                type={type}
-                name={name}
-                label={label}
-                value={values[name]}
-                error={Boolean(errors[name])}
-                variant='standard'
-                onChange={handleChange}
-              />
-            </Grid>
-          ))}
+    },
+    resolver: yupResolver(CharacterInfoSchema),
+  });
 
-          <Grid item xs={12}>
-            <div className='save-button'>
-              {isSubmitting && <Loader className='loader-save-button' size={20} />}
-              <Button variant='contained' type='submit' disabled={isSubmitting}>
-                Salvar
-              </Button>
-            </div>
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
+      <Grid container item xs={12} spacing={3}>
+        {CHARACTER_FORM_FIELDS.map(({ id, label, name, xs, type }) => (
+          <Grid key={`${id}-${name}`} item xs={xs}>
+            <Controller
+              name={name as any}
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  type={type}
+                  label={label}
+                  // Coerce null/undefined to empty string so MUI never treats
+                  // the field as uncontrolled
+                  value={field.value ?? ''}
+                  error={Boolean(errors[name as keyof typeof errors])}
+                  variant='standard'
+                />
+              )}
+            />
           </Grid>
+        ))}
+
+        <Grid item xs={12}>
+          <div className='save-button'>
+            {isSubmitting && <Loader className='loader-save-button' size={20} />}
+            <Button variant='contained' type='submit' disabled={isSubmitting}>
+              Salvar
+            </Button>
+          </div>
         </Grid>
-      </Form>
-    )}
-  </Formik>
-);
+      </Grid>
+    </form>
+  );
+};
 
 export default CharacterInfoForm;

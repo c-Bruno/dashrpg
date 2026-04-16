@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useMemo } from 'react';
 
 import { Grid } from '@mui/material';
 import { SkillAttributeList } from 'main/components/molecules';
@@ -18,9 +18,9 @@ interface AttributesBySkillProps {
   attributes: Attribute[];
 }
 
-const AttributesBySkill: React.FC<AttributesBySkillProps> = ({ skills, attributes }) => {
+const AttributesBySkill = ({ skills, attributes }: AttributesBySkillProps) => {
   // Pré-processa os atributos agrupando por skill_id
-  const attributesBySkillId = React.useMemo(() => {
+  const attributesBySkillId = useMemo(() => {
     return attributes.reduce<Record<number, string[]>>((acc, attr) => {
       if (!acc[attr.skill_id]) {
         acc[attr.skill_id] = [];

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import * as S from './skill-attribute-list.styles';
 
 interface SkillAttributeListProps {
@@ -7,7 +5,7 @@ interface SkillAttributeListProps {
   items: string[];
 }
 
-const SkillAttibuteList: React.FC<SkillAttributeListProps> = ({ title, items }) => (
+const SkillAttibuteList = ({ title, items }: SkillAttributeListProps) => (
   <S.CardContainer>
     <S.Header sx={{ px: 2, py: 1 }} title={title} subheader={`${items.length} no total`} />
     <S.DividerLine />
