@@ -25,7 +25,7 @@ export const Container = styled('div')<ContainerProps>(({ theme, $outline, $colo
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'center',
-    background: '#242424',
+    background: '#1c1c22',
     border: getBorder($outline, borderColor),
   };
 });

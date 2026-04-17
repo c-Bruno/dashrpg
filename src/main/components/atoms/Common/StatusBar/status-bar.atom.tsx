@@ -10,11 +10,23 @@ type StatusBarProps = {
   variant?: 'life' | 'sanity';
 };
 
-type ColorMapType = { icon?: typeof Favorite; barColor: string; trackColor: string };
+type ColorMapType = { label: string; icon?: typeof Favorite; barColor: string; trackColor: string; gradient: string };
 
 const COLOR_MAP: Record<string, ColorMapType> = {
-  life: { icon: Favorite, barColor: '#E80A67', trackColor: 'rgba(232, 10, 103, 0.15)' },
-  sanity: { icon: BarcodeReader, barColor: '#1e45b6', trackColor: 'rgba(30, 69, 182, 0.15)' },
+  life: {
+    label: 'Vida',
+    icon: Favorite,
+    barColor: '#8b0000',
+    trackColor: 'rgba(100, 1, 1, 0.12)',
+    gradient: 'linear-gradient(90deg, #640101, #c41e1e)',
+  },
+  sanity: {
+    label: 'Sanidade',
+    icon: BarcodeReader,
+    barColor: '#2d5be3',
+    trackColor: 'rgba(45, 91, 227, 0.10)',
+    gradient: 'linear-gradient(90deg, #1a3bbf, #4a78ff)',
+  },
 } as const;
 
 /**
@@ -22,12 +34,23 @@ const COLOR_MAP: Record<string, ColorMapType> = {
  * with a label showing current and total values.
  */
 const StatusBar = ({ percent, variant = 'life', total, current, withIcon = false }: StatusBarProps) => {
-  const { barColor, trackColor, icon: Icon } = COLOR_MAP[variant];
+  const { barColor, trackColor, gradient, icon: Icon, label } = COLOR_MAP[variant];
 
   return (
     <S.StatusBox>
-      {withIcon && Icon && <Icon sx={{ color: barColor, flexShrink: 0 }} />}
-      <S.StatusBar variant='determinate' value={percent} barColor={barColor} trackColor={trackColor} />
+      {withIcon && Icon && (
+        <>
+          <Icon sx={{ color: barColor, flexShrink: 0 }} />
+          <S.StatNameLabel>{label}</S.StatNameLabel>
+        </>
+      )}
+      <S.StatusBar
+        variant='determinate'
+        value={percent}
+        barColor={barColor}
+        trackColor={trackColor}
+        gradient={gradient}
+      />
       <S.StatusLabel>
         {current}/{total}
       </S.StatusLabel>

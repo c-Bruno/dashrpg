@@ -6,18 +6,13 @@ interface DefaultImageOptionProps {
   height?: number;
   altText?: string;
   onClick?: () => void;
+  hoverEffect?: boolean;
 }
 
-const RoundedImage = ({
-  src,
-  width = 100,
-  height = 100,
-  onClick,
-  altText = 'Default Option',
-}: DefaultImageOptionProps) => {
+const RoundedImage = ({ src, width, height, onClick, altText, hoverEffect = false }: DefaultImageOptionProps) => {
   return (
-    <S.ImageButton onClick={onClick}>
-      <S.ImageWrapper src={src} alt={altText} width={width} height={height} />
+    <S.ImageButton onClick={onClick} hoverEffect={hoverEffect}>
+      <S.ImageWrapper src={src} alt={altText} width={width ?? 100} height={height ?? 100} />
     </S.ImageButton>
   );
 };

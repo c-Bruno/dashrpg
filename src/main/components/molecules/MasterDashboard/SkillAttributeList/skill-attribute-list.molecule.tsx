@@ -5,23 +5,31 @@ interface SkillAttributeListProps {
   items: string[];
 }
 
-const SkillAttibuteList = ({ title, items }: SkillAttributeListProps) => (
-  <S.CardContainer>
-    <S.Header sx={{ px: 2, py: 1 }} title={title} subheader={`${items.length} no total`} />
-    <S.DividerLine />
-    <S.List>
-      {items.map((value) => {
-        const labelId = `transfer-list-all-item-${value}-label`;
+/**
+ * A component that displays a list of skill attributes with a title and a counter.
+ * If there are no items, it shows an empty state message.
+ */
+const SkillAttibuteList = ({ title, items }: SkillAttributeListProps) => {
+  const itemCount = items?.length || 0;
 
-        return (
-          <S.ListItem key={value}>
-            <span id={labelId}>{value}</span>
-          </S.ListItem>
-        );
-      })}
-      <li />
-    </S.List>
-  </S.CardContainer>
-);
+  return (
+    <S.CardContainer>
+      <S.Header>
+        <S.Title>{title}</S.Title>
+        <S.Counter>{itemCount}</S.Counter>
+      </S.Header>
+
+      {itemCount === 0 && <S.EmptyState>Nenhum atributo cadastrado</S.EmptyState>}
+
+      {itemCount > 0 && (
+        <S.List>
+          {items.map((value, index) => (
+            <S.ListItem key={`${value}-${index}`}>{value}</S.ListItem>
+          ))}
+        </S.List>
+      )}
+    </S.CardContainer>
+  );
+};
 
 export default SkillAttibuteList;

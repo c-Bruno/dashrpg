@@ -1,7 +1,11 @@
 import { styled } from '@mui/material';
 import Image from 'next/image';
 
-export const ImageButton = styled('div')(() => ({
+interface ImageButtonProps {
+  hoverEffect?: boolean;
+}
+
+export const ImageButton = styled('div')<ImageButtonProps>(({ hoverEffect }) => ({
   borderRadius: '50%',
   overflow: 'hidden',
   cursor: 'pointer',
@@ -9,8 +13,9 @@ export const ImageButton = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+
   '&:hover': {
-    transform: 'scale(1.3)',
+    transform: hoverEffect ? 'scale(1.3)' : 'none',
     borderColor: '#1976d2',
   },
 }));

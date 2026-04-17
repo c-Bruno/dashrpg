@@ -1,5 +1,10 @@
+import { useState } from 'react';
+import type { MouseEvent } from 'react';
+
+import { Delete as DeleteIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
+import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import { characterPicture } from 'common/helpers';
-import { ActionButton, RoundedImage, StatusBar } from 'main/components/atoms';
+import { RoundedImage, StatusBar } from 'main/components/atoms';
 
 import * as S from './character-snapshot-card.styles';
 
@@ -10,14 +15,33 @@ interface CharacterSnapshotCardProps {
 }
 
 const CharacterSnapshotCard = ({ character, deleteCharacter, ...rest }: CharacterSnapshotCardProps) => {
-  const { current_hit_points, max_hit_points, current_sanity_points, max_sanity_points } = character;
+  const { current_hit_points, max_hit_points, current_sanity_points, max_sanity_points, occupation } = character;
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
 
   const handleCardClick = () => {
     window.open(`/sheet/${character.id}`, '_blank');
   };
 
-  const hpPercent = max_hit_points > 0 ? Math.min(100, Math.round((current_hit_points / max_hit_points) * 100)) : 0;
+  // Open menu and stop card click event
+  const handleMenuOpen = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    setMenuAnchor(e.currentTarget);
+  };
 
+  // Close menu and stop card click event
+  const handleMenuClose = (e: MouseEvent) => {
+    e.stopPropagation();
+    setMenuAnchor(null);
+  };
+
+  // Handle delete action and stop card click event
+  const handleDelete = (e: MouseEvent) => {
+    e.stopPropagation();
+    setMenuAnchor(null);
+    deleteCharacter();
+  };
+
+  const hpPercent = max_hit_points > 0 ? Math.min(100, Math.round((current_hit_points / max_hit_points) * 100)) : 0;
   const sanityPercent =
     max_sanity_points > 0 ? Math.min(100, Math.round((current_sanity_points / max_sanity_points) * 100)) : 0;
 
@@ -25,36 +49,49 @@ const CharacterSnapshotCard = ({ character, deleteCharacter, ...rest }: Characte
   const isDead = current_hit_points === 0;
 
   return (
-    <S.CharacterCardContainer isCritical={isCritical} isDead={isDead} {...rest}>
-      <RoundedImage
-        src={characterPicture.getCharacterPictureURL(character)}
-        altText={character.name}
-        width={105}
-        height={105}
-        onClick={handleCardClick}
-      />
-      <S.CharacterDetails>
-        <S.CharacterTitle>{character.name}</S.CharacterTitle>
+    <S.CharacterCardContainer isCritical={isCritical} isDead={isDead} onClick={handleCardClick} {...rest}>
+      <S.AvatarWrapper>
+        <RoundedImage src={characterPicture.getCharacterPictureURL(character)} altText={character.name} />
+      </S.AvatarWrapper>
+
+      <S.CardContent>
+        <S.CardTopRow>
+          <S.TitleGroup>
+            <S.CharacterTitle>{character.name}</S.CharacterTitle>
+            {occupation && <S.CharacterSubtitle>{occupation}</S.CharacterSubtitle>}
+          </S.TitleGroup>
+
+          <S.MenuButton onClick={handleMenuOpen} size='small'>
+            <MoreVertIcon fontSize='small' />
+          </S.MenuButton>
+        </S.CardTopRow>
 
         <S.StatsWrapper>
-          {/* Barra de vida */}
           <StatusBar percent={hpPercent} total={max_hit_points} current={current_hit_points} withIcon />
-
-          {/* Barra de sanidade */}
           <StatusBar
-            total={max_sanity_points}
             percent={sanityPercent}
+            total={max_sanity_points}
             current={current_sanity_points}
             variant='sanity'
             withIcon
           />
         </S.StatsWrapper>
+      </S.CardContent>
 
-        <S.ActionButtonsWrapper>
-          <ActionButton type='link' tooltip='Ver ficha' onClick={handleCardClick} fontSize='small' outline />
-          <ActionButton type='delete' tooltip='Deletar' onClick={deleteCharacter} fontSize='small' outline />
-        </S.ActionButtonsWrapper>
-      </S.CharacterDetails>
+      <Menu
+        anchorEl={menuAnchor}
+        open={Boolean(menuAnchor)}
+        onClose={handleMenuClose}
+        onClick={(e) => e.stopPropagation()}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
+        <MenuItem onClick={handleDelete} sx={{ color: '#ff3d7f' }}>
+          <ListItemIcon>
+            <DeleteIcon fontSize='small' sx={{ color: '#ff3d7f' }} />
+          </ListItemIcon>
+          <ListItemText>Deletar personagem</ListItemText>
+        </MenuItem>
+      </Menu>
     </S.CharacterCardContainer>
   );
 };
