@@ -1,5 +1,4 @@
 // Common
-export { default as AddEntityButton } from './Common/AddEntityButton/add-entity-button.molecule';
 export { default as DefaultImageSelector } from './Common/DefaultImageSelector/default-image-selector.molecule';
 export { default as EditableDataRow } from './Common/EditableDataRow/editable-data-row.molecule';
 export { default as RollableAttribute } from './Common/RollableAttribute/rollable-attribute.molecule';

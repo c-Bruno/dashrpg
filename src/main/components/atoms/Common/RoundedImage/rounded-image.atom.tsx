@@ -1,4 +1,3 @@
-
 import * as S from './rounded-image.tyles';
 
 interface DefaultImageOptionProps {

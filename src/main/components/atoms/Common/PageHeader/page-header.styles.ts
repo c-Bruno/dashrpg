@@ -1,4 +1,4 @@
-import {    Grid, styled, Typography    } from '@mui/material';
+import { Grid, styled, Typography } from '@mui/material';
 
 export const HeaderContainer = styled(Grid)(({ theme }) => ({
   textAlign: 'center',

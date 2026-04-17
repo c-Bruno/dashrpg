@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { ENTITY_CONFIG } from 'common/constants';
 import { calcSpaceInventory } from 'common/helpers';
-import { AddEntityButton } from 'main/components/molecules';
+import { ActionButton } from 'main/components/atoms';
 import Image from 'next/image';
 
 import * as S from './wrapped-card.styles';
@@ -53,7 +53,7 @@ const WrappedCard = ({ character, modal, children, entityType }: WrappedCardProp
 
             {isClient && onClick && (
               <S.TopRightButtonWrapper>
-                {<AddEntityButton tooltip={tooltip} onClick={onClick} />}
+                <ActionButton tooltip={tooltip} onClick={onClick} fontSize='small' />
               </S.TopRightButtonWrapper>
             )}
           </S.SectionTitle>

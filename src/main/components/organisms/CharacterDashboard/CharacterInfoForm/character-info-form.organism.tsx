@@ -2,10 +2,9 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, CircularProgress, Grid, TextField } from '@mui/material';
 import { CHARACTER_FORM_FIELDS } from 'common/constants';
 import { CharacterInfoSchema } from 'core/validations';
-import { Loader } from 'main/components/atoms';
 
 interface CharacterInfoFormProps {
   initialValues: any;
@@ -66,7 +65,7 @@ const CharacterInfoForm = ({ initialValues, onSubmit }: CharacterInfoFormProps) 
 
         <Grid size={12}>
           <div className='save-button'>
-            {isSubmitting && <Loader className='loader-save-button' size={20} />}
+            {isSubmitting && <CircularProgress className='loader-save-button' size={20} />}
             <Button variant='contained' type='submit' disabled={isSubmitting}>
               Salvar
             </Button>

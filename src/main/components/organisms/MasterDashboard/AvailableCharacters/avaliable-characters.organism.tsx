@@ -1,7 +1,6 @@
-
 import { Grid } from '@mui/material';
 import { useModal } from 'common/hooks';
-import { AddButtonBox } from 'main/components/atoms';
+import { ActionButton } from 'main/components/atoms';
 import { CharacterSnapshotCard, CreateCharacterModal } from 'main/components/molecules';
 
 interface AvailableCharactersProps {
@@ -15,7 +14,7 @@ const AvailableCharacters = ({ characters, confirmationModal }: AvailableCharact
   return (
     <Grid container spacing={3} size={12}>
       {characters.map((character) => (
-        <Grid key={character.id} size={{ xs: 12, md: 4 }}>
+        <Grid key={character.id} size={{ xs: 12, md: 6 }}>
           <CharacterSnapshotCard
             character={character}
             deleteCharacter={() =>
@@ -30,7 +29,7 @@ const AvailableCharacters = ({ characters, confirmationModal }: AvailableCharact
       ))}
 
       <Grid size={{ xs: 12, md: 4 }}>
-        <AddButtonBox onClick={() => createCharacterModal.appear()} />
+        <ActionButton onClick={() => createCharacterModal.appear()} />
       </Grid>
     </Grid>
   );
