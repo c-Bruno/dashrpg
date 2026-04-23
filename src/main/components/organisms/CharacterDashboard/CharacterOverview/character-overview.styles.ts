@@ -1,10 +1,10 @@
-import {    Grid, styled    } from '@mui/material';
-import { RoundedImage } from 'main/components/atoms';
+import { Grid, styled } from '@mui/material';
 
 export const CenteredGrid = styled(Grid)(() => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  marginBottom: 12,
 }));
 
 export const ImageWrapper = styled('div')({
@@ -23,9 +23,4 @@ export const GlowEffect = styled('div')({
   background: 'radial-gradient(circle, rgba(255, 255, 255, 0.23), transparent)',
   filter: 'blur(4px)',
   zIndex: 0,
-});
-
-export const StyledRoundedImage = styled(RoundedImage)({
-  position: 'relative',
-  zIndex: 1,
 });

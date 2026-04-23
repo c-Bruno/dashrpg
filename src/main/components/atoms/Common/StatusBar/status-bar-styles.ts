@@ -11,6 +11,7 @@ export const StatusBox = styled(Box)({
   alignItems: 'center',
   gap: '10px',
   width: '100%',
+  cursor: 'pointer',
 });
 
 export const StatusBar = styled(LinearProgress, {

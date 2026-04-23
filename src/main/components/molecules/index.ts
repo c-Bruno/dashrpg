@@ -5,7 +5,6 @@ export { default as RollableAttribute } from './Common/RollableAttribute/rollabl
 
 // Character dashboard
 export { default as AttributeStatusItem } from './CharacterDashboard/AttributeStatusItem/attribute-status-item.molecule';
-export { default as StatusBar } from './CharacterDashboard/StatusBar/status-bar.molecule';
 export { default as TableBody } from './CharacterDashboard/Table/Body/table-body.molecule';
 export { default as TableHead } from './CharacterDashboard/Table/Head/table-head.molecule';
 export { default as TablePaginationActions } from './CharacterDashboard/Table/PaginationActions/table-pagination-actions.molecule';

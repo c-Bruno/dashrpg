@@ -1,6 +1,6 @@
 import { ToastContainer, toast } from 'react-toastify';
 
-import {   Grid, TextField   } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useModal } from 'common/hooks';
@@ -45,39 +45,22 @@ const RollableAttribute = ({ data, image, onInput, onValueChange }: RollableAttr
   };
 
   return (
-    <div>
-      <Grid container sx={{ justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-        {/* Imagem do dado para rolagem no atributo */}
-        <Grid>
-          <Dice width={40} height={40} image={image} altText='Dice roll' onClick={() => handleDiceClick(data)} />
-        </Grid>
+    <S.Container>
+      <Grid container sx={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+        <Dice width={40} height={40} image={image} altText='Dice roll' onClick={() => handleDiceClick(data)} />
+        <S.AttributeTextName onClick={() => infoModal.appear()}>{data.name}</S.AttributeTextName>
 
-        {/* Nome do atributo com acionamento para o modal de informação */}
-        <S.AttributeName>
-          <S.AttributeTextName onClick={() => infoModal.appear()}>{data.name}</S.AttributeTextName>
-        </S.AttributeName>
-
-        {/* Text para digitar o valor do atributo */}
-        <Grid>
-          <TextField
-            value={data.value ?? ''}
-            variant='standard'
-            fullWidth
-            slotProps={{
-              htmlInput: {
-                style: {
-                  padding: 8,
-                  textAlign: 'center',
-                },
-              },
-            }}
-            onBlur={(event) => onValueChange(event.target.value)}
-            onChange={(event) => onInput(event.target.value)}
-          />
-        </Grid>
+        <TextField
+          value={data.value ?? ''}
+          variant='standard'
+          fullWidth
+          slotProps={{ htmlInput: { style: { padding: 8, textAlign: 'center' } } }}
+          onBlur={(event) => onValueChange(event.target.value)}
+          onChange={(event) => onInput(event.target.value)}
+        />
       </Grid>
       <ToastContainer />
-    </div>
+    </S.Container>
   );
 };
 

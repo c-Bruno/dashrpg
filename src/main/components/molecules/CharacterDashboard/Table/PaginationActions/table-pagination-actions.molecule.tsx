@@ -43,16 +43,14 @@ const TablePaginationActions = ({ count, page, rowsPerPage, onPageChange }: Tabl
       <IconButton
         onClick={handleNextButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label='próxima página'
-      >
+        aria-label='próxima página'>
         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
       </IconButton>
 
       <IconButton
         onClick={handleLastPageButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label='ultima página'
-      >
+        aria-label='ultima página'>
         {theme.direction === 'rtl' ? <FirstPage /> : <LastPage />}
       </IconButton>
     </Box>

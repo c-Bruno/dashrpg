@@ -100,8 +100,7 @@ const TableBody = ({ character, handleCharacter, rows, rowsPerPage, page }: any)
                     text: 'Deseja apagar este item?',
                     data: { id: row.id, type: 'combat' },
                   });
-                }}
-              >
+                }}>
                 <Delete />
               </Button>
             </Tooltip>
@@ -116,8 +115,7 @@ const TableBody = ({ character, handleCharacter, rows, rowsPerPage, page }: any)
                     character: character.id,
                     data: row,
                   })
-                }
-              >
+                }>
                 <Edit />
               </Button>
             </Tooltip>

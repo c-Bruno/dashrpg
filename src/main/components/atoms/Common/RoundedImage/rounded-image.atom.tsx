@@ -11,9 +11,11 @@ interface DefaultImageOptionProps {
 
 const RoundedImage = ({ src, width, height, onClick, altText, hoverEffect = false }: DefaultImageOptionProps) => {
   return (
-    <S.ImageButton onClick={onClick} hoverEffect={hoverEffect}>
-      <S.ImageWrapper src={src} alt={altText} width={width ?? 100} height={height ?? 100} />
-    </S.ImageButton>
+    <S.ImageWrappe width={width} height={height}>
+      <S.ImageButton onClick={onClick} hoverEffect={hoverEffect}>
+        <S.ImageWrapper src={src} alt={altText} width={width ?? 100} height={height ?? 100} />
+      </S.ImageButton>
+    </S.ImageWrappe>
   );
 };
 

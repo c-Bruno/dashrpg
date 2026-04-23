@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
 
-import { Delete as DeleteIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
-import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-import { characterPicture } from 'common/helpers';
+import { MoreVert as MoreVertIcon } from '@mui/icons-material';
+import { ListItemText, Menu, MenuItem } from '@mui/material';
+import { characterPicture, ProgressBarHelper } from 'common/helpers';
 import { RoundedImage, StatusBar } from 'main/components/atoms';
 
 import * as S from './character-snapshot-card.styles';
@@ -15,12 +15,10 @@ interface CharacterSnapshotCardProps {
 }
 
 const CharacterSnapshotCard = ({ character, deleteCharacter, ...rest }: CharacterSnapshotCardProps) => {
-  const { current_hit_points, max_hit_points, current_sanity_points, max_sanity_points, occupation } = character;
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+  const { current_hit_points, max_hit_points, current_sanity_points, max_sanity_points, occupation } = character;
 
-  const handleCardClick = () => {
-    window.open(`/sheet/${character.id}`, '_blank');
-  };
+  const handleCardClick = () => window.open(`/sheet/${character.id}`, '_blank');
 
   // Open menu and stop card click event
   const handleMenuOpen = (e: MouseEvent<HTMLElement>) => {
@@ -41,18 +39,15 @@ const CharacterSnapshotCard = ({ character, deleteCharacter, ...rest }: Characte
     deleteCharacter();
   };
 
-  const hpPercent = max_hit_points > 0 ? Math.min(100, Math.round((current_hit_points / max_hit_points) * 100)) : 0;
-  const sanityPercent =
-    max_sanity_points > 0 ? Math.min(100, Math.round((current_sanity_points / max_sanity_points) * 100)) : 0;
+  const hpPercent = ProgressBarHelper.Percentage(current_hit_points, max_hit_points);
+  const sanityPercent = ProgressBarHelper.Percentage(current_sanity_points, max_sanity_points);
 
   const isCritical = hpPercent > 0 && hpPercent <= 25;
   const isDead = current_hit_points === 0;
 
   return (
     <S.CharacterCardContainer isCritical={isCritical} isDead={isDead} onClick={handleCardClick} {...rest}>
-      <S.AvatarWrapper>
-        <RoundedImage src={characterPicture.getCharacterPictureURL(character)} altText={character.name} />
-      </S.AvatarWrapper>
+      <RoundedImage src={characterPicture.getCharacterPictureURL(character)} altText={character.name} />
 
       <S.CardContent>
         <S.CardTopRow>
@@ -86,9 +81,6 @@ const CharacterSnapshotCard = ({ character, deleteCharacter, ...rest }: Characte
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
         <MenuItem onClick={handleDelete} sx={{ color: '#ff3d7f' }}>
-          <ListItemIcon>
-            <DeleteIcon fontSize='small' sx={{ color: '#ff3d7f' }} />
-          </ListItemIcon>
           <ListItemText>Deletar personagem</ListItemText>
         </MenuItem>
       </Menu>

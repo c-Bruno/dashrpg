@@ -1,11 +1,17 @@
-import {    Grid, styled    } from '@mui/material';
+import { styled } from '@mui/material';
 
-export const AttributeName = styled(Grid)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
+export const Container = styled('div')(() => ({
+  margin: '5px 0 15px',
+
+  '& > div': {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 10,
+  },
 }));
 
-export const AttributeTextName = styled('span')(({ theme }) => ({
+export const AttributeTextName = styled('span')(() => ({
   cursor: 'pointer',
   textAlign: 'center',
   fontWeight: 'bold',

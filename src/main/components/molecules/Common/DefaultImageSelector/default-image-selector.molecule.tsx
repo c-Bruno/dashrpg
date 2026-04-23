@@ -18,7 +18,6 @@ const DefaultImageSelector = ({ onSelect }: DefaultImageSelectorProps) => {
           <RoundedImage
             key={idx}
             src={standard_character_picture_url}
-            altText='Default Option'
             onClick={() => onSelect(standard_character_picture_url, injured_character_picture_url)}
           />
         ))}

@@ -36,13 +36,6 @@ export const CharacterCardContainer = styled('div', {
   },
 }));
 
-export const AvatarWrapper = styled(Box)({
-  width: '95px',
-  height: '95px',
-  flexShrink: 0,
-  alignSelf: 'center',
-});
-
 export const CardContent = styled(Box)({
   flex: 1,
   minWidth: 0,
