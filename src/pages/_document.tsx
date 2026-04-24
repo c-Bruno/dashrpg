@@ -1,10 +1,11 @@
 import { ReactElement } from 'react';
 
 import createEmotionServer from '@emotion/server/create-instance';
-import createEmotionCache from '../utils/createEmotionCache';
-import theme from '../themes/Default.theme';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import type { DocumentContext, DocumentInitialProps } from 'next/document';
+
+import theme from '../themes/Default.theme';
+import createEmotionCache from '../utils/createEmotionCache';
 
 /**
  * Custom Document — injects Emotion's server-side critical CSS into the HTML
@@ -22,10 +23,7 @@ export default class MyDocument extends Document {
           <link rel='preconnect' href='https://fonts.googleapis.com' />
           <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='anonymous' />
           <link href='https://fonts.googleapis.com/css2?family=Fruktur&display=swap' rel='stylesheet' />
-          <link
-            rel='stylesheet'
-            href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap'
-          />
+          <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap' />
           {/* Critical Emotion styles extracted on the server */}
           {(this.props as any).emotionStyleTags}
         </Head>
@@ -37,7 +35,9 @@ export default class MyDocument extends Document {
     );
   }
 
-  static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps & { emotionStyleTags: ReactElement[] }> {
+  static async getInitialProps(
+    ctx: DocumentContext,
+  ): Promise<DocumentInitialProps & { emotionStyleTags: ReactElement[] }> {
     const originalRenderPage = ctx.renderPage;
     const cache = createEmotionCache();
     const { extractCriticalToChunks } = createEmotionServer(cache);

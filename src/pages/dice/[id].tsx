@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { styled } from '@mui/material';
-import { prisma } from 'common/libs/prisma.lib';
-import { socket } from 'common/libs';
-import type { Character } from 'common/types';
 import { Queue } from 'common/helpers/queue.helper';
+import { socket } from 'common/libs';
+import { prisma } from 'common/libs/prisma.lib';
+import type { Character } from 'common/types';
+import { CoverTitle } from 'main/components/atoms';
 import type { GetServerSideProps } from 'next';
-import Head from 'next/head';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -47,8 +47,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     return { props: { character: null, config: null } };
   }
 
-  const findConfig = (name: string) =>
-    Number.parseInt(configs.find((c) => c.name === name)?.value ?? '0', 10);
+  const findConfig = (name: string) => Number.parseInt(configs.find((c) => c.name === name)?.value ?? '0', 10);
 
   return {
     props: {
@@ -110,9 +109,8 @@ const Dice = ({ character, config }: DiceProps) => {
 
   return (
     <>
-      <Head>
-        <title>Dados de {character.name} | RPG</title>
-      </Head>
+      <CoverTitle title={`Dados de ${character.name}`} />
+
       <Container>
         {currentDice && (
           <DiceContainer>

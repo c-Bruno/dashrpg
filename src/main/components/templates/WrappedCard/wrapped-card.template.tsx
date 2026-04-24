@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 
+import { Grid } from '@mui/material';
 import { ENTITY_CONFIG } from 'common/constants';
 import { calcSpaceInventory } from 'common/helpers';
 import { ActionButton } from 'main/components/atoms';
@@ -8,7 +9,8 @@ import Image from 'next/image';
 import * as S from './wrapped-card.styles';
 
 interface WrappedCardProps {
-  character: any;
+  size?: number | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
+  character?: any;
   modal?: any;
   children: ReactNode;
   entityType:
@@ -25,7 +27,7 @@ interface WrappedCardProps {
     | 'SpecialItem';
 }
 
-const WrappedCard = ({ character, modal, children, entityType }: WrappedCardProps) => {
+const WrappedCard = ({ character = null, modal, children, entityType, size }: WrappedCardProps) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -44,26 +46,24 @@ const WrappedCard = ({ character, modal, children, entityType }: WrappedCardProp
   };
 
   return (
-    <S.SectionContainer>
-      <div>
-        <div>
-          <S.SectionTitle variant='h5'>
-            {title}
-            {image && <Image src={image} alt='Character Portrait' width={30} height={30}></Image>}
+    <Grid size={size}>
+      <S.SectionContainer>
+        <S.SectionTitle variant='h5'>
+          {title}
+          {image && <Image src={image} alt='Character Portrait' width={30} height={30}></Image>}
 
-            {isClient && onClick && (
-              <S.TopRightButtonWrapper>
-                <ActionButton tooltip={tooltip} onClick={onClick} fontSize='small' />
-              </S.TopRightButtonWrapper>
-            )}
-          </S.SectionTitle>
+          {isClient && onClick && (
+            <S.TopRightButtonWrapper>
+              <ActionButton tooltip={tooltip} onClick={onClick} fontSize='small' />
+            </S.TopRightButtonWrapper>
+          )}
+        </S.SectionTitle>
 
-          <S.SectionSubtitle variant='subtitle1'>{subtitle}</S.SectionSubtitle>
-        </div>
-      </div>
+        <S.SectionSubtitle variant='subtitle1'>{subtitle}</S.SectionSubtitle>
 
-      <S.ContentWrapper>{children}</S.ContentWrapper>
-    </S.SectionContainer>
+        <S.ContentWrapper>{children}</S.ContentWrapper>
+      </S.SectionContainer>
+    </Grid>
   );
 };
 

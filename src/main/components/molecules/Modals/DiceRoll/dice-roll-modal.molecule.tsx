@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import {   Box, Grid   } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { rollDiceHelper } from 'common/helpers';
+import { useAudio } from 'common/hooks';
 import { ModalTemplate } from 'main/components/templates';
-import useSound from 'use-sound';
 
 import * as S from './dice-roll-modal.styles';
 
@@ -22,7 +22,7 @@ interface DiceRollModalProps {
 const DiceRollModal = ({ amount, atribute, handleClose }: DiceRollModalProps) => {
   const [showGrids, setShowGrids] = useState(false); // Hook para carregar os grids apenas após a rolagem dos dados
   const [stopRotation, setStopRotation] = useState(false); // Hook para definir a rotação do dado em tela
-  const [play] = useSound('/sounds/DiceRollingOnTable.mp3');
+  const { play } = useAudio('/sounds/DiceRollingOnTable.mp3');
 
   const [rollDiceResult, setRollDiceResult] = useState<RollDiceResult>({
     number: '',
@@ -30,10 +30,10 @@ const DiceRollModal = ({ amount, atribute, handleClose }: DiceRollModalProps) =>
     color: 'primary',
   });
 
-  // Hook para iniciar o audio da rolagem
   useEffect(() => {
     play();
-  }, [play]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setRollDiceResult(rollDiceHelper.rollDamage(amount));
@@ -49,7 +49,7 @@ const DiceRollModal = ({ amount, atribute, handleClose }: DiceRollModalProps) =>
   return (
     <ModalTemplate onClose={handleClose} maxWidth='xl'>
       <Grid container>
-        <Grid container spacing={0} size={12} sx={{ justifyContent: "center", alignItems: "center" }}>
+        <Grid container spacing={0} size={12} sx={{ justifyContent: 'center', alignItems: 'center' }}>
           {/* Dado na tela */}
           <S.RotatingDiceImage
             width={40}
@@ -71,8 +71,7 @@ const DiceRollModal = ({ amount, atribute, handleClose }: DiceRollModalProps) =>
                   marginLeft: 'auto',
                   marginRight: 'auto',
                   marginTop: '1%',
-                }}
-              >
+                }}>
                 <S.CenteredChip
                   label={rollDiceResult.number}
                   color={rollDiceResult.color}
@@ -93,8 +92,7 @@ const DiceRollModal = ({ amount, atribute, handleClose }: DiceRollModalProps) =>
                     marginLeft: 'auto',
                     marginRight: 'auto',
                     marginTop: '0.5%',
-                  }}
-                >
+                  }}>
                   {rollDiceResult.description && (
                     <S.CenteredChip
                       label={rollDiceResult.description}

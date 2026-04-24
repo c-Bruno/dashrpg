@@ -22,15 +22,21 @@ const ModalTemplate = ({
   maxWidth,
 }: ModalTemplateProps) => {
   return (
-    <Dialog open={true} onClose={onClose} maxWidth={maxWidth} fullWidth>
+    <Dialog
+      open={true}
+      onClose={onClose}
+      maxWidth={maxWidth}
+      fullWidth
+      slotProps={{ paper: { sx: { borderRadius: 5 } } }}>
       {title && <DialogTitle>{title}</DialogTitle>}
+
       <DialogContent dividers={!!title}>{children}</DialogContent>
-      <DialogActions sx={{ mt: 1.2, mb: 1.2, mr: 2 }}>
-        <Button onClick={onClose} color='secondary' variant='outlined' disabled={disableClose}>
+      <DialogActions sx={{ mt: 2, mb: 2, mr: 2 }}>
+        <Button onClick={onClose} color='secondary' variant='outlined' disabled={disableClose} sx={{ borderRadius: 5 }}>
           Fechar
         </Button>
         {onConfirm && (
-          <Button onClick={onConfirm} variant='contained' disabled={disableConfirm}>
+          <Button onClick={onConfirm} variant='contained' disabled={disableConfirm} sx={{ borderRadius: 5 }}>
             Confirmar
           </Button>
         )}

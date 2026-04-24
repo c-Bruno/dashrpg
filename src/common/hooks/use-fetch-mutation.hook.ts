@@ -24,7 +24,7 @@ export type ErrorsResponse<T = unknown> = {
 };
 
 export type FetchMutationOptions<P = unknown, R = unknown> = {
-  onSuccess?: (data: R, response?: ApiResponse<R>) => void;
+  onSuccess?: (data: R, params: P, response?: ApiResponse<R>) => void;
   onError?: (params: ErrorsResponse<P>) => void;
 };
 
@@ -46,7 +46,7 @@ const useFetchMutation = <P = unknown, R = unknown>(
       setData(response.data);
       setErrors(undefined);
 
-      options?.onSuccess && options.onSuccess(response.data, response);
+      options?.onSuccess && options.onSuccess(response.data, params, response);
     } catch (err) {
       setData(undefined);
 

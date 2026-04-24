@@ -20,6 +20,7 @@ export const StatusBar = styled(LinearProgress, {
   flex: 1,
   height: '25px',
   borderRadius: '15px',
+
   backgroundColor: trackColor,
   '& .MuiLinearProgress-bar': {
     background: gradient ?? barColor,

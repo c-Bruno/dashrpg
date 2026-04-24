@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import {   Container, Grid   } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import { useModal } from 'common/hooks';
-import { api, socket } from 'common/libs';
+import { api } from 'common/libs';
 import { prisma } from 'common/libs/prisma.lib';
 import type { Character } from 'common/types';
-import { Header } from 'main/components/atoms';
+import { CoverTitle, Header } from 'main/components/atoms';
 import {
   AttributeStatusItem,
-  DiceRollModal,
-  StatusBarModal,
   ChangePictureModal,
   ConfirmationModal,
   InventoryModal,
@@ -26,7 +24,6 @@ import {
 } from 'main/components/organisms';
 import { WrappedCard } from 'main/components/templates';
 import type { GetServerSideProps } from 'next';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // ---------------------------------------------------------------------------
@@ -81,58 +78,12 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
 
   const refreshData = () => router.replace(router.asPath);
 
-  /** Merges a partial update into the local character state */
-  const updateCharacterState = (data: Partial<Character>) =>
-    setCharacter((prev) => (prev ? { ...prev, ...data } : prev));
-
   // -------------------------------------------------------------------------
   // API handlers
   // -------------------------------------------------------------------------
 
   const onCharacterInfoSubmit = async (values: Partial<Character>) => {
     await api.put(`/character/${character?.id}`, values);
-  };
-
-  /** Persists new HP values and notifies connected clients via WebSocket */
-  const onHitPointsModalSubmit = async (newData: { current: string; max: string }) => {
-    const data = {
-      current_hit_points: Number(newData.current),
-      max_hit_points: Number(newData.max),
-    };
-
-    try {
-      await api.put(`/character/${character?.id}`, data);
-      updateCharacterState(data);
-
-      socket.emit('update_hit_points', {
-        character_id: character?.id,
-        current: data.current_hit_points,
-        max: data.max_hit_points,
-      });
-    } catch {
-      toast.error('Erro ao atualizar a vida!');
-    }
-  };
-
-  /** Persists new sanity values and notifies connected clients via WebSocket */
-  const onSanityPointsModalSubmit = async (newData: { current: string; max: string }) => {
-    const data = {
-      current_sanity_points: Number(newData.current),
-      max_sanity_points: Number(newData.max),
-    };
-
-    try {
-      await api.put(`/character/${character?.id}`, data);
-      updateCharacterState(data);
-
-      socket.emit('update_hit_points', {
-        character_id: character?.id,
-        current: data.current_sanity_points,
-        max: data.max_sanity_points,
-      });
-    } catch {
-      toast.error('Erro ao atualizar a sanidade!');
-    }
   };
 
   // -------------------------------------------------------------------------
@@ -164,38 +115,6 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
       }}
     />
   ));
-
-  const hitPointsModal = useModal(({ close }: any) => (
-    <StatusBarModal
-      type='hp'
-      onSubmit={async (newData: any) => {
-        await onHitPointsModalSubmit(newData);
-        close();
-      }}
-      handleClose={close}
-      data={{
-        current: character?.current_hit_points,
-        max: character?.max_hit_points,
-      }}
-    />
-  ));
-
-  const sanityPointsModal = useModal(({ close }: any) => (
-    <StatusBarModal
-      type='sn'
-      onSubmit={async (newData: any) => {
-        await onSanityPointsModalSubmit(newData);
-        close();
-      }}
-      handleClose={close}
-      data={{
-        current: character?.current_sanity_points,
-        max: character?.max_sanity_points,
-      }}
-    />
-  ));
-
-  const diceRollModal = useModal(({ close }: any) => <DiceRollModal amount='1d100' handleClose={close} />);
 
   const changePictureModal = useModal(({ close }: any) => (
     <ChangePictureModal onPictureChange={refreshData} handleClose={close} character={character} />
@@ -248,75 +167,57 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
 
   return (
     <Container style={{ marginBottom: '30px', maxWidth: '1400px' }}>
-      <Head>
-        <title>{`${character?.name ?? ''} | RPG`}</title>
-      </Head>
+      <CoverTitle title={`${character?.name} `} />
 
       <Grid container spacing={3}>
         <Header title={`${character?.name}`} />
 
         <Grid container spacing={3} size={12}>
           {/* Overview: imagem, vida e sanidade */}
-          <Grid size={{ xs: 12, md: 4 }}>
-            <WrappedCard entityType='characterOverview' character={character}>
-              <CharacterOverview
-                character={character}
-                diceRollModal={diceRollModal}
-                hitPointsModal={hitPointsModal}
-                sanityPointsModal={sanityPointsModal}
-                changePictureModal={changePictureModal}
-              />
-            </WrappedCard>
-          </Grid>
+          <WrappedCard entityType='characterOverview' character={character} size={{ xs: 12, md: 4 }}>
+            <CharacterOverview
+              character={character}
+              setCharacter={setCharacter}
+              changePictureModal={changePictureModal}
+            />
+          </WrappedCard>
 
           {/* Dados pessoais do personagem */}
-          <Grid size={{ xs: 12, md: 8 }}>
-            <WrappedCard entityType='characterInfoForm' character={character}>
-              <CharacterInfoForm initialValues={character} onSubmit={onCharacterInfoSubmit} />
-            </WrappedCard>
-          </Grid>
+          <WrappedCard entityType='characterInfoForm' character={character} size={{ xs: 12, md: 8 }}>
+            <CharacterInfoForm initialValues={character} onSubmit={onCharacterInfoSubmit} />
+          </WrappedCard>
 
           {/* Inventário */}
-          <Grid size={{ xs: 12, md: 4 }}>
-            <WrappedCard entityType='inventory' character={character} modal={inventoryModal}>
-              <InventoryList
-                character={character}
-                inventoryModal={inventoryModal}
-                confirmationModal={confirmationModal}
-              />
-            </WrappedCard>
-          </Grid>
+          <WrappedCard entityType='inventory' character={character} modal={inventoryModal} size={{ xs: 12, md: 4 }}>
+            <InventoryList
+              character={character}
+              inventoryModal={inventoryModal}
+              confirmationModal={confirmationModal}
+            />
+          </WrappedCard>
 
           {/* Atributos */}
-          <Grid size={{ xs: 12, md: 8 }}>
-            <WrappedCard entityType='attribute' character={character}>
-              <AttributeStatusItem character={character} setCharacter={setCharacter} />
-            </WrappedCard>
-          </Grid>
+          <WrappedCard entityType='attribute' character={character} size={{ xs: 12, md: 8 }}>
+            <AttributeStatusItem character={character} setCharacter={setCharacter} />
+          </WrappedCard>
 
           {/* Ações de combate */}
-          <Grid size={12}>
-            <WrappedCard entityType='combat' character={character} modal={combatModal}>
-              <WeaponStatusList
-                character={character}
-                handleCharacter={(newCharacter: Character) => setCharacter(newCharacter)}
-              />
-            </WrappedCard>
-          </Grid>
+          <WrappedCard entityType='combat' character={character} modal={combatModal} size={12}>
+            <WeaponStatusList
+              character={character}
+              handleCharacter={(newCharacter: Character) => setCharacter(newCharacter)}
+            />
+          </WrappedCard>
 
           {/* Item especial */}
-          <Grid size={{ xs: 12, md: 4 }}>
-            <WrappedCard entityType='SpecialItem' character={character}>
-              <SpecialItem character={character} />
-            </WrappedCard>
-          </Grid>
+          <WrappedCard entityType='SpecialItem' character={character} size={{ xs: 12, md: 4 }}>
+            <SpecialItem character={character} />
+          </WrappedCard>
 
           {/* Perícias */}
-          <Grid size={8}>
-            <WrappedCard entityType='skills' character={character}>
-              <SkillsList character={character} setCharacter={setCharacter} />
-            </WrappedCard>
-          </Grid>
+          <WrappedCard entityType='skills' character={character} size={8}>
+            <SkillsList character={character} setCharacter={setCharacter} />
+          </WrappedCard>
         </Grid>
       </Grid>
     </Container>

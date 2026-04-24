@@ -3,8 +3,10 @@ import type { MouseEvent } from 'react';
 
 import { MoreVert as MoreVertIcon } from '@mui/icons-material';
 import { ListItemText, Menu, MenuItem } from '@mui/material';
+import { StatusBarEnum } from 'common/enums';
 import { characterPicture, ProgressBarHelper } from 'common/helpers';
-import { RoundedImage, StatusBar } from 'main/components/atoms';
+import { RoundedImage } from 'main/components/atoms';
+import { StatusBar } from 'main/components/molecules';
 
 import * as S from './character-snapshot-card.styles';
 
@@ -67,7 +69,7 @@ const CharacterSnapshotCard = ({ character, deleteCharacter, ...rest }: Characte
             percent={sanityPercent}
             total={max_sanity_points}
             current={current_sanity_points}
-            variant='sanity'
+            variant={StatusBarEnum.Sanity}
             withIcon
           />
         </S.StatsWrapper>

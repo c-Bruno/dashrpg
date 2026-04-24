@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 
-import {   Button, Container, Grid   } from '@mui/material';
+import { Button, Container, Grid } from '@mui/material';
 import { useModal } from 'common/hooks';
-import { Header } from 'main/components/atoms';
-import { ConfirmationModal, SkillModal, AttributeModal } from 'main/components/molecules';
+import { CoverTitle, Header } from 'main/components/atoms';
+import { ConfirmationModal, SkillModal, AttributeModal, CreatureList } from 'main/components/molecules';
 import { AttributesBySkill, AvailableItemsList, AvailableCharacters, AvailableDices } from 'main/components/organisms';
 import { WrappedCard } from 'main/components/templates';
 import { useDashboardStore } from 'main/store';
-import Head from 'next/head';
 
 import { runInitialSetup } from './master-dashboard.helper';
 
@@ -67,54 +66,46 @@ const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttribute
 
   return (
     <Container maxWidth='lg' style={{ marginBottom: '30px' }}>
-      <Head>
-        <title>Mestre | RPG</title>
-      </Head>
+      <CoverTitle title='Mestre' />
 
       <Grid container spacing={3}>
         <Header title='Dashboard do Mestre' />
 
         {configs.length > 0 ? (
           <>
-            <Grid size={12}>
-              <WrappedCard entityType='avaliableCharacters' character={null}>
-                <AvailableCharacters characters={characters} confirmationModal={confirmationModal} />
-              </WrappedCard>
-            </Grid>
+            <WrappedCard entityType='avaliableCharacters' size={12}>
+              <AvailableCharacters characters={characters} confirmationModal={confirmationModal} />
+            </WrappedCard>
 
-            <Grid size={{ xs: 12, md: 6 }}>
-              <WrappedCard entityType='attributesList' character={null} modal={attributeModal}>
-                <AvailableItemsList
-                  type='attribute'
-                  items={attributes}
-                  itemModal={attributeModal}
-                  confirmationModal={confirmationModal}
-                />
-              </WrappedCard>
-            </Grid>
+            <WrappedCard entityType='attributesList' modal={attributeModal} size={{ xs: 12, md: 6 }}>
+              <AvailableItemsList
+                type='attribute'
+                items={attributes}
+                itemModal={attributeModal}
+                confirmationModal={confirmationModal}
+              />
+            </WrappedCard>
 
-            <Grid size={{ xs: 12, md: 6 }}>
-              <WrappedCard entityType='skillsList' character={null} modal={skillModal}>
-                <AvailableItemsList
-                  type='skill'
-                  items={skills}
-                  itemModal={skillModal}
-                  confirmationModal={confirmationModal}
-                />
-              </WrappedCard>
-            </Grid>
+            <WrappedCard entityType='skillsList' modal={skillModal} size={{ xs: 12, md: 6 }}>
+              <AvailableItemsList
+                type='skill'
+                items={skills}
+                itemModal={skillModal}
+                confirmationModal={confirmationModal}
+              />
+            </WrappedCard>
 
-            <Grid size={12}>
-              <WrappedCard entityType='attribute' character={null}>
-                <AttributesBySkill attributes={attributes} skills={skills} />
-              </WrappedCard>
-            </Grid>
+            <WrappedCard entityType='attribute' size={12}>
+              <AttributesBySkill attributes={attributes} skills={skills} />
+            </WrappedCard>
 
-            <Grid size={12}>
-              <WrappedCard entityType='dices' character={null}>
-                <AvailableDices />
-              </WrappedCard>
-            </Grid>
+            <WrappedCard entityType='attribute' size={12}>
+              <CreatureList />
+            </WrappedCard>
+
+            <WrappedCard entityType='dices' size={12}>
+              <AvailableDices />
+            </WrappedCard>
           </>
         ) : (
           <Grid size={12}>

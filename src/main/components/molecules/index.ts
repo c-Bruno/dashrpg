@@ -2,6 +2,7 @@
 export { default as DefaultImageSelector } from './Common/DefaultImageSelector/default-image-selector.molecule';
 export { default as EditableDataRow } from './Common/EditableDataRow/editable-data-row.molecule';
 export { default as RollableAttribute } from './Common/RollableAttribute/rollable-attribute.molecule';
+export { default as StatusBar } from './Common/StatusBar/status-bar.molecule';
 
 // Character dashboard
 export { default as AttributeStatusItem } from './CharacterDashboard/AttributeStatusItem/attribute-status-item.molecule';

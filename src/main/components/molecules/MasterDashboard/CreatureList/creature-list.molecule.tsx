@@ -2,7 +2,7 @@ import { Grid } from '@mui/material';
 
 const CreatureList = () => {
   return (
-    <Grid container spacing={2} sx={{ justifyContent: "center", alignItems: "center", marginTop: 30 }}>
+    <Grid container spacing={2} sx={{ justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
       <Grid>
         <a target='_blank' rel='noreferrer' href='https://www.mythrillfiction.com/the-dark-rider'>
           <div className='card'>

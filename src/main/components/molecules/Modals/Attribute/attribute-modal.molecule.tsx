@@ -29,36 +29,20 @@ const AttributeModal = ({
   const { addAttribute, removeAttribute } = useDashboardStore();
   const [updatedAttributes, setUpdatedAttributes] = useState(attributes);
 
-  const [attribute, setAttribute] = useState({
-    name: '',
-    description: '',
-    skill_id: '',
-  });
+  const [attribute, setAttribute] = useState({ name: '', description: '', skill_id: '' });
 
   useEffect(() => {
-    if (!data) {
-      return;
-    }
+    if (!data) return;
 
-    setAttribute({
-      name: data.name,
-      description: data.description,
-      skill_id: data.skill_id,
-    });
+    setAttribute({ name: data.name, description: data.description, skill_id: data.skill_id });
   }, [data]);
 
   const resetState = () => {
-    return setAttribute({
-      name: '',
-      description: '',
-      skill_id: '',
-    });
+    return setAttribute({ name: '', description: '', skill_id: '' });
   };
 
   const submit = () => {
-    if (!attribute.name) {
-      return;
-    }
+    if (!attribute.name) return;
 
     if (operation === 'create') {
       api
