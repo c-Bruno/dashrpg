@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 
 import { StatusBarEnum } from 'common/enums';
+import { ProgressBarHelper } from 'common/helpers';
 import { useFetchMutation, useModal } from 'common/hooks';
 import { socket } from 'common/libs';
 import { CharacterService } from 'core/services';
@@ -12,9 +13,8 @@ import { COLOR_MAP } from './status-bar.content';
 type StatusBarProps = {
   characterId?: number;
   withIcon?: boolean;
-  total?: string;
-  current?: string;
-  percent: number;
+  total?: number;
+  current?: number;
   variant?: StatusBarEnum;
   setCharacter?: any;
 };
@@ -25,7 +25,6 @@ type StatusBarProps = {
  */
 const StatusBar = ({
   characterId,
-  percent,
   variant = StatusBarEnum.Life,
   total,
   current,
@@ -36,7 +35,7 @@ const StatusBar = ({
   const { barColor, trackColor, gradient, icon: Icon, label } = COLOR_MAP[variant];
 
   const { trigger } = useFetchMutation(CharacterService.updateCharacter, {
-    onSuccess: (data, params) => {
+    onSuccess: (_data, params) => {
       const { ...updateData } = params;
       setCharacter((prev) => (prev ? { ...prev, ...updateData } : prev));
 
@@ -59,6 +58,8 @@ const StatusBar = ({
     trigger({ character_id: characterId, ...data }); // This will call the API to update the character on the server
   };
 
+  const percent = ProgressBarHelper.Percentage(current, total);
+
   const updateStatusbarModal = useModal(({ close }) => (
     <StatusBarModal
       type={variant}
@@ -74,7 +75,7 @@ const StatusBar = ({
   return (
     <S.StatusBox onClick={characterId ? () => updateStatusbarModal.appear() : undefined}>
       {withIcon && Icon && <Icon sx={{ color: barColor, flexShrink: 0 }} />}
-      <S.StatNameLabel>{label}</S.StatNameLabel>
+      <S.StatusBarLabel>{label}</S.StatusBarLabel>
 
       <S.StatusBar
         variant='determinate'
@@ -83,9 +84,9 @@ const StatusBar = ({
         trackColor={trackColor}
         gradient={gradient}
       />
-      <S.StatusLabel>
+      <S.StatusBarLabel>
         {current}/{total}
-      </S.StatusLabel>
+      </S.StatusBarLabel>
     </S.StatusBox>
   );
 };

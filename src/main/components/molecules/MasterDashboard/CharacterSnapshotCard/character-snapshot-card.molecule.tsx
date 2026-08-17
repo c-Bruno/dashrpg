@@ -64,9 +64,8 @@ const CharacterSnapshotCard = ({ character, deleteCharacter, ...rest }: Characte
         </S.CardTopRow>
 
         <S.StatsWrapper>
-          <StatusBar percent={hpPercent} total={max_hit_points} current={current_hit_points} withIcon />
+          <StatusBar total={max_hit_points} current={current_hit_points} withIcon />
           <StatusBar
-            percent={sanityPercent}
             total={max_sanity_points}
             current={current_sanity_points}
             variant={StatusBarEnum.Sanity}

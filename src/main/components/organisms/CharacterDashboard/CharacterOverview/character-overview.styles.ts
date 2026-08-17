@@ -4,7 +4,7 @@ export const CenteredGrid = styled(Grid)(() => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  marginBottom: 12,
+  gap: 35,
 }));
 
 export const ImageWrapper = styled('div')({

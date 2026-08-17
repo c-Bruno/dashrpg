@@ -1,8 +1,6 @@
 import Head from 'next/head';
 
-type CoverTitleProps = {
-  title: string;
-};
+type CoverTitleProps = { title: string };
 
 /**
  * A component that sets the page title in the browser tab.

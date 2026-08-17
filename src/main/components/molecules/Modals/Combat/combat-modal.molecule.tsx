@@ -130,8 +130,7 @@ const CombatModal = ({ data, onSubmit, operation, character, handleClose, fullCh
       title={operation === 'create' ? 'Adicionar um novo item' : 'Editar item'}
       onClose={handleClose}
       onConfirm={submit}
-      maxWidth='xl'
-    >
+      maxWidth='xl'>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label='custom pagination table' stickyHeader>
           {/* Cabeçalho da tabela */}
@@ -175,8 +174,7 @@ const CombatModal = ({ data, onSubmit, operation, character, handleClose, fullCh
                         ...prevState,
                         type: value,
                       }));
-                    }}
-                  >
+                    }}>
                     <MenuItem value='Balistico'>Balístico</MenuItem>
                     <MenuItem value='Fisico'>Físico</MenuItem>
                     <MenuItem value='Fogo'>Fogo</MenuItem>

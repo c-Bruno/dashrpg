@@ -28,17 +28,8 @@ export const StatusBar = styled(LinearProgress, {
   },
 }));
 
-export const StatusLabel = styled(Typography)(({ theme }) => ({
+export const StatusBarLabel = styled(Typography)(({ theme }) => ({
   fontWeight: '600',
   whiteSpace: 'nowrap',
   color: theme.palette.text.secondary,
-  minWidth: '50px',
-  textAlign: 'right',
 }));
-
-export const StatNameLabel = styled(Typography)({
-  fontWeight: '600',
-  whiteSpace: 'nowrap',
-  minWidth: '54px',
-  color: 'rgba(255,255,255,0.6)',
-});

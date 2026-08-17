@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Grid } from '@mui/material';
 import { ENTITY_CONFIG } from 'common/constants';
 import { calcSpaceInventory } from 'common/helpers';
-import { ActionButton } from 'main/components/atoms';
+import { ActionButton } from 'main/components/molecules';
 import Image from 'next/image';
 
 import * as S from './wrapped-card.styles';

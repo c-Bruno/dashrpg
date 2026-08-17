@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import {   Grid, Link, TextField, Typography   } from '@mui/material';
+import { Grid, Link, TextField, Typography } from '@mui/material';
 import { characterPicture } from 'common/helpers';
 import { api } from 'common/libs';
 import { DefaultImageSelector } from 'main/components/molecules';

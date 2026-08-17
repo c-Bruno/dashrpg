@@ -11,7 +11,7 @@ import * as S from './rollable-attribute.styles';
 
 interface RollableAttributeProps {
   data: any;
-  image: string;
+  image?: string;
   onInput: (value: string) => void;
   onValueChange: (value: string) => void;
 }
@@ -53,7 +53,6 @@ const RollableAttribute = ({ data, image, onInput, onValueChange }: RollableAttr
         <TextField
           value={data.value ?? ''}
           variant='standard'
-          fullWidth
           slotProps={{ htmlInput: { style: { padding: 8, textAlign: 'center' } } }}
           onBlur={(event) => onValueChange(event.target.value)}
           onChange={(event) => onInput(event.target.value)}

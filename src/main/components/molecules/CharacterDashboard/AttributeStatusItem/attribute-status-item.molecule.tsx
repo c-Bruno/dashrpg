@@ -1,51 +1,54 @@
+import { Dispatch, SetStateAction } from 'react';
 import { toast } from 'react-toastify';
 
 import { Grid } from '@mui/material';
+import { useFetchMutation } from 'common/hooks';
 import { api } from 'common/libs';
+import { Character } from 'common/types';
 import { RollableAttribute } from 'main/components/molecules';
 
-const AttributeStatusItem = ({ character, setCharacter }: any) => {
-  const updateCharacterAttributeValue = (attribute, value) => {
-    const index = character.attributes.findIndex((a) => a.attribute_id === attribute.attribute_id);
-    const newArray = character.attributes;
+type UpdateAttributeParams = {
+  character_id: number;
+  attribute_id: number;
+  value: string;
+};
 
-    newArray[index] = {
-      ...attribute,
-      value,
-    };
+type AttributeStatusItemProps = {
+  character: Character;
+  setCharacter: Dispatch<SetStateAction<Character | null>>;
+};
 
-    setCharacter((prevState) => ({
-      ...prevState,
-      attributes: newArray,
-    }));
+const AttributeStatusItem = ({ character, setCharacter }: AttributeStatusItemProps) => {
+  const { trigger } = useFetchMutation((params: UpdateAttributeParams) => api.put('/character/attribute', params), {
+    onError: () => toast.error('Erro ao atualizar o atributo!'),
+  });
+
+  const updateLocalAttribute = (attributeId: number, value: string) => {
+    setCharacter((prev) =>
+      prev
+        ? {
+            ...prev,
+            attributes: prev.attributes?.map((attr) => (attr.attribute_id === attributeId ? { ...attr, value } : attr)),
+          }
+        : prev,
+    );
   };
 
   return (
     <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
-      {character.attributes.map((item, index) => (
-        <Grid key={index} size={2}>
+      {character.attributes?.map((item) => (
+        <Grid key={item.attribute_id} size={2}>
           <RollableAttribute
-            image='/assets/dice.png'
             data={{
               name: item.attribute.name,
               value: item.value,
               description: item.attribute.description,
               skill_id: item.attribute.skill_id,
             }}
-            onValueChange={(newValue) => {
-              api
-                .put('/character/attribute', {
-                  character_id: character.id,
-                  attribute_id: item.attribute.id,
-                  value: newValue,
-                })
-                .catch((err) => {
-                  toast.error(`Erro ao atualizar o valor! Erro: ${err.toString()}`);
-                });
-            }}
-            onInput={(newValue) => {
-              updateCharacterAttributeValue(item, newValue);
-            }}
+            onValueChange={(newValue) =>
+              trigger({ character_id: character.id!, attribute_id: item.attribute.id, value: newValue })
+            }
+            onInput={(newValue) => updateLocalAttribute(item.attribute_id, newValue)}
           />
         </Grid>
       ))}

@@ -1,7 +1,6 @@
 import { Grid } from '@mui/material';
 import { useModal } from 'common/hooks';
-import { ActionButton } from 'main/components/atoms';
-import { CharacterSnapshotCard, CreateCharacterModal } from 'main/components/molecules';
+import { CharacterSnapshotCard, CreateCharacterModal, ActionButton } from 'main/components/molecules';
 
 interface AvailableCharactersProps {
   characters: any[];

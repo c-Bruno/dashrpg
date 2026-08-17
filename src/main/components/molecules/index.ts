@@ -1,4 +1,5 @@
 // Common
+export { default as ActionButton } from './ActionButton/action-button.atom';
 export { default as DefaultImageSelector } from './Common/DefaultImageSelector/default-image-selector.molecule';
 export { default as EditableDataRow } from './Common/EditableDataRow/editable-data-row.molecule';
 export { default as RollableAttribute } from './Common/RollableAttribute/rollable-attribute.molecule';

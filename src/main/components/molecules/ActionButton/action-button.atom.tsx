@@ -12,9 +12,7 @@ interface ActionButtonProps {
 }
 
 const ICON_MAP: Record<string, SvgIconComponent> = { add: Add, link: Link, delete: Delete } as const;
-const COLOR_MAP: Record<string, string> = {
-  delete: '#E80A67',
-} as const;
+const COLOR_MAP: Record<string, string> = { delete: '#E80A67' } as const;
 
 /**
  * A simple, reusable component that renders a box with a plus icon,
