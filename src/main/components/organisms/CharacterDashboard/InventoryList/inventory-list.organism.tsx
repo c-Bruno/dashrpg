@@ -1,7 +1,6 @@
 // src/components/organisms/InventoryList/InventoryList.tsx
 
-
-import {   Grid, TextField   } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import { calcSpaceInventory } from 'common/helpers';
 import { EditableDataRow } from 'main/components/molecules';
 
@@ -37,13 +36,14 @@ const InventoryList = ({ character, inventoryModal, confirmationModal }: Invento
           <Grid key={index} size={12}>
             <EditableDataRow
               data={inventory}
-              editRow={(data) =>
+              editRow={(data) => {
+                const linkedCombat = character.combat?.find((c: any) => c.combat?.inventory_id === data.inventory_id);
                 inventoryModal.appear({
                   operation: 'edit',
-                  data,
+                  data: linkedCombat ? { ...data, combat: linkedCombat.combat } : data,
                   space: calcSpaceInventory(character),
-                })
-              }
+                });
+              }}
               deleteRow={(data) =>
                 confirmationModal.appear({
                   title: 'Apagar item do inventário',

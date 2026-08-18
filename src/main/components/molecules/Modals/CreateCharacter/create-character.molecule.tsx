@@ -1,11 +1,14 @@
 import { useState } from 'react';
 
-import { TextField, Grid, Box, Typography } from '@mui/material';
+import { TextField } from '@mui/material';
 import { useFetchMutation } from 'common/hooks';
 import { api } from 'common/libs';
 import { Character } from 'common/types';
+import { DefaultImageSelector } from 'main/components/molecules';
 import { ModalTemplate } from 'main/components/templates';
 import { useDashboardStore } from 'main/store';
+
+import * as S from './create-character.styles';
 
 interface CreateCharacterModalProps {
   handleClose: () => void;
@@ -15,22 +18,27 @@ const CreateCharacterModal = ({ handleClose }: CreateCharacterModalProps) => {
   const { addCharacter } = useDashboardStore();
 
   const [name, setName] = useState('');
-
-  const resetModal = () => {
-    setName('');
-    handleClose();
-  };
-
-  const createCharacter = useFetchMutation((payload: { name: string }) => api.post<Character>('/character', payload), {
-    onSuccess: (data: Character) => {
-      addCharacter(data);
-      resetModal();
-    },
+  const [pictureURLs, setPictureURLs] = useState({
+    standard_character_picture_url: '',
+    injured_character_picture_url: '',
   });
 
-  const handleCreate = async () => {
-    createCharacter.trigger({ name: name.trim() });
-  };
+  const { trigger, isLoading } = useFetchMutation(
+    (payload: { name: string; standard_character_picture_url?: string; injured_character_picture_url?: string }) =>
+      api.post<Character>('/character', payload),
+    {
+      onSuccess: (data: Character) => {
+        addCharacter(data);
+        handleClose();
+      },
+    },
+  );
+
+  const handleCreate = () =>
+    trigger({
+      name: name.trim(),
+      ...(pictureURLs.standard_character_picture_url && pictureURLs.injured_character_picture_url ? pictureURLs : {}),
+    });
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
@@ -41,32 +49,33 @@ const CreateCharacterModal = ({ handleClose }: CreateCharacterModalProps) => {
 
   return (
     <ModalTemplate
-      title='🗿 Criar personagem'
-      onClose={resetModal}
+      title='⚔ Criar aventureiro'
+      onClose={handleClose}
       onConfirm={handleCreate}
       disableConfirm={!name.trim()}
-      disableClose={createCharacter.isLoading}>
-      <Grid container spacing={2}>
-        <Grid size={12}>
-          <Box sx={{ mb: 3, mt: 1 }}>
-            <Typography variant='body2' color='text.secondary'>
-              Preencha os campos abaixo para criar um novo personagem
-            </Typography>
-          </Box>
-          <Box sx={{ mb: 3 }}>
-            <TextField
-              autoFocus
-              label='Nome'
-              fullWidth
-              value={name}
-              variant='standard'
-              onKeyPress={handleKeyPress}
-              helperText={!name.trim() && 'Nome é obrigatório!'}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </Box>
-        </Grid>
-      </Grid>
+      disableClose={isLoading}>
+      <S.Container>
+        <TextField
+          autoFocus
+          label='Nome do aventureiro'
+          value={name}
+          variant='standard'
+          onKeyUp={handleKeyPress}
+          helperText='Nome é obrigatório!'
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <S.SectionDivider>
+          <S.SectionLabel>Retrato do personagem</S.SectionLabel>
+        </S.SectionDivider>
+
+        <DefaultImageSelector
+          isNewCharacter
+          onSelect={(standard, injured) =>
+            setPictureURLs({ standard_character_picture_url: standard, injured_character_picture_url: injured })
+          }
+        />
+      </S.Container>
     </ModalTemplate>
   );
 };

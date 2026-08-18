@@ -1,24 +1,32 @@
+import { useState } from 'react';
 
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { IMAGE_PLACEHOLDERS } from 'common/constants';
 import { RoundedImage } from 'main/components/atoms';
 
 interface DefaultImageSelectorProps {
+  isNewCharacter?: boolean;
   onSelect: (standard_character_picture_url: string, injured_character_picture_url: string) => void;
 }
 
-const DefaultImageSelector = ({ onSelect }: DefaultImageSelectorProps) => {
+const DefaultImageSelector = ({ onSelect, isNewCharacter }: DefaultImageSelectorProps) => {
+  const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
+
+  const handleSelect = (standard: string, injured: string) => {
+    setSelectedUrl(standard);
+    onSelect(standard, injured);
+  };
+
   return (
     <Box sx={{ mt: 3 }}>
-      <Typography variant='subtitle1' gutterBottom>
-        Ou escolha uma imagem padrão:
-      </Typography>
+      {!isNewCharacter && 'Ou escolha uma imagem padrão:'}
       <Box sx={{ mt: 2.5, mb: 2.5, display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-        {IMAGE_PLACEHOLDERS.map(({ standard_character_picture_url, injured_character_picture_url }, idx) => (
+        {IMAGE_PLACEHOLDERS.map(({ standard_character_picture_url, injured_character_picture_url }) => (
           <RoundedImage
-            key={idx}
+            key={standard_character_picture_url}
             src={standard_character_picture_url}
-            onClick={() => onSelect(standard_character_picture_url, injured_character_picture_url)}
+            selected={selectedUrl === standard_character_picture_url}
+            onClick={() => handleSelect(standard_character_picture_url, injured_character_picture_url)}
           />
         ))}
       </Box>

@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 
 import { Button, Container, Grid } from '@mui/material';
+import { EntityTypeEnum } from 'common/enums';
 import { useModal } from 'common/hooks';
 import { CoverTitle, Header } from 'main/components/atoms';
-import { ConfirmationModal, SkillModal, AttributeModal, CreatureList } from 'main/components/molecules';
+import { InfoModal, SkillModal, AttributeModal, CreatureList } from 'main/components/molecules';
 import { AttributesBySkill, AvailableItemsList, AvailableCharacters, AvailableDices } from 'main/components/organisms';
 import { WrappedCard } from 'main/components/templates';
 import { useDashboardStore } from 'main/store';
@@ -27,8 +28,8 @@ const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttribute
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialCharacters, initialAttributes, initialSkills, configs]);
 
-  const confirmationModal = useModal(({ close, custom }) => (
-    <ConfirmationModal title={custom.title} text={custom.text} data={custom.data} handleClose={close} />
+  const infoModal = useModal(({ close, custom }) => (
+    <InfoModal showConfirm title={custom.title} text={custom.text} data={custom.data} handleClose={close} />
   ));
 
   const attributeModal = useModal(({ close, custom }) => {
@@ -73,37 +74,32 @@ const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttribute
 
         {configs.length > 0 ? (
           <>
-            <WrappedCard entityType='avaliableCharacters' size={12}>
-              <AvailableCharacters characters={characters} confirmationModal={confirmationModal} />
+            <WrappedCard entityType={EntityTypeEnum.CHARACTER_INFO_FORM}>
+              <AvailableCharacters characters={characters} confirmationModal={infoModal} />
             </WrappedCard>
 
-            <WrappedCard entityType='attributesList' modal={attributeModal} size={{ xs: 12, md: 6 }}>
+            <WrappedCard entityType={EntityTypeEnum.ATTRIBUTES_LIST} modal={attributeModal} size={{ xs: 12, md: 6 }}>
               <AvailableItemsList
                 type='attribute'
                 items={attributes}
                 itemModal={attributeModal}
-                confirmationModal={confirmationModal}
+                confirmationModal={infoModal}
               />
             </WrappedCard>
 
-            <WrappedCard entityType='skillsList' modal={skillModal} size={{ xs: 12, md: 6 }}>
-              <AvailableItemsList
-                type='skill'
-                items={skills}
-                itemModal={skillModal}
-                confirmationModal={confirmationModal}
-              />
+            <WrappedCard entityType={EntityTypeEnum.SKILLS_LIST} modal={skillModal} size={{ xs: 12, md: 6 }}>
+              <AvailableItemsList type='skill' items={skills} itemModal={skillModal} confirmationModal={infoModal} />
             </WrappedCard>
 
-            <WrappedCard entityType='attribute' size={12}>
+            <WrappedCard entityType={EntityTypeEnum.ATTRIBUTE}>
               <AttributesBySkill attributes={attributes} skills={skills} />
             </WrappedCard>
 
-            <WrappedCard entityType='attribute' size={12}>
+            <WrappedCard entityType={EntityTypeEnum.ATTRIBUTE}>
               <CreatureList />
             </WrappedCard>
 
-            <WrappedCard entityType='dices' size={12}>
+            <WrappedCard entityType={EntityTypeEnum.DICES}>
               <AvailableDices />
             </WrappedCard>
           </>

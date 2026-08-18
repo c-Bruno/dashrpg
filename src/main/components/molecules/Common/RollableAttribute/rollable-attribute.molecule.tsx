@@ -24,7 +24,8 @@ const RollableAttribute = ({ data, image, onInput, onValueChange }: RollableAttr
   const diceRollModal = useModal(({ close }) => (
     <DiceRollModal
       amount={'1d20'}
-      atribute={data.name}
+      attribute={data.name}
+      attributeValue={Number(data.value)}
       // onDiceRoll={rollData => {
       //   const parsedData = {
       //     character_id: character.id,

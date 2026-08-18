@@ -60,6 +60,7 @@ model Inventory {
   character_id Int
 
   characters CharacterInventory[]
+  combat     Combat?
   
   @@map("inventory")
 }
@@ -111,6 +112,10 @@ model Combat {
   current_load String?
   total_load String?
   character_id Int
+
+  // Optional link: weapons also occupy inventory space
+  inventory_id Int?     @unique
+  inventory    Inventory? @relation(fields: [inventory_id], references: [id])
 
   characters CharacterCombat[]
   

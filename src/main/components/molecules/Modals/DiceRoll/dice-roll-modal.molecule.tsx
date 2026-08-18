@@ -1,34 +1,27 @@
 import { useEffect, useState } from 'react';
 
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { rollDiceHelper } from 'common/helpers';
+import { RollDiceResult } from 'common/helpers/roll-dice.helper';
 import { useAudio } from 'common/hooks';
+import { CenteredBox, Dice } from 'main/components/atoms';
 import { ModalTemplate } from 'main/components/templates';
 
 import * as S from './dice-roll-modal.styles';
 
-type RollDiceResult = {
-  number: string;
-  description?: string;
-  color: 'primary' | 'error' | 'success';
-};
-
 interface DiceRollModalProps {
   amount: string;
-  atribute?: any;
+  attribute?: string;
+  attributeValue?: number;
   handleClose: () => void;
 }
 
-const DiceRollModal = ({ amount, atribute, handleClose }: DiceRollModalProps) => {
-  const [showGrids, setShowGrids] = useState(false); // Hook para carregar os grids apenas após a rolagem dos dados
-  const [stopRotation, setStopRotation] = useState(false); // Hook para definir a rotação do dado em tela
+const DiceRollModal = ({ amount, attribute, attributeValue, handleClose }: DiceRollModalProps) => {
+  const [showGrids, setShowGrids] = useState(false);
+  const [stopRotation, setStopRotation] = useState(false);
   const { play } = useAudio('/sounds/DiceRollingOnTable.mp3');
 
-  const [rollDiceResult, setRollDiceResult] = useState<RollDiceResult>({
-    number: '',
-    description: '',
-    color: 'primary',
-  });
+  const [diceResult, setDiceResult] = useState<RollDiceResult>({ number: '', description: '', color: 'primary' });
 
   useEffect(() => {
     play();
@@ -36,7 +29,7 @@ const DiceRollModal = ({ amount, atribute, handleClose }: DiceRollModalProps) =>
   }, []);
 
   useEffect(() => {
-    setRollDiceResult(rollDiceHelper.rollDamage(amount));
+    setDiceResult(rollDiceHelper.rollDamage(amount, attributeValue));
 
     const timer = setTimeout(() => {
       setStopRotation(true);
@@ -50,63 +43,14 @@ const DiceRollModal = ({ amount, atribute, handleClose }: DiceRollModalProps) =>
     <ModalTemplate onClose={handleClose} maxWidth='xl'>
       <Grid container>
         <Grid container spacing={0} size={12} sx={{ justifyContent: 'center', alignItems: 'center' }}>
-          {/* Dado na tela */}
-          <S.RotatingDiceImage
-            width={40}
-            height={40}
-            alt='Dice roll'
-            src={'/assets/dice.png'}
-            stopRotation={stopRotation}
-          />
+          <Dice width={50} height={50} stopRotation={stopRotation} />
         </Grid>
 
-        {/* Valor/numero retornado na rolagem */}
         {showGrids && (
-          <>
-            <Grid size={12}>
-              <Box
-                sx={{
-                  width: 500,
-                  maxWidth: '100%',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  marginTop: '1%',
-                }}>
-                <S.CenteredChip
-                  label={rollDiceResult.number}
-                  color={rollDiceResult.color}
-                  size='medium'
-                  style={{ width: '20%' }}
-                  variant='outlined'
-                />
-              </Box>
-            </Grid>
-
-            {/* Tipo de resultado obtido */}
-            {atribute ? (
-              <Grid size={12}>
-                <Box
-                  sx={{
-                    width: 500,
-                    maxWidth: '100%',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    marginTop: '0.5%',
-                  }}>
-                  {rollDiceResult.description && (
-                    <S.CenteredChip
-                      label={rollDiceResult.description}
-                      color={rollDiceResult.color}
-                      size='medium'
-                      style={{ width: '50%' }}
-                    />
-                  )}
-                </Box>
-              </Grid>
-            ) : (
-              atribute
-            )}
-          </>
+          <S.ResultBox>
+            <CenteredBox label={diceResult.number} color={diceResult.color} />
+            {attribute && <CenteredBox label={diceResult.description} color={diceResult.color} variant='filled' />}
+          </S.ResultBox>
         )}
       </Grid>
     </ModalTemplate>

@@ -55,25 +55,20 @@ const ChangePictureModal = ({ character, handleClose, onPictureChange }: ChangeP
   };
 
   const handleDefaultImageSelect = (standard_character_picture_url: string, injured_character_picture_url: string) => {
-    setPictureURLs({
-      standard_character_picture_url,
-      injured_character_picture_url,
-    });
+    setPictureURLs({ standard_character_picture_url, injured_character_picture_url });
   };
 
   return (
     <ModalTemplate title='👤 Alterar imagens do personagem' onClose={handleClose} onConfirm={submit}>
       <Grid container spacing={3}>
         <Grid size={12}>
-          <Typography variant='body2'>
-            Utilize imagens no tamanho <strong>420x600</strong> em formato <strong>PNG</strong>. Apenas links de imagens
-            hospedadas no
-            <Link href='https://imgur.com/' target='_blank' rel='noopener noreferrer' underline='hover'>
-              {' '}
-              Imgur
-            </Link>{' '}
-            ou Discord são aceitos.
-          </Typography>
+          Utilize imagens no tamanho <strong>420x600</strong> em formato <strong>PNG</strong>. Apenas links de imagens
+          hospedadas no
+          <Link href='https://imgur.com/' target='_blank' rel='noopener noreferrer' underline='hover'>
+            {' '}
+            Imgur
+          </Link>{' '}
+          ou Discord são aceitos.
         </Grid>
 
         <Grid size={11}>
@@ -98,9 +93,7 @@ const ChangePictureModal = ({ character, handleClose, onPictureChange }: ChangeP
           />
         </Grid>
 
-        <Grid size={12}>
-          <DefaultImageSelector onSelect={handleDefaultImageSelect} />
-        </Grid>
+        <DefaultImageSelector onSelect={handleDefaultImageSelect} />
       </Grid>
     </ModalTemplate>
   );

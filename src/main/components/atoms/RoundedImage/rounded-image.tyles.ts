@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 interface ImageButtonProps {
   hoverEffect?: boolean;
+  selected?: boolean;
 }
 
 interface ImageWrapperProps {
@@ -17,14 +18,15 @@ export const ImageWrappe = styled(Box)<ImageWrapperProps>(({ width, height }) =>
   alignSelf: 'center',
 }));
 
-export const ImageButton = styled('div')<ImageButtonProps>(({ hoverEffect }) => ({
+export const ImageButton = styled('div')<ImageButtonProps>(({ hoverEffect, selected }) => ({
   borderRadius: '50%',
   overflow: 'hidden',
   cursor: 'pointer',
-  transition: 'transform 0.3s, border-color 0.3s',
+  transition: 'transform 0.3s, border-color 0.3s, box-shadow 0.3s',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  boxShadow: selected ? '0 0 0 3px #fff' : 'none',
 
   '&:hover': {
     transform: hoverEffect ? 'scale(1.3)' : 'none',

@@ -1,26 +1,10 @@
-import { Chip, keyframes, styled } from '@mui/material';
-import Image from 'next/image';
+import { styled } from '@mui/material';
 
-export const spinAnimation = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
-export const CenteredChip = styled(Chip)(() => ({
+export const ResultBox = styled('div')({
   display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  fontSize: 'medium',
-}));
-
-export const RotatingDiceImage = styled(Image, {
-  shouldForwardProp: (prop) => prop !== 'stopRotation',
-})<{ stopRotation?: boolean }>(({ stopRotation }) => ({
-  animation: stopRotation ? 'none' : `${spinAnimation} 1s linear infinite`,
-}));
+  marginTop: '1rem',
+  width: '100%',
+  gap: '1rem',
+});

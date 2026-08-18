@@ -1,161 +1,74 @@
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-
-import {   Grid, TextField   } from '@mui/material';
-import { api } from 'common/libs';
+import { Grid, TextField } from '@mui/material';
 import { ModalTemplate } from 'main/components/templates';
 
-const InventoryModal = ({ data, onSubmit, operation, character, totalSpace, handleClose, fullCharacter }: any) => {
-  const [updatedCharacter, setUpdatedCharacter] = useState(fullCharacter);
+import * as S from './inventory-modal.styles';
+import { InventoryData, WEAPON_TYPES } from './inventory.helper';
+import useInventorySubmit from './use-inventory-submit.hook';
+import WeaponFields from './weapon-fields.molecule';
 
-  const [inventory, setInventory] = useState({
-    description: '',
-    weight: null,
-    character_id: character,
-  });
+interface InventoryModalProps {
+  data: InventoryData | null;
+  onSubmit: (character: unknown) => void;
+  operation: 'create' | 'edit';
+  character: number;
+  totalSpace: number;
+  handleClose: () => void;
+  fullCharacter: any;
+}
 
-  useEffect(() => {
-    if (!data) {
-      return;
-    }
+const InventoryModal = (props: InventoryModalProps) => {
+  const { inventory, isWeapon, setIsWeapon, combat, updateInventoryField, updateCombatField, submit, isLoading } =
+    useInventorySubmit(props);
 
-    setInventory({
-      description: data.inventory.description,
-      weight: data.inventory.weight,
-      character_id: character,
-    });
-  }, [data]);
-
-  const resetState = () => {
-    return setInventory({
-      description: '',
-      weight: null,
-      character_id: character,
-    });
-  };
-
-  const submit = () => {
-    if (!inventory.description || !inventory.weight) {
-      // Verifica se a descrição e peso esta preenchida
-      toast.error('Preencha todos os campos');
-      return;
-    }
-
-    if (inventory.weight > totalSpace) {
-      // Verifica se o novo item cabe no inventario
-      toast.error('Este item não cabe no seu inventário');
-      return;
-    }
-
-    // Se a operação for criar
-    if (operation === 'create') {
-      api
-        .post('/inventory', inventory)
-        .then(async () => {
-          //
-          const responseID = await api.get(`/inventory/`);
-
-          const newIds: number[] = [];
-          (responseID.data as { id: number }[]).forEach((val) => {
-            newIds.push(val.id);
-          });
-
-          // Atualiza o personagem com os novos valores do inventário
-          updatedCharacter.inventory.push({
-            inventory_id: Math.max.apply(null, newIds),
-            inventory,
-          });
-          setUpdatedCharacter(updatedCharacter);
-
-          // Callback para atualizar o personagem no componente pai
-          onSubmit(updatedCharacter);
-
-          // Close modal
-          handleClose();
-
-          // Limpa as informações do formulário
-          resetState();
-        })
-        .catch(() => {
-          toast.error('Erro ao criar o item!');
-        });
-    } else if (operation === 'edit') {
-      // Se a operação for editar
-      api
-        .put(`/inventory/${data.inventory_id}`, inventory)
-        .then(() => {
-          // Descobre o ID no inventario que vai ser atualizado e modifica essa posição na lista
-          const index = updatedCharacter.inventory.findIndex((obj) => obj.inventory_id === data.inventory_id);
-          updatedCharacter.inventory[index].inventory = inventory;
-          setUpdatedCharacter(updatedCharacter);
-
-          // Callback para atualizar o personagem no componente pai
-          onSubmit(updatedCharacter);
-
-          // Close modal
-          handleClose();
-
-          resetState();
-        })
-        .catch((err) => {
-          toast.error('Erro ao editar o item!');
-          console.log(err);
-        });
-    }
-  };
+  const selectedType = WEAPON_TYPES.find((t) => t.value === combat.type);
 
   return (
     <ModalTemplate
-      title={operation === 'create' ? 'Adicionar um novo item' : 'Editar item'}
-      onClose={handleClose}
+      title={props.operation === 'create' ? '📦 Adicionar item' : '📦 Editar item'}
+      onClose={props.handleClose}
       onConfirm={submit}
-    >
-      <Grid container spacing={3}>
+      disableConfirm={!inventory.description || isLoading}
+      maxWidth='sm'>
+      <S.WeaponPreview>
+        <S.WeaponIcon>{selectedType?.icon ?? '🎒​'}</S.WeaponIcon>
+        <S.WeaponName>{combat.weapon || inventory.description || ''}</S.WeaponName>
+        <S.WeaponTypeBadge label={selectedType?.label ?? 'Item'} size='small' />
+      </S.WeaponPreview>
+
+      <Grid container spacing={2} sx={{ pt: 1 }}>
         <Grid size={12}>
           <TextField
-            style={{
-              marginTop: '15px',
-            }}
             autoFocus
-            label='Descrição'
-            type='text'
             fullWidth
+            label='Descrição'
             variant='standard'
-            defaultValue={data ? data.inventory.description : ''}
-            onChange={({ target }) => {
-              const value = target.value;
-
-              setInventory((prevState) => ({
-                ...prevState,
-                description: value,
-              }));
-            }}
-            spellCheck={false}
+            autoComplete='off'
+            value={inventory.description}
+            onChange={updateInventoryField('description')}
           />
         </Grid>
 
         <Grid size={12}>
           <TextField
-            style={{
-              marginTop: '15px',
-            }}
+            fullWidth
             label='Peso'
             type='number'
-            fullWidth
-            multiline
             variant='standard'
-            defaultValue={data ? data.inventory.weight : ''}
-            onChange={({ target }) => {
-              const value = Number(target.value);
-
-              setInventory((prevState) => ({
-                ...prevState,
-                weight: value,
-              }));
-            }}
-            spellCheck={false}
+            autoComplete='off'
+            value={inventory.weight || ''}
+            onChange={updateInventoryField('weight')}
+            slotProps={{ htmlInput: { min: 0, step: 0.1 } }}
           />
         </Grid>
+
+        <Grid size={12}>
+          <S.WeaponToggleRow>
+            <S.WeaponToggleLabel>⚔ É uma arma?</S.WeaponToggleLabel>
+            <S.GoldSwitch checked={isWeapon} onChange={(e) => setIsWeapon(e.target.checked)} size='small' />
+          </S.WeaponToggleRow>
+        </Grid>
+
+        {isWeapon && <WeaponFields combat={combat} onChange={updateCombatField} />}
       </Grid>
     </ModalTemplate>
   );

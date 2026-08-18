@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { Grid } from '@mui/material';
 import { ENTITY_CONFIG } from 'common/constants';
+import { EntityTypeEnum } from 'common/enums';
 import { calcSpaceInventory } from 'common/helpers';
 import { ActionButton } from 'main/components/molecules';
 import Image from 'next/image';
@@ -13,21 +14,10 @@ interface WrappedCardProps {
   character?: any;
   modal?: any;
   children: ReactNode;
-  entityType:
-    | 'combat'
-    | 'inventory'
-    | 'skills'
-    | 'attribute'
-    | 'dices'
-    | 'avaliableCharacters'
-    | 'attributesList'
-    | 'skillsList'
-    | 'characterOverview'
-    | 'characterInfoForm'
-    | 'SpecialItem';
+  entityType: EntityTypeEnum;
 }
 
-const WrappedCard = ({ character = null, modal, children, entityType, size }: WrappedCardProps) => {
+const WrappedCard = ({ character = null, modal, children, entityType, size = 12 }: WrappedCardProps) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {

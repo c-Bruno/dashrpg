@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { Button, Dialog, DialogContent } from '@mui/material';
+
+import * as S from './modal-template.styles';
 
 interface ModalTemplateProps {
   title?: string;
@@ -22,16 +24,11 @@ const ModalTemplate = ({
   maxWidth,
 }: ModalTemplateProps) => {
   return (
-    <Dialog
-      open={true}
-      onClose={onClose}
-      maxWidth={maxWidth}
-      fullWidth
-      slotProps={{ paper: { sx: { borderRadius: 5 } } }}>
-      {title && <DialogTitle>{title}</DialogTitle>}
+    <Dialog open={true} onClose={onClose} maxWidth={maxWidth} fullWidth slotProps={{ paper: { sx: S.paperSx } }}>
+      {title && <S.Title>{title}</S.Title>}
 
-      <DialogContent dividers={!!title}>{children}</DialogContent>
-      <DialogActions sx={{ mt: 2, mb: 2, mr: 2 }}>
+      <S.Container>{children}</S.Container>
+      <S.Actions>
         <Button onClick={onClose} color='secondary' variant='outlined' disabled={disableClose} sx={{ borderRadius: 5 }}>
           Fechar
         </Button>
@@ -40,7 +37,7 @@ const ModalTemplate = ({
             Confirmar
           </Button>
         )}
-      </DialogActions>
+      </S.Actions>
     </Dialog>
   );
 };

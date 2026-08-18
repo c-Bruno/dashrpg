@@ -6,16 +6,22 @@ interface DiceProps {
   width: number;
   height: number;
   image?: string;
-  onClick: () => void;
+  onClick?: () => void;
   altText?: string;
+  stopRotation?: boolean;
 }
 
-/**
- * A reusable component that displays a dice image which can be clicked to trigger an action, such as rolling the dice.
- * The image source and alternative text can be customized, and the component is memoized for performance optimization.
- */
-const Dice = ({ width, height, image = '/assets/dice.png', onClick, altText }: DiceProps) => {
-  return <S.Dice width={width} height={height} src={image} alt={altText || 'Dice roll'} onClick={onClick} />;
+const Dice = ({ width, height, image = '/assets/dice.png', onClick, altText, stopRotation }: DiceProps) => {
+  return (
+    <S.Dice
+      width={width}
+      height={height}
+      src={image}
+      alt={altText || 'Dice roll'}
+      onClick={onClick}
+      stopRotation={stopRotation}
+    />
+  );
 };
 
 export default memo(Dice);

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { Container, Grid } from '@mui/material';
+import { EntityTypeEnum } from 'common/enums';
 import { useModal } from 'common/hooks';
 import { api } from 'common/libs';
 import { prisma } from 'common/libs/prisma.lib';
@@ -10,7 +11,7 @@ import { CoverTitle, Header } from 'main/components/atoms';
 import {
   AttributeStatusItem,
   ChangePictureModal,
-  ConfirmationModal,
+  InfoModal,
   InventoryModal,
   CombatModal,
 } from 'main/components/molecules';
@@ -90,8 +91,9 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
   // Modals
   // -------------------------------------------------------------------------
 
-  const confirmationModal = useModal(({ close, custom }: any) => (
-    <ConfirmationModal
+  const infoModal = useModal(({ close, custom }: any) => (
+    <InfoModal
+      showConfirm
       title={custom.title}
       text={custom.text}
       data={custom.data}
@@ -174,7 +176,7 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
 
         <Grid container spacing={3} size={12}>
           {/* Overview: imagem, vida e sanidade */}
-          <WrappedCard entityType='characterOverview' character={character} size={{ xs: 12, md: 4 }}>
+          <WrappedCard entityType={EntityTypeEnum.CHARACTER_OVERVIEW} character={character} size={{ xs: 12, md: 4 }}>
             <CharacterOverview
               character={character}
               setCharacter={setCharacter}
@@ -183,26 +185,26 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
           </WrappedCard>
 
           {/* Dados pessoais do personagem */}
-          <WrappedCard entityType='characterInfoForm' character={character} size={{ xs: 12, md: 8 }}>
+          <WrappedCard entityType={EntityTypeEnum.CHARACTER_INFO_FORM} character={character} size={{ xs: 12, md: 8 }}>
             <CharacterInfoForm initialValues={character} onSubmit={onCharacterInfoSubmit} />
           </WrappedCard>
 
           {/* Inventário */}
-          <WrappedCard entityType='inventory' character={character} modal={inventoryModal} size={{ xs: 12, md: 4 }}>
-            <InventoryList
-              character={character}
-              inventoryModal={inventoryModal}
-              confirmationModal={confirmationModal}
-            />
+          <WrappedCard
+            entityType={EntityTypeEnum.INVENTORY}
+            character={character}
+            modal={inventoryModal}
+            size={{ xs: 12, md: 4 }}>
+            <InventoryList character={character} inventoryModal={inventoryModal} confirmationModal={infoModal} />
           </WrappedCard>
 
           {/* Atributos */}
-          <WrappedCard entityType='attribute' character={character} size={{ xs: 12, md: 8 }}>
+          <WrappedCard entityType={EntityTypeEnum.ATTRIBUTE} character={character} size={{ xs: 12, md: 8 }}>
             <AttributeStatusItem character={character} setCharacter={setCharacter} />
           </WrappedCard>
 
           {/* Ações de combate */}
-          <WrappedCard entityType='combat' character={character} modal={combatModal} size={12}>
+          <WrappedCard entityType={EntityTypeEnum.COMBAT} character={character} modal={combatModal} size={12}>
             <WeaponStatusList
               character={character}
               handleCharacter={(newCharacter: Character) => setCharacter(newCharacter)}
@@ -210,12 +212,12 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
           </WrappedCard>
 
           {/* Item especial */}
-          <WrappedCard entityType='SpecialItem' character={character} size={{ xs: 12, md: 4 }}>
+          <WrappedCard entityType={EntityTypeEnum.SPECIAL_ITEM} character={character} size={{ xs: 12, md: 4 }}>
             <SpecialItem character={character} />
           </WrappedCard>
 
           {/* Perícias */}
-          <WrappedCard entityType='skills' character={character} size={8}>
+          <WrappedCard entityType={EntityTypeEnum.SKILLS} character={character} size={8}>
             <SkillsList character={character} setCharacter={setCharacter} />
           </WrappedCard>
         </Grid>

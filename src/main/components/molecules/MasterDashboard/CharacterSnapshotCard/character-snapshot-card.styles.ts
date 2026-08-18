@@ -1,4 +1,4 @@
-import { Box, IconButton, styled, Typography } from '@mui/material';
+import { Box, styled, Typography } from '@mui/material';
 
 interface CardContainerProps {
   isCritical?: boolean;
@@ -14,7 +14,7 @@ export const CharacterCardContainer = styled('div', {
   flexDirection: 'row',
   gap: '1rem',
   padding: '6.5rem 2rem',
-  borderRadius: '14px',
+  borderRadius: '10px',
   cursor: isDead ? 'default' : 'pointer',
   background: '#1c1c22',
 
@@ -70,20 +70,9 @@ export const CharacterTitle = styled(Typography)({
 });
 
 export const CharacterSubtitle = styled(Typography)({
-  fontSize: '15px',
+  fontSize: '10px',
   color: 'rgba(255,255,255,0.38)',
   lineHeight: 1.3,
-});
-
-export const MenuButton = styled(IconButton)({
-  width: 28,
-  height: 28,
-  flexShrink: 0,
-  color: 'rgba(255,255,255,0.4)',
-  '&:hover': {
-    color: 'rgba(255,255,255,0.9)',
-    background: 'rgba(255,255,255,0.08)',
-  },
 });
 
 export const StatsWrapper = styled(Box)({

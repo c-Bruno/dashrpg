@@ -1,17 +1,17 @@
 import { toast } from 'react-toastify';
 
 import { Delete, Edit } from '@mui/icons-material';
-import { TableRow, TableCell, Tooltip, Button, TableBody as MuiTableBody } from '@mui/material';
+import { TableRow, TableCell, Button, TableBody as MuiTableBody } from '@mui/material';
 import { useModal } from 'common/hooks';
 import { api } from 'common/libs';
 import { Dice } from 'main/components/atoms';
-import { CombatModal, ConfirmationModal, DiceRollModal } from 'main/components/molecules';
+import { CombatModal, InfoModal, DiceRollModal } from 'main/components/molecules';
 
 const TableBody = ({ character, handleCharacter, rows, rowsPerPage, page }: any) => {
   const diceRollModal = useModal(({ close, custom }) => <DiceRollModal amount={custom.amount} handleClose={close} />);
 
-  const confirmationModal = useModal(({ close, custom }) => (
-    <ConfirmationModal
+  const infoModal = useModal(({ close, custom }) => (
+    <InfoModal
       title={custom.title}
       text={custom.text}
       data={custom.data}
@@ -60,21 +60,15 @@ const TableBody = ({ character, handleCharacter, rows, rowsPerPage, page }: any)
           </TableCell>
 
           {/* Tipo */}
-          <TableCell style={{ minWidth: 100 }} align='right'>
-            {row.type}
-          </TableCell>
+          <TableCell>{row.type}</TableCell>
 
           {/* Dano */}
-          <TableCell style={{ minWidth: 100 }} align='right'>
+          <TableCell>
             <Dice
               width={25}
               height={25}
               altText='Dice roll'
-              onClick={() =>
-                diceRollModal.appear({
-                  amount: row.damage,
-                })
-              }
+              onClick={() => diceRollModal.appear({ amount: row.damage })}
             />
             {row.damage}
           </TableCell>
@@ -91,34 +85,31 @@ const TableBody = ({ character, handleCharacter, rows, rowsPerPage, page }: any)
 
           {/* Deletar e Editar cadastro */}
           <TableCell style={{ minWidth: 70 }} align='right'>
-            <Tooltip title='Remover item de combate'>
-              <Button
-                variant='outlined'
-                onClick={() => {
-                  confirmationModal.appear({
-                    title: 'Apagar item de combate',
-                    text: 'Deseja apagar este item?',
-                    data: { id: row.id, type: 'combat' },
-                  });
-                }}>
-                <Delete />
-              </Button>
-            </Tooltip>
+            <Button
+              variant='outlined'
+              onClick={() => {
+                infoModal.appear({
+                  title: 'Apagar item de combate',
+                  text: 'Deseja apagar este item?',
+                  data: { id: row.id, type: 'combat' },
+                  showConfirm: true,
+                });
+              }}>
+              <Delete />
+            </Button>
 
-            <Tooltip title='Editar indormações do item de combate'>
-              <Button
-                variant='outlined'
-                style={{ marginLeft: '5px' }}
-                onClick={() =>
-                  combatModal.appear({
-                    operation: 'edit',
-                    character: character.id,
-                    data: row,
-                  })
-                }>
-                <Edit />
-              </Button>
-            </Tooltip>
+            <Button
+              variant='outlined'
+              style={{ marginLeft: '5px' }}
+              onClick={() =>
+                combatModal.appear({
+                  operation: 'edit',
+                  character: character.id,
+                  data: row,
+                })
+              }>
+              <Edit />
+            </Button>
           </TableCell>
         </TableRow>
       ))}

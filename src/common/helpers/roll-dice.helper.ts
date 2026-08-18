@@ -1,20 +1,26 @@
+import dicesConstant from 'common/constants/dices.constant';
 import { DiceLabelColor, DiceOutcome } from 'common/enums/roll-dice.enum';
 
 type DiceResult = {
   number: string;
-  description?: any;
+  description?: string;
   color: DiceLabelColor;
 };
 
-export const rollDamage = (damageAmount: string): DiceResult => {
-  const diceNumber = rollDice(damageAmount);
+export type RollDiceResult = {
+  number: string;
+  description?: string;
+  color: 'primary' | 'error' | 'success' | 'info' | 'warning';
+};
 
-  const diceTypeResult = calcDice(diceNumber, damageAmount);
+// attributeValue: valor numérico do atributo do personagem (1–21+)
+export const rollDamage = (damageAmount: string, attributeValue?: number): DiceResult => {
+  const diceNumber = rollDice(damageAmount);
+  const diceTypeResult = calcDice(Number(diceNumber), damageAmount, attributeValue);
   const diceColor = getDiceColor(diceTypeResult);
   return { number: diceNumber, description: diceTypeResult, color: diceColor };
 };
 
-// Rolador de dados
 export const rollDice = (dice: string): string => {
   let totalDamage = 0;
 
@@ -35,20 +41,36 @@ export const rollDice = (dice: string): string => {
   return String(totalDamage);
 };
 
-// Calcula qual o tipo do resultado do dado (Extremo, Bom, Normal, Fracasso)
-export const calcDice = (dice: string, damageAmount: string): DiceOutcome => {
-  const numericDice = Number(dice);
-  if (numericDice === 20 && damageAmount === '1d20') return DiceOutcome.ExtremeSuccess; // 20 NATURAL
-  if (numericDice === 100 && damageAmount === '1d100') return DiceOutcome.ExtremeSuccess; // 100 NATURAL
-  if (numericDice === 1) return DiceOutcome.ExtremeFailure; // 1 NATURAL
+export const calcDice = (roll: number, damageAmount: string, attributeValue?: number): DiceOutcome => {
+  if (roll === 1) return DiceOutcome.ExtremeFailure;
+
+  // Teste de atributo: compara o resultado com os limiares da tabela
+  if (attributeValue !== undefined) {
+    const index = Math.min(Math.max(attributeValue - 1, 0), 20);
+    const thresholds = dicesConstant.DICE_ROLLS.table[index] as { normal: number; good?: number; extreme?: number };
+
+    if (thresholds.extreme !== undefined && roll >= thresholds.extreme) return DiceOutcome.ExtremeSuccess;
+    if (thresholds.good !== undefined && roll >= thresholds.good) return DiceOutcome.GoodSuccess;
+    if (roll >= thresholds.normal) return DiceOutcome.Success;
+    return DiceOutcome.Failure;
+  }
+
+  // Rolagem de dano sem atributo: apenas detecta resultados naturais extremos
+  if (roll === 20 && damageAmount === '1d20') return DiceOutcome.ExtremeSuccess;
+  if (roll === 100 && damageAmount === '1d100') return DiceOutcome.ExtremeSuccess;
   return DiceOutcome.Normal;
 };
 
-// Retorna a cor do label
 export const getDiceColor = (outcome: DiceOutcome): DiceLabelColor => {
   switch (outcome) {
     case DiceOutcome.ExtremeSuccess:
       return DiceLabelColor.Success;
+    case DiceOutcome.GoodSuccess:
+      return DiceLabelColor.Info;
+    case DiceOutcome.Success:
+      return DiceLabelColor.Primary;
+    case DiceOutcome.Failure:
+      return DiceLabelColor.Warning;
     case DiceOutcome.ExtremeFailure:
       return DiceLabelColor.Error;
     default:

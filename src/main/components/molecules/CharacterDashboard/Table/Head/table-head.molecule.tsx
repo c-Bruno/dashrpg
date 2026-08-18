@@ -1,4 +1,3 @@
-
 import { TableCell, TableRow, TableHead as MuiTableHead } from '@mui/material';
 import { TABLE_HEADERS } from 'common/constants';
 

@@ -14,21 +14,10 @@ interface TablePaginationActionsProps {
 const TablePaginationActions = ({ count, page, rowsPerPage, onPageChange }: TablePaginationActionsProps) => {
   const theme = useTheme();
 
-  const handleFirstPageButtonClick = (event) => {
-    onPageChange(event, 0);
-  };
-
-  const handleBackButtonClick = (event) => {
-    onPageChange(event, page - 1);
-  };
-
-  const handleNextButtonClick = (event) => {
-    onPageChange(event, page + 1);
-  };
-
-  const handleLastPageButtonClick = (event) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
+  const handleFirstPageButtonClick = (event) => onPageChange(event, 0);
+  const handleBackButtonClick = (event) => onPageChange(event, page - 1);
+  const handleNextButtonClick = (event) => onPageChange(event, page + 1);
+  const handleLastPageButtonClick = (event) => onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
 
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>

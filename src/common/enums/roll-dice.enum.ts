@@ -1,11 +1,16 @@
 export enum DiceOutcome {
   ExtremeSuccess = 'Sucesso extremo',
+  GoodSuccess = 'Sucesso bom',
+  Success = 'Sucesso',
+  Failure = 'Fracasso',
   ExtremeFailure = 'Fracasso extremo',
-  Normal = '',
+  Normal = '', // rolagem de dano sem contexto de atributo
 }
 
 export enum DiceLabelColor {
   Success = 'success',
-  Error = 'error',
+  Info = 'info',
   Primary = 'primary',
+  Warning = 'warning',
+  Error = 'error',
 }

@@ -1,249 +1,159 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 import { toast } from 'react-toastify';
 
-import { TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
+import { Grid, MenuItem, TextField } from '@mui/material';
 import { api } from 'common/libs';
-import { TableHead } from 'main/components/molecules';
 import { ModalTemplate } from 'main/components/templates';
 
+import * as S from './combat-modal.styles';
+
+interface CombatData {
+  id?: number;
+  weapon: string;
+  type: string;
+  damage: string;
+  current_load: string | number;
+  total_load: string | number;
+}
+
 interface CombatModalProps {
-  data: any;
-  onSubmit: any;
-  operation: string;
-  character: any;
+  data: CombatData | null;
+  onSubmit: (character: unknown) => void;
+  operation: 'create' | 'edit';
+  character: number;
   handleClose: () => void;
   fullCharacter: any;
 }
 
+const WEAPON_TYPES = [
+  { value: 'Balistico', label: 'Balístico', icon: '🔫' },
+  { value: 'Fisico', label: 'Físico', icon: '⚔️' },
+  { value: 'Fogo', label: 'Fogo', icon: '🔥' },
+];
+
+const buildEmpty = (characterId: number) => ({
+  weapon: '',
+  type: '',
+  damage: '',
+  current_load: '',
+  total_load: '',
+  character_id: characterId,
+});
+
 const CombatModal = ({ data, onSubmit, operation, character, handleClose, fullCharacter }: CombatModalProps) => {
-  const [updatedCharacter, setUpdatedCharacter] = useState(fullCharacter);
-
-  // Tipo de armas
-  const [type, setType] = useState('');
-  const handleChange = (event) => {
-    setType(event.target.value);
-  };
-
-  const [combat, setCombat] = useState({
-    weapon: '',
-    type: '',
-    damage: '',
-    current_load: '',
-    total_load: '',
-    character_id: character,
-  });
+  const [combat, setCombat] = useState(() => (data ? { ...data, character_id: character } : buildEmpty(character)));
 
   useEffect(() => {
-    if (!data) {
-      return;
-    }
+    setCombat(data ? { ...data, character_id: character } : buildEmpty(character));
+  }, [data, character]);
 
-    setCombat({
-      weapon: data.weapon,
-      type: data.type,
-      damage: data.damage,
-      current_load: data.current_load,
-      total_load: data.total_load,
-      character_id: character,
-    });
-  }, [data]);
+  const update = (field: string) => (e: ChangeEvent<HTMLInputElement>) =>
+    setCombat((prev) => ({ ...prev, [field]: e.target.value }));
 
-  const resetState = () => {
-    return setCombat({
-      weapon: '',
-      type: '',
-      damage: '',
-      current_load: '',
-      total_load: '',
-      character_id: character,
-    });
-  };
+  const submit = async () => {
+    if (!combat.weapon) return;
 
-  const submit = () => {
-    if (!combat.weapon) {
-      return;
-    }
-
-    // Se a operação for criar
-    if (operation === 'create') {
-      api
-        .post('/combat', combat)
-        .then(async () => {
-          const responseID = await api.get(`/combat/`);
-
-          const newIds: number[] = [];
-          (responseID.data as { id: number }[]).forEach((val) => {
-            newIds.push(val.id);
-          });
-
-          updatedCharacter.combat.push({
-            combat_id: Math.max.apply(null, newIds),
-            combat,
-          });
-          setUpdatedCharacter(updatedCharacter);
-
-          // Callback
-          onSubmit(updatedCharacter);
-
-          // Close modal
-          handleClose();
-
-          // Limpa aa informações
-          resetState();
-        })
-        .catch(() => {
-          toast.error('Erro ao criar o item!');
-        });
-    } else if (operation === 'edit') {
-      // Se a operação for editar
-      api
-        .put(`/combat/${data.id}`, combat)
-        .then(() => {
-          // Descobre o ID no inventario que vai ser atualizado e modifica essa posição na lista
-          const index = updatedCharacter.combat.findIndex((obj) => obj.combat_id == data.id);
-
-          updatedCharacter.combat[index].combat = combat;
-          setUpdatedCharacter(updatedCharacter);
-
-          // Callback para atualizar o personagem no componente pai
-          onSubmit(updatedCharacter);
-
-          // Close modal
-          handleClose();
-
-          resetState();
-        })
-        .catch((err) => {
-          toast.error('Erro ao editar o item!');
-        });
+    try {
+      if (operation === 'create') {
+        await api.post('/combat', combat);
+        const response = await api.get('/combat/');
+        const newId = Math.max(...(response.data as { id: number }[]).map((v) => v.id));
+        const updated = { ...fullCharacter, combat: [...fullCharacter.combat, { combat_id: newId, combat }] };
+        onSubmit(updated);
+      } else {
+        await api.put(`/combat/${data!.id}`, combat);
+        const updated = {
+          ...fullCharacter,
+          combat: fullCharacter.combat.map((item) => (item.combat_id === data!.id ? { ...item, combat } : item)),
+        };
+        onSubmit(updated);
+      }
+      handleClose();
+    } catch {
+      toast.error(operation === 'create' ? 'Erro ao criar o item!' : 'Erro ao editar o item!');
     }
   };
+
+  const selectedType = WEAPON_TYPES.find((t) => t.value === combat.type);
 
   return (
     <ModalTemplate
-      title={operation === 'create' ? 'Adicionar um novo item' : 'Editar item'}
+      title={operation === 'create' ? '⚔ Adicionar arma' : '⚔ Editar arma'}
       onClose={handleClose}
       onConfirm={submit}
-      maxWidth='xl'>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 500 }} aria-label='custom pagination table' stickyHeader>
-          {/* Cabeçalho da tabela */}
-          <TableHead />
+      disableConfirm={!combat.weapon}
+      maxWidth='sm'>
+      <S.WeaponPreview>
+        <S.WeaponIcon>{selectedType?.icon ?? '🗡️'}</S.WeaponIcon>
+        <S.WeaponName>{combat.weapon ?? ''}</S.WeaponName>
+        <S.WeaponTypeBadge label={selectedType?.label ?? '—'} size='small' className={selectedType ? '' : 'hidden'} />
+      </S.WeaponPreview>
 
-          <TableBody>
-            <TableRow>
-              {/* Descrição da arma */}
-              <TableCell component='th' scope='row'>
-                <TextField
-                  id='filled-basic'
-                  label='Descrição'
-                  variant='standard'
-                  autoComplete='off'
-                  defaultValue={data ? data.weapon : ''}
-                  onChange={({ target }) => {
-                    const value = target.value;
+      <Grid container spacing={3} sx={{ pt: 1.5 }}>
+        <Grid size={12}>
+          <TextField
+            fullWidth
+            autoFocus
+            label='Nome da arma'
+            variant='standard'
+            autoComplete='off'
+            value={combat.weapon}
+            onChange={update('weapon')}
+          />
+        </Grid>
 
-                    setCombat((prevState) => ({
-                      ...prevState,
-                      weapon: value,
-                    }));
-                  }}
-                />
-              </TableCell>
+        <Grid size={12}>
+          <TextField
+            select
+            fullWidth
+            label='Tipo da arma'
+            variant='standard'
+            value={combat.type}
+            onChange={update('type')}>
+            {WEAPON_TYPES.map(({ value, label, icon }) => (
+              <MenuItem key={value} value={value}>
+                {icon} {label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
 
-              {/* Tipo */}
-              <TableCell style={{ minWidth: 180 }} align='left'>
-                <FormControl fullWidth variant='standard'>
-                  <InputLabel id='demo-simple-select-label'>Tipo da arma</InputLabel>
-                  <Select
-                    labelId='demo-simple-select-label'
-                    id='demo-simple-select'
-                    // value={type}
-                    label='Tipo de arma'
-                    defaultValue={data ? data.type : ''}
-                    onChange={({ target }) => {
-                      const value = target.value;
+        <Grid size={4}>
+          <TextField
+            fullWidth
+            label='Dano'
+            variant='standard'
+            autoComplete='off'
+            placeholder='ex: 2d6'
+            value={combat.damage}
+            onChange={update('damage')}
+          />
+        </Grid>
 
-                      setCombat((prevState) => ({
-                        ...prevState,
-                        type: value,
-                      }));
-                    }}>
-                    <MenuItem value='Balistico'>Balístico</MenuItem>
-                    <MenuItem value='Fisico'>Físico</MenuItem>
-                    <MenuItem value='Fogo'>Fogo</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
+        <Grid size={4}>
+          <TextField
+            fullWidth
+            type='number'
+            label='Carga Atual'
+            variant='standard'
+            autoComplete='off'
+            value={combat.current_load}
+            onChange={update('current_load')}
+          />
+        </Grid>
 
-              {/* Dano */}
-              <TableCell style={{ minWidth: 100 }} align='right'>
-                <TextField
-                  id='filled-basic'
-                  label='Dano'
-                  variant='standard'
-                  autoComplete='off'
-                  defaultValue={data ? data.damage : ''}
-                  onChange={({ target }) => {
-                    const value = target.value;
-
-                    setCombat((prevState) => ({
-                      ...prevState,
-                      damage: value,
-                    }));
-                  }}
-                />
-              </TableCell>
-
-              {/* Carga atual */}
-              <TableCell style={{ minWidth: 70 }} align='right'>
-                <TextField
-                  type='number'
-                  id='filled-basic'
-                  label='Carga Atual'
-                  variant='standard'
-                  autoComplete='off'
-                  defaultValue={data ? data.current_load : ''}
-                  onChange={({ target }) => {
-                    const value = target.value;
-
-                    setCombat((prevState) => ({
-                      ...prevState,
-                      current_load: value,
-                    }));
-                  }}
-                />
-              </TableCell>
-
-              {/* Capacidade */}
-              <TableCell style={{ minWidth: 70 }} align='right'>
-                <TextField
-                  type='number'
-                  id='filled-basic'
-                  label='Carga Maxima'
-                  variant='standard'
-                  autoComplete='off'
-                  defaultValue={data ? data.total_load : ''}
-                  onChange={({ target }) => {
-                    const value = target.value;
-
-                    setCombat((prevState) => ({
-                      ...prevState,
-                      total_load: value,
-                    }));
-                  }}
-                />
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+        <Grid size={4}>
+          <TextField
+            fullWidth
+            type='number'
+            label='Carga Máxima'
+            variant='standard'
+            autoComplete='off'
+            value={combat.total_load}
+            onChange={update('total_load')}
+          />
+        </Grid>
+      </Grid>
     </ModalTemplate>
   );
 };
