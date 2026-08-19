@@ -12,6 +12,7 @@ const TableBody = ({ character, handleCharacter, rows, rowsPerPage, page }: any)
 
   const infoModal = useModal(({ close, custom }) => (
     <InfoModal
+      showConfirm
       title={custom.title}
       text={custom.text}
       data={custom.data}
@@ -64,12 +65,7 @@ const TableBody = ({ character, handleCharacter, rows, rowsPerPage, page }: any)
 
           {/* Dano */}
           <TableCell>
-            <Dice
-              width={25}
-              height={25}
-              altText='Dice roll'
-              onClick={() => diceRollModal.appear({ amount: row.damage })}
-            />
+            <Dice width={25} height={25} onClick={() => diceRollModal.appear({ amount: row.damage })} />
             {row.damage}
           </TableCell>
 

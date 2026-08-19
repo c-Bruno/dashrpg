@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { Button, Container, Grid } from '@mui/material';
 import { EntityTypeEnum } from 'common/enums';
 import { useModal } from 'common/hooks';
-import { CoverTitle, Header } from 'main/components/atoms';
-import { InfoModal, SkillModal, AttributeModal, CreatureList } from 'main/components/molecules';
+import { CoverTitle, PageHeader } from 'main/components/atoms';
+import { SkillModal, AttributeModal, CreatureList } from 'main/components/molecules';
 import { AttributesBySkill, AvailableItemsList, AvailableCharacters, AvailableDices } from 'main/components/organisms';
 import { WrappedCard } from 'main/components/templates';
 import { useDashboardStore } from 'main/store';
@@ -27,10 +27,6 @@ const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttribute
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialCharacters, initialAttributes, initialSkills, configs]);
-
-  const infoModal = useModal(({ close, custom }) => (
-    <InfoModal showConfirm title={custom.title} text={custom.text} data={custom.data} handleClose={close} />
-  ));
 
   const attributeModal = useModal(({ close, custom }) => {
     return (
@@ -70,25 +66,20 @@ const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttribute
       <CoverTitle title='Mestre' />
 
       <Grid container spacing={3}>
-        <Header title='Dashboard do Mestre' />
+        <PageHeader title='Dashboard do Mestre' />
 
         {configs.length > 0 ? (
           <>
             <WrappedCard entityType={EntityTypeEnum.CHARACTER_INFO_FORM}>
-              <AvailableCharacters characters={characters} confirmationModal={infoModal} />
+              <AvailableCharacters characters={characters} />
             </WrappedCard>
 
             <WrappedCard entityType={EntityTypeEnum.ATTRIBUTES_LIST} modal={attributeModal} size={{ xs: 12, md: 6 }}>
-              <AvailableItemsList
-                type='attribute'
-                items={attributes}
-                itemModal={attributeModal}
-                confirmationModal={infoModal}
-              />
+              <AvailableItemsList type='attribute' items={attributes} itemModal={attributeModal} />
             </WrappedCard>
 
             <WrappedCard entityType={EntityTypeEnum.SKILLS_LIST} modal={skillModal} size={{ xs: 12, md: 6 }}>
-              <AvailableItemsList type='skill' items={skills} itemModal={skillModal} confirmationModal={infoModal} />
+              <AvailableItemsList type='skill' items={skills} itemModal={skillModal} />
             </WrappedCard>
 
             <WrappedCard entityType={EntityTypeEnum.ATTRIBUTE}>

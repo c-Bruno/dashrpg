@@ -48,7 +48,7 @@ const RollableAttribute = ({ data, image, onInput, onValueChange }: RollableAttr
   return (
     <S.Container>
       <Grid container sx={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-        <Dice width={40} height={40} image={image} altText='Dice roll' onClick={() => handleDiceClick(data)} />
+        <Dice width={40} height={40} image={image} onClick={() => handleDiceClick(data)} />
         <S.AttributeTextName onClick={() => infoModal.appear()}>{data.name}</S.AttributeTextName>
 
         <TextField

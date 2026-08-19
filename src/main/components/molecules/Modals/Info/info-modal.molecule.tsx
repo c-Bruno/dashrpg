@@ -6,7 +6,7 @@ import { ModalTemplate } from 'main/components/templates';
 import { useDashboardStore } from 'main/store';
 
 interface InfoModalProps {
-  data: any;
+  data?: any;
   title: string;
   text: string;
   showConfirm?: boolean;

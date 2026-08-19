@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-
-import { Grid, Link, TextField, Typography } from '@mui/material';
-import { characterPicture } from 'common/helpers';
-import { api } from 'common/libs';
+import { Grid, Link } from '@mui/material';
+import { PictureUrlField } from 'main/components/atoms';
 import { DefaultImageSelector } from 'main/components/molecules';
 import { ModalTemplate } from 'main/components/templates';
+
+import * as S from './change-picture.styles';
+import useChangePicture from './use-change-picture.hook';
 
 interface ChangePictureModalProps {
   character: any;
@@ -14,82 +13,64 @@ interface ChangePictureModalProps {
 }
 
 const ChangePictureModal = ({ character, handleClose, onPictureChange }: ChangePictureModalProps) => {
-  const [pictureURLs, setPictureURLs] = useState({
-    standard_character_picture_url: '',
-    injured_character_picture_url: '',
-  });
-
-  useEffect(() => {
-    setPictureURLs({
-      standard_character_picture_url: character.standard_character_picture_url,
-      injured_character_picture_url: character.injured_character_picture_url,
-    });
-  }, [character]);
-
-  const submit = () => {
-    const { standard_character_picture_url, injured_character_picture_url } = pictureURLs;
-
-    if (!standard_character_picture_url || !injured_character_picture_url) {
-      toast.error('Preencha as duas artes!');
-      return;
-    }
-
-    if (
-      !characterPicture.validateImageURL(standard_character_picture_url) ||
-      !characterPicture.validateImageURL(injured_character_picture_url)
-    ) {
-      toast.error('As imagens devem ser PNGs hospedadas no Discord ou Imgur.');
-      return;
-    }
-
-    api
-      .put(`/character/${character.id}`, pictureURLs)
-      .then(() => {
-        toast.success('Imagens alteradas com sucesso!');
-        onPictureChange();
-        handleClose();
-      })
-      .catch(() => {
-        toast.error('Erro ao salvar!');
-      });
-  };
-
-  const handleDefaultImageSelect = (standard_character_picture_url: string, injured_character_picture_url: string) => {
-    setPictureURLs({ standard_character_picture_url, injured_character_picture_url });
-  };
+  const { pictureURLs, isStandardValid, isInjuredValid, isLoading, submit, handleChange, handleDefaultImageSelect } =
+    useChangePicture({ character, handleClose, onPictureChange });
 
   return (
-    <ModalTemplate title='👤 Alterar imagens do personagem' onClose={handleClose} onConfirm={submit}>
+    <ModalTemplate
+      title='👤 Alterar imagens do personagem'
+      onClose={handleClose}
+      onConfirm={submit}
+      disableConfirm={isLoading}>
       <Grid container spacing={3}>
         <Grid size={12}>
-          Utilize imagens no tamanho <strong>420x600</strong> em formato <strong>PNG</strong>. Apenas links de imagens
-          hospedadas no
-          <Link href='https://imgur.com/' target='_blank' rel='noopener noreferrer' underline='hover'>
-            {' '}
-            Imgur
-          </Link>{' '}
-          ou Discord são aceitos.
+          <S.Hint>
+            Utilize imagens no tamanho <strong>420x600</strong> em formato <strong>PNG</strong>. Apenas links de imagens
+            hospedadas no{' '}
+            <Link href='https://imgur.com/' target='_blank' rel='noopener noreferrer' underline='hover'>
+              Imgur
+            </Link>{' '}
+            ou Discord são aceitos.
+          </S.Hint>
         </Grid>
 
-        <Grid size={11}>
-          <TextField
-            fullWidth
-            name='standard_character_picture_url'
+        <Grid size={12}>
+          <S.PreviewRow>
+            <S.PreviewCard>
+              <S.PreviewLabel>Padrão</S.PreviewLabel>
+              {pictureURLs.standard_character_picture_url ? (
+                <S.PreviewImage src={pictureURLs.standard_character_picture_url} alt='Padrão' />
+              ) : (
+                <S.PreviewPlaceholder>🧍</S.PreviewPlaceholder>
+              )}
+            </S.PreviewCard>
+
+            <S.PreviewCard>
+              <S.PreviewLabel>Machucado</S.PreviewLabel>
+              {pictureURLs.injured_character_picture_url ? (
+                <S.PreviewImage src={pictureURLs.injured_character_picture_url} alt='Machucado' />
+              ) : (
+                <S.PreviewPlaceholder>🩸</S.PreviewPlaceholder>
+              )}
+            </S.PreviewCard>
+          </S.PreviewRow>
+        </Grid>
+
+        <Grid size={12}>
+          <PictureUrlField
             label='Imagem padrão'
-            variant='standard'
             value={pictureURLs.standard_character_picture_url}
-            // onChange={(e) => onPictureChange(e.target.value)}
+            onChange={handleChange('standard_character_picture_url')}
+            isValid={isStandardValid}
           />
         </Grid>
 
-        <Grid size={11}>
-          <TextField
-            fullWidth
-            name='injured_character_picture_url'
+        <Grid size={12}>
+          <PictureUrlField
             label='Imagem machucada'
-            variant='standard'
             value={pictureURLs.injured_character_picture_url}
-            // onChange={(e) => onPictureChange(e.target.value)}
+            onChange={handleChange('injured_character_picture_url')}
+            isValid={isInjuredValid}
           />
         </Grid>
 

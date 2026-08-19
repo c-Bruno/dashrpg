@@ -1,4 +1,4 @@
-import { styled } from '@mui/material';
+import { Chip, styled } from '@mui/material';
 
 export const ResultBox = styled('div')({
   display: 'flex',
@@ -8,3 +8,13 @@ export const ResultBox = styled('div')({
   width: '100%',
   gap: '1rem',
 });
+
+export const CenteredChip = styled(Chip)(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  fontSize: 'medium',
+  width: '18%',
+}));

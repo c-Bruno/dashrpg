@@ -31,33 +31,6 @@ export const WeaponName = styled(Typography)({
   transition: 'color 0.2s',
 });
 
-export const SectionDivider = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  gap: 10,
-  margin: '12px 0 4px',
-  '&::before': {
-    content: '""',
-    flex: 1,
-    height: 1,
-    background: `linear-gradient(to right, transparent, ${GOLD})`,
-  },
-  '&::after': {
-    content: '""',
-    flex: 1,
-    height: 1,
-    background: `linear-gradient(to left, transparent, ${GOLD})`,
-  },
-});
-
-export const SectionLabel = styled(Typography)({
-  fontSize: '0.62rem',
-  color: 'rgba(201, 168, 76, 0.8)',
-  textTransform: 'uppercase',
-  letterSpacing: '0.15em',
-  whiteSpace: 'nowrap',
-});
-
 export const WeaponToggleRow = styled('div')({
   display: 'flex',
   alignItems: 'center',

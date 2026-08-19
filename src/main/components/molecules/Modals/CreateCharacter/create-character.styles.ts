@@ -23,31 +23,3 @@ export const PortraitPreview = styled(Image)({
   boxShadow: `0 0 18px rgba(201, 168, 76, 0.2), 0 0 40px rgba(201, 168, 76, 0.06)`,
   transition: 'border-color 0.3s, box-shadow 0.3s',
 });
-
-// Divisor ornamental com linhas graduais — padrão visual de jogos RPG
-export const SectionDivider = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  gap: 10,
-  margin: '4px 0',
-  '&::before': {
-    content: '""',
-    flex: 1,
-    height: 1,
-    background: `linear-gradient(to right, transparent, ${GOLD})`,
-  },
-  '&::after': {
-    content: '""',
-    flex: 1,
-    height: 1,
-    background: `linear-gradient(to left, transparent, ${GOLD})`,
-  },
-});
-
-export const SectionLabel = styled(Typography)({
-  fontSize: '0.65rem',
-  color: 'rgba(201, 168, 76, 0.85)',
-  textTransform: 'uppercase',
-  letterSpacing: '0.15em',
-  whiteSpace: 'nowrap',
-});

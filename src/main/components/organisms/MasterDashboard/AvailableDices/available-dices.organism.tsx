@@ -16,9 +16,6 @@ const AvaliableDices = () => {
       <Grid size={12}>
         {Object.values(DICES.WITCH_DICES).map((item) => (
           <Dice
-            width={80}
-            height={80}
-            altText={`dice`}
             key={`${item}-dice`}
             image={`/assets/diceImages/${item}.png`}
             onClick={() => diceRollModal.appear({ amount: `1${item}` })}

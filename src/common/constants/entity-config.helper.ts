@@ -21,7 +21,6 @@ const ENTITY_CONFIG = {
         character: character.id,
         space: calcSpace(character),
       }),
-    tooltip: 'Criar item de inventário',
   }),
 
   attribute: () => ({
@@ -36,7 +35,6 @@ const ENTITY_CONFIG = {
       modal.appear({
         operation: 'create',
       }),
-    tooltip: 'Criar uma pericias para os personagens',
   }),
 
   combat: ({ character, modal }) => ({
@@ -47,7 +45,6 @@ const ENTITY_CONFIG = {
         operation: 'create',
         character: character.id,
       }),
-    tooltip: 'Criar ação de combate',
   }),
 
   SpecialItem: () => ({
@@ -67,7 +64,6 @@ const ENTITY_CONFIG = {
       modal.appear({
         operation: 'create',
       }),
-    tooltip: 'Criar uma pericias para os personagens',
   }),
 
   dices: () => ({

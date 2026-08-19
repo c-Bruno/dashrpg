@@ -12,8 +12,8 @@ interface DefaultImageOptionProps {
 
 const RoundedImage = ({
   src,
-  width,
-  height,
+  width = 95,
+  height = 95,
   onClick,
   altText = 'Player image',
   hoverEffect = false,
@@ -22,7 +22,7 @@ const RoundedImage = ({
   return (
     <S.ImageWrappe width={width} height={height}>
       <S.ImageButton onClick={onClick} hoverEffect={hoverEffect} selected={selected}>
-        <S.ImageWrapper src={src} alt={altText} width={width ?? 100} height={height ?? 100} />
+        <S.ImageWrapper src={src} alt={altText} width={width} height={height} />
       </S.ImageButton>
     </S.ImageWrappe>
   );

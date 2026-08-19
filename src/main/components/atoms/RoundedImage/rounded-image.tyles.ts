@@ -12,8 +12,8 @@ interface ImageWrapperProps {
 }
 
 export const ImageWrappe = styled(Box)<ImageWrapperProps>(({ width, height }) => ({
-  width: width ?? 95,
-  height: height ?? 95,
+  width: width,
+  height: height,
   flexShrink: 0,
   alignSelf: 'center',
 }));

@@ -27,12 +27,11 @@ const WrappedCard = ({ character = null, modal, children, entityType, size = 12 
   const config = useMemo(() => ENTITY_CONFIG[entityType], [entityType]);
   if (!config) return null;
 
-  const { title, subtitle, image, onClick, tooltip } = config({ character, modal, calcSpace: calcSpaceInventory }) as {
+  const { title, subtitle, image, onClick } = config({ character, modal, calcSpace: calcSpaceInventory }) as {
     title?: string;
     subtitle?: string;
     image?: string;
     onClick?: () => void;
-    tooltip?: string;
   };
 
   return (
@@ -44,7 +43,7 @@ const WrappedCard = ({ character = null, modal, children, entityType, size = 12 
 
           {isClient && onClick && (
             <S.TopRightButtonWrapper>
-              <ActionButton tooltip={tooltip} onClick={onClick} fontSize='small' />
+              <ActionButton onClick={onClick} fontSize='small' />
             </S.TopRightButtonWrapper>
           )}
         </S.SectionTitle>

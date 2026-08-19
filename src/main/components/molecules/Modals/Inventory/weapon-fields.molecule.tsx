@@ -1,8 +1,8 @@
 import { ChangeEvent } from 'react';
 
 import { Grid, MenuItem, TextField } from '@mui/material';
+import { SectionDivider } from 'main/components/atoms';
 
-import * as S from './inventory-modal.styles';
 import { CombatPayload, WEAPON_TYPES } from './inventory.helper';
 
 interface WeaponFieldsProps {
@@ -12,11 +12,7 @@ interface WeaponFieldsProps {
 
 const WeaponFields = ({ combat, onChange }: WeaponFieldsProps) => (
   <>
-    <Grid size={12}>
-      <S.SectionDivider>
-        <S.SectionLabel>Atributos de combate</S.SectionLabel>
-      </S.SectionDivider>
-    </Grid>
+    <SectionDivider label='Atributos de combate' />
 
     <Grid size={12}>
       <TextField

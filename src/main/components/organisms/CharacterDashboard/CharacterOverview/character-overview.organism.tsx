@@ -33,8 +33,7 @@ const CharacterOverview = ({ character, changePictureModal, setCharacter }) => {
       <FormControlLabel control={<Switch color='secondary' />} label='Traumatizado' />
       <FormControlLabel control={<Switch color='secondary' />} label='Morrendo' />
 
-      {/* Dado para rolagem d100 */}
-      <Dice width={80} height={80} altText='Dice roll' onClick={() => diceRollModal.appear()} />
+      <Dice onClick={() => diceRollModal.appear()} />
     </S.CenteredGrid>
   );
 };

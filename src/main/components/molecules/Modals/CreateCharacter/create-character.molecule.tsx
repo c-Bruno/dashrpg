@@ -65,12 +65,7 @@ const CreateCharacterModal = ({ handleClose }: CreateCharacterModalProps) => {
           onChange={(e) => setName(e.target.value)}
         />
 
-        <S.SectionDivider>
-          <S.SectionLabel>Retrato do personagem</S.SectionLabel>
-        </S.SectionDivider>
-
         <DefaultImageSelector
-          isNewCharacter
           onSelect={(standard, injured) =>
             setPictureURLs({ standard_character_picture_url: standard, injured_character_picture_url: injured })
           }

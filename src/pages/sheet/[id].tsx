@@ -7,7 +7,7 @@ import { useModal } from 'common/hooks';
 import { api } from 'common/libs';
 import { prisma } from 'common/libs/prisma.lib';
 import type { Character } from 'common/types';
-import { CoverTitle, Header } from 'main/components/atoms';
+import { CoverTitle, PageHeader } from 'main/components/atoms';
 import {
   AttributeStatusItem,
   ChangePictureModal,
@@ -172,7 +172,7 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
       <CoverTitle title={`${character?.name} `} />
 
       <Grid container spacing={3}>
-        <Header title={`${character?.name}`} />
+        <PageHeader title={`${character?.name}`} />
 
         <Grid container spacing={3} size={12}>
           {/* Overview: imagem, vida e sanidade */}

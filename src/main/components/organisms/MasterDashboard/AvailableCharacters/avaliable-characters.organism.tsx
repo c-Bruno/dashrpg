@@ -1,14 +1,23 @@
 import { Grid } from '@mui/material';
 import { useModal } from 'common/hooks';
-import { CharacterSnapshotCard, CreateCharacterModal, ActionButton } from 'main/components/molecules';
+import { CharacterSnapshotCard, CreateCharacterModal, ActionButton, InfoModal } from 'main/components/molecules';
 
 interface AvailableCharactersProps {
   characters: any[];
-  confirmationModal: any;
 }
 
-const AvailableCharacters = ({ characters, confirmationModal }: AvailableCharactersProps) => {
+const AvailableCharacters = ({ characters }: AvailableCharactersProps) => {
   const createCharacterModal = useModal(({ close }) => <CreateCharacterModal handleClose={close} />);
+
+  const infoModal = useModal(({ close, custom }) => (
+    <InfoModal
+      showConfirm
+      title='Apagar personagem'
+      text='Tem certeza que deseja apagar o personagem?'
+      data={custom.data}
+      handleClose={close}
+    />
+  ));
 
   return (
     <Grid container spacing={3} size={12}>
@@ -16,20 +25,12 @@ const AvailableCharacters = ({ characters, confirmationModal }: AvailableCharact
         <Grid key={character.id} size={{ xs: 12, md: 5 }}>
           <CharacterSnapshotCard
             character={character}
-            deleteCharacter={() =>
-              confirmationModal.appear({
-                title: 'Apagar personagem',
-                text: 'Tem certeza que deseja apagar o personagem?',
-                data: { id: character.id, type: 'character' },
-              })
-            }
+            deleteCharacter={() => infoModal.appear({ data: { id: character.id, type: 'character' } })}
           />
         </Grid>
       ))}
 
-      <Grid size={{ xs: 12, md: 5 }}>
-        <ActionButton onClick={() => createCharacterModal.appear()} />
-      </Grid>
+      <ActionButton onClick={() => createCharacterModal.appear()} />
     </Grid>
   );
 };

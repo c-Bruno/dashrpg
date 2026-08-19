@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 import { rollDiceHelper } from 'common/helpers';
 import { RollDiceResult } from 'common/helpers/roll-dice.helper';
 import { useAudio } from 'common/hooks';
-import { CenteredBox, Dice } from 'main/components/atoms';
+import { Dice } from 'main/components/atoms';
 import { ModalTemplate } from 'main/components/templates';
 
 import * as S from './dice-roll-modal.styles';
@@ -48,8 +48,8 @@ const DiceRollModal = ({ amount, attribute, attributeValue, handleClose }: DiceR
 
         {showGrids && (
           <S.ResultBox>
-            <CenteredBox label={diceResult.number} color={diceResult.color} />
-            {attribute && <CenteredBox label={diceResult.description} color={diceResult.color} variant='filled' />}
+            <S.CenteredChip label={diceResult.number} color={diceResult.color} size='medium' variant='outlined' />
+            {attribute && <S.CenteredChip label={diceResult.description} color={diceResult.color} size='medium' />}
           </S.ResultBox>
         )}
       </Grid>
