@@ -1,38 +1,40 @@
 import { prisma } from 'common/libs/prisma.lib';
 import type { NextApiHandler } from 'next';
 
-/**
- * Handler for /api/combat/[id]
- *
- * DELETE — Removes all character–combat junction rows first, then deletes the
- *           combat item atomically via a Prisma transaction.
- * PUT    — Updates the weapon or other fields of an existing combat item.
- */
 const handler: NextApiHandler = async (req, res) => {
   try {
     if (req.method === 'DELETE') {
       const id = Number(req.query.id);
 
-      // Remove junction rows before the parent to satisfy FK constraints
-      const deleteFromCharacterCombat = prisma.characterCombat.deleteMany({
-        where: { combat_id: id },
-      });
+      // Check for a linked inventory item before deleting
+      const combatRecord = await prisma.combat.findUnique({ where: { id } });
+      const linkedInventoryId = combatRecord?.inventory_id ?? null;
 
-      const deleteCombat = prisma.combat.delete({ where: { id } });
-
-      await prisma.$transaction([deleteFromCharacterCombat, deleteCombat]);
-
-      return res.status(200).json({ success: true, callback: 'removeCombat', id });
-    } else if (req.method === 'PUT') {
-      const { body } = req;
-
-      if (!body.weapon) {
-        return res.status(400).json({ error: 'Weapon not set' });
+      if (linkedInventoryId) {
+        await prisma.$transaction([
+          prisma.characterCombat.deleteMany({ where: { combat_id: id } }),
+          prisma.combat.delete({ where: { id } }),
+          prisma.characterInventory.deleteMany({ where: { inventory_id: linkedInventoryId } }),
+          prisma.inventory.delete({ where: { id: linkedInventoryId } }),
+        ]);
+      } else {
+        await prisma.$transaction([
+          prisma.characterCombat.deleteMany({ where: { combat_id: id } }),
+          prisma.combat.delete({ where: { id } }),
+        ]);
       }
 
+      return res.status(200).json({ success: true, id, linkedInventoryId });
+    } else if (req.method === 'PUT') {
       const id = Number(req.query.id);
+      const { weapon, type, damage, current_load, total_load } = req.body;
 
-      const combat = await prisma.combat.update({ where: { id }, data: body });
+      // Build update with only provided fields — supports both full edits and partial shoot updates
+      const data = Object.fromEntries(
+        Object.entries({ weapon, type, damage, current_load, total_load }).filter(([, v]) => v !== undefined),
+      );
+
+      const combat = await prisma.combat.update({ where: { id }, data });
 
       return res.status(200).json(combat);
     } else {

@@ -1,8 +1,5 @@
-// src/components/organisms/InventoryList/InventoryList.tsx
-
-import { Grid, TextField } from '@mui/material';
 import { calcSpaceInventory } from 'common/helpers';
-import { EditableDataRow } from 'main/components/molecules';
+import { InventoryRow } from 'main/components/molecules';
 
 import * as S from './inventory-list.styles';
 
@@ -13,48 +10,60 @@ interface InventoryListProps {
 }
 
 const InventoryList = ({ character, inventoryModal, confirmationModal }: InventoryListProps) => {
+  const freeSpace = calcSpaceInventory(character);
+  const usedSpace = character.inventory.reduce(
+    (acc: number, item: any) => acc + Number(item.inventory?.weight || 0),
+    0,
+  );
+  const totalSpace = usedSpace + freeSpace;
+  const fillPercent = totalSpace > 0 ? Math.min((usedSpace / totalSpace) * 100, 100) : 0;
+
   return (
     <>
-      {/* Cabeçalho das informações de inventário */}
-      <Grid container style={{ paddingBottom: '16px' }}>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <TextField disabled label='ITEM' variant='standard' fullWidth />
-        </Grid>
+      <S.CapacityRow>
+        <S.CapacityLabel>Carga</S.CapacityLabel>
+        <S.CapacityBar variant='determinate' value={fillPercent} />
+        <S.SpaceInfo>
+          {usedSpace}/{totalSpace} ({freeSpace} livre)
+        </S.SpaceInfo>
+      </S.CapacityRow>
 
-        <Grid size={{ xs: 12, md: 3 }}>
-          <TextField disabled label='ESPAÇOS' variant='standard' fullWidth />
-        </Grid>
+      <S.ScrollableList>
+        {character.inventory.length === 0 ? (
+          <S.EmptyState>Nenhum item carregado</S.EmptyState>
+        ) : (
+          character.inventory.map((item: any, index: number) => {
+            const linkedCombat = character.combat?.find((c: any) => {
+              // primary: FK link set by the inventory modal weapon toggle
+              if (c.combat?.inventory_id != null) return c.combat.inventory_id === item.inventory_id;
+              // fallback: name match for combat records created before the inventory link existed
+              return c.combat?.weapon?.toLowerCase().trim() === item.inventory?.description?.toLowerCase().trim();
+            });
 
-        <Grid size={{ xs: 12, md: 3 }}>
-          <TextField disabled label={`(${calcSpaceInventory(character)} LIVRE)`} variant='standard' fullWidth />
-        </Grid>
-      </Grid>
-
-      {/* Lista de itens */}
-      <S.ScrollableBox container size={12} spacing={0.8}>
-        {character.inventory.map((inventory, index) => (
-          <Grid key={index} size={12}>
-            <EditableDataRow
-              data={inventory}
-              editRow={(data) => {
-                const linkedCombat = character.combat?.find((c: any) => c.combat?.inventory_id === data.inventory_id);
-                inventoryModal.appear({
-                  operation: 'edit',
-                  data: linkedCombat ? { ...data, combat: linkedCombat.combat } : data,
-                  space: calcSpaceInventory(character),
-                });
-              }}
-              deleteRow={(data) =>
-                confirmationModal.appear({
-                  title: 'Apagar item do inventário',
-                  text: 'Deseja apagar este item?',
-                  data: { id: data.inventory_id, type: 'inventory' },
-                })
-              }
-            />
-          </Grid>
-        ))}
-      </S.ScrollableBox>
+            return (
+              <InventoryRow
+                key={item.inventory_id ?? index}
+                item={item}
+                isWeapon={!!linkedCombat}
+                onEdit={() =>
+                  inventoryModal.appear({
+                    operation: 'edit',
+                    data: linkedCombat ? { ...item, combat: linkedCombat.combat } : item,
+                    space: freeSpace,
+                  })
+                }
+                onDelete={() =>
+                  confirmationModal.appear({
+                    title: 'Apagar item do inventário',
+                    text: 'Deseja apagar este item?',
+                    data: { id: item.inventory_id, type: 'inventory' },
+                  })
+                }
+              />
+            );
+          })
+        )}
+      </S.ScrollableList>
     </>
   );
 };

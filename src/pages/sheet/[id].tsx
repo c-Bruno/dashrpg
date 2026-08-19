@@ -32,7 +32,7 @@ import { useRouter } from 'next/router';
 // ---------------------------------------------------------------------------
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const characterId = isNaN(Number(params?.id)) ? null : Number(params?.id);
+  const characterId = Number.isNaN(Number(params?.id)) ? null : Number(params?.id);
 
   if (!characterId) {
     return { props: { rawCharacter: null } };
@@ -53,15 +53,21 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     return { props: { rawCharacter: null } };
   }
 
-  // Serialize dates/BigInt values so Next.js can pass them as JSON props
-  const serialized = JSON.parse(JSON.stringify(character));
-
-  return { props: { rawCharacter: serialized } };
+  return { props: { rawCharacter: JSON.parse(JSON.stringify(character)) } };
 };
 
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
+
+const removeInventoryWithCascade = (prev: any, id: number, type: string, linkedCombatId?: number | null) => {
+  const withoutDeleted = { ...prev, [type]: prev[type].filter((item: any) => item[`${type}_id`] !== id) };
+  if (type !== 'inventory' || !linkedCombatId) return withoutDeleted;
+  return {
+    ...withoutDeleted,
+    combat: withoutDeleted.combat.filter((c: any) => c.combat_id !== linkedCombatId),
+  };
+};
 
 interface SheetProps {
   rawCharacter: Character | null;
@@ -103,15 +109,11 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
 
         api
           .delete(`/${type}/${id}`)
-          .then(() => {
-            setCharacter((prev) =>
-              prev
-                ? {
-                    ...prev,
-                    [type]: (prev as any)[type].filter((item: any) => item[`${type}_id`] !== id),
-                  }
-                : prev,
-            );
+          .then((response) => {
+            setCharacter((prev) => {
+              if (!prev) return prev;
+              return removeInventoryWithCascade(prev, id, type, response.data?.linkedCombatId);
+            });
           })
           .catch(() => toast.error(`Erro ao apagar: ${type}`));
       }}

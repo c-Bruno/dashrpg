@@ -2,14 +2,13 @@
 export { default as ActionButton } from './ActionButton/action-button.atom';
 export { default as DefaultImageSelector } from './Common/DefaultImageSelector/default-image-selector.molecule';
 export { default as EditableDataRow } from './Common/EditableDataRow/editable-data-row.molecule';
+export { default as InventoryRow } from './Common/InventoryRow/inventory-row.molecule';
+export { default as WeaponRow } from './Common/WeaponRow/weapon-row.molecule';
 export { default as RollableAttribute } from './Common/RollableAttribute/rollable-attribute.molecule';
 export { default as StatusBar } from './Common/StatusBar/status-bar.molecule';
 
 // Character dashboard
 export { default as AttributeStatusItem } from './CharacterDashboard/AttributeStatusItem/attribute-status-item.molecule';
-export { default as TableBody } from './CharacterDashboard/Table/Body/table-body.molecule';
-export { default as TableHead } from './CharacterDashboard/Table/Head/table-head.molecule';
-export { default as TablePaginationActions } from './CharacterDashboard/Table/PaginationActions/table-pagination-actions.molecule';
 
 // Master dashboard
 export { default as CreatureList } from './MasterDashboard/CreatureList/creature-list.molecule';

@@ -1,19 +1,12 @@
-import { ChangeEvent, useMemo, useState } from 'react';
+import { useMemo } from 'react';
+import { toast } from 'react-toastify';
 
-import { Paper, Table, TableContainer, TableRow, TableFooter, TablePagination } from '@mui/material';
-import { TableBody, TableHead, TablePaginationActions } from 'main/components/molecules';
+import { useModal } from 'common/hooks';
+import { api } from 'common/libs';
+import { CombatModal, DiceRollModal, InfoModal } from 'main/components/molecules';
+import WeaponRow, { WeaponRowData } from 'main/components/molecules/Common/WeaponRow/weapon-row.molecule';
 
-// Builds each table row — all nullable fields are typed as string to match the Prisma model
-const createData = (
-  id: number,
-  weapon: string,
-  type?: string,
-  damage?: string,
-  current_load?: string,
-  total_load?: string,
-) => {
-  return { id, weapon, type, damage, current_load, total_load };
-};
+import * as S from './weapon-status-list.styles';
 
 type CombatItem = {
   combat_id: number;
@@ -23,6 +16,7 @@ type CombatItem = {
     damage?: string;
     current_load?: string;
     total_load?: string;
+    inventory_id?: number | null;
   };
 };
 
@@ -35,67 +29,102 @@ interface WeaponStatusListProps {
   handleCharacter: (newCharacter: any) => void;
 }
 
+const removeCombatWithCascade = (prev: any, id: number, linkedInventoryId?: number | null) => {
+  const updated = { ...prev, combat: prev.combat.filter((c: any) => c.combat_id !== id) };
+  if (!linkedInventoryId) return updated;
+  return { ...updated, inventory: updated.inventory.filter((i: any) => i.inventory_id !== linkedInventoryId) };
+};
+
 const WeaponStatusList = ({ character, handleCharacter }: WeaponStatusListProps) => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const diceRollModal = useModal(({ close, custom }) => <DiceRollModal amount={custom.amount} handleClose={close} />);
 
-  const combatRows = useMemo(() => {
-    return character.combat
-      .map((item) =>
-        createData(
-          item.combat_id,
-          item.combat.weapon,
-          item.combat.type,
-          item.combat.damage,
-          item.combat.current_load,
-          item.combat.total_load,
-        ),
-      )
-      .sort((a, b) => (a.weapon < b.weapon ? -1 : 1));
-  }, [character.combat]);
+  const infoModal = useModal(({ close, custom }) => (
+    <InfoModal
+      showConfirm
+      title={custom.title}
+      text={custom.text}
+      data={custom.data}
+      handleClose={close}
+      onConfirmation={(data) => {
+        const { id, type } = data;
+        api
+          .delete(`/${type}/${id}`)
+          .then((response) => {
+            handleCharacter((prev: any) => removeCombatWithCascade(prev, id, response.data?.linkedInventoryId));
+          })
+          .catch(() => toast.error(`Erro ao apagar: ${type}`));
+      }}
+    />
+  ));
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+  const combatModal = useModal(({ close, custom }) => (
+    <CombatModal
+      handleClose={close}
+      data={custom.data || null}
+      character={custom.character || custom.data?.character_id}
+      onSubmit={handleCharacter}
+      operation={custom.operation}
+      fullCharacter={character}
+    />
+  ));
+
+  const handleShoot = (row: WeaponRowData) => {
+    const remaining = Math.max(0, Number(row.current_load) - 1);
+    api
+      .put(`/combat/${row.id}`, { current_load: String(remaining) })
+      .then(() => {
+        handleCharacter((prev: any) => ({
+          ...prev,
+          combat: prev.combat.map((c: any) =>
+            c.combat_id === row.id ? { ...c, combat: { ...c.combat, current_load: String(remaining) } } : c,
+          ),
+        }));
+        if (remaining === 0) toast.warn('Sem munição!');
+      })
+      .catch(() => toast.error('Erro ao registrar disparo.'));
   };
 
-  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setRowsPerPage(Number.parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  const combatRows = useMemo(
+    () =>
+      (character.combat ?? [])
+        .map((item) => ({
+          id: item.combat_id,
+          weapon: item.combat.weapon,
+          type: item.combat.type,
+          damage: item.combat.damage,
+          current_load: item.combat.current_load,
+          total_load: item.combat.total_load,
+          inventory_id: item.combat.inventory_id,
+        }))
+        .sort((a, b) => (a.weapon < b.weapon ? -1 : 1)),
+    [character.combat],
+  );
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 500 }} aria-label='custom pagination table' stickyHeader>
-        {/* Cabeçalho da tabela */}
-        <TableHead />
-
-        {/* Caso possua dados de combate do personagem */}
-        <TableBody
-          rows={combatRows}
-          page={page}
-          character={character}
-          rowsPerPage={rowsPerPage}
-          handleCharacter={handleCharacter}
-        />
-
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'Todas', value: -1 }]}
-              colSpan={6}
-              count={combatRows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              slotProps={{ select: { native: true } }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-              labelRowsPerPage='Linhas por página'
+    <S.ListWrapper>
+      <S.ScrollableList>
+        {combatRows.length === 0 ? (
+          <S.EmptyState>Nenhuma arma cadastrada</S.EmptyState>
+        ) : (
+          combatRows.map((row) => (
+            <WeaponRow
+              key={row.id}
+              row={row}
+              onRollDice={() => diceRollModal.appear({ amount: row.damage })}
+              onShoot={() => handleShoot(row)}
+              onEdit={() => combatModal.appear({ operation: 'edit', character: character.id, data: row })}
+              onDelete={() =>
+                infoModal.appear({
+                  title: 'Apagar item de combate',
+                  text: 'Deseja apagar este item?',
+                  data: { id: row.id, type: 'combat' },
+                })
+              }
             />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+          ))
+        )}
+      </S.ScrollableList>
+    </S.ListWrapper>
   );
 };
 

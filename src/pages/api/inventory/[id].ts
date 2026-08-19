@@ -1,38 +1,35 @@
 import { prisma } from 'common/libs/prisma.lib';
 import type { NextApiHandler } from 'next';
 
-/**
- * Handler for /api/inventory/[id]
- *
- * DELETE — Removes all character–inventory junction rows first, then deletes the
- *           inventory item atomically via a Prisma transaction.
- * PUT    — Updates the description or other fields of an existing inventory item.
- */
 const handler: NextApiHandler = async (req, res) => {
   try {
     if (req.method === 'DELETE') {
       const id = Number(req.query.id);
 
-      // Remove junction rows before the parent to satisfy FK constraints
-      const deleteFromCharacterInventory = prisma.characterInventory.deleteMany({
-        where: { inventory_id: id },
-      });
+      // Check for a linked combat record before deleting
+      const linkedCombat = await prisma.combat.findUnique({ where: { inventory_id: id } });
+      const linkedCombatId = linkedCombat?.id ?? null;
 
-      const deleteInventory = prisma.inventory.delete({ where: { id } });
-
-      await prisma.$transaction([deleteFromCharacterInventory, deleteInventory]);
-
-      return res.status(200).json({ success: true });
-    } else if (req.method === 'PUT') {
-      const { body } = req;
-
-      if (!body.description) {
-        return res.status(400).json({ error: 'Name not set' });
+      if (linkedCombatId) {
+        await prisma.$transaction([
+          prisma.characterCombat.deleteMany({ where: { combat_id: linkedCombatId } }),
+          prisma.combat.delete({ where: { id: linkedCombatId } }),
+          prisma.characterInventory.deleteMany({ where: { inventory_id: id } }),
+          prisma.inventory.delete({ where: { id } }),
+        ]);
+      } else {
+        await prisma.$transaction([
+          prisma.characterInventory.deleteMany({ where: { inventory_id: id } }),
+          prisma.inventory.delete({ where: { id } }),
+        ]);
       }
 
+      return res.status(200).json({ success: true, id, linkedCombatId });
+    } else if (req.method === 'PUT') {
       const id = Number(req.query.id);
+      const { description, weight } = req.body;
 
-      const inventory = await prisma.inventory.update({ where: { id }, data: body });
+      const inventory = await prisma.inventory.update({ where: { id }, data: { description, weight } });
 
       return res.status(200).json(inventory);
     } else {
