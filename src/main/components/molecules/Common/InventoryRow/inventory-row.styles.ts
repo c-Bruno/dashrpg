@@ -1,42 +1,90 @@
 import { Chip, Typography, styled } from '@mui/material';
 
 export const Row = styled('div')({
-  display: 'flex',
+  position: 'relative',
+  minWidth: 0,
+  minHeight: 116,
+  display: 'grid',
+  gridTemplateColumns: 'minmax(0, 1fr)',
+  gridTemplateRows: 'minmax(0, 1fr) 24px',
   alignItems: 'center',
-  gap: 10,
-  padding: '9px 6px',
-  borderRadius: 4,
-  borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-  transition: 'background 0.12s',
+  gap: 0,
+  padding: '5px 7px 4px',
+  border: '1px solid rgba(255, 255, 255, 0.2)',
+  borderRadius: 7,
+  background: 'rgba(255, 255, 255, 0.045)',
+  transition: 'background 0.12s, border-color 0.12s',
   '&:hover': {
-    background: 'rgba(255, 255, 255, 0.04)',
+    background: 'rgba(255, 255, 255, 0.075)',
+    borderColor: 'rgba(255, 255, 255, 0.42)',
+  },
+  '& > .MuiIconButton-root': {
+    gridRow: '2',
+    justifySelf: 'end',
+    width: 24,
+    height: 24,
+    padding: 4,
+    color: 'rgba(255, 255, 255, 0.58)',
+    '&:hover': {
+      color: '#f44336',
+      background: 'rgba(244, 67, 54, 0.1)',
+    },
+  },
+});
+
+export const ItemButton = styled('button')({
+  gridRow: '1',
+  minWidth: 0,
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 3,
+  padding: '3px 3px 2px',
+  border: 0,
+  borderRadius: 4,
+  background: 'transparent',
+  color: 'inherit',
+  font: 'inherit',
+  cursor: 'pointer',
+  '&:focus-visible': {
+    outline: '2px solid rgba(255, 255, 255, 0.82)',
+    outlineOffset: 1,
   },
 });
 
 export const ItemIcon = styled('span')({
-  fontSize: '1rem',
+  fontSize: '1.5rem',
   lineHeight: 1,
-  flexShrink: 0,
-  width: 22,
+  minHeight: 30,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '100%',
   textAlign: 'center',
 });
 
 export const NameBlock = styled('div')({
-  flex: 1,
   minWidth: 0,
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
+  alignItems: 'center',
   gap: 3,
 });
 
 export const ItemName = styled(Typography)({
-  fontSize: '0.88rem',
-  fontWeight: 400,
-  color: 'rgba(255, 255, 255, 0.82)',
+  width: '100%',
+  fontSize: '0.82rem',
+  fontWeight: 500,
+  color: 'rgba(255, 255, 255, 0.92)',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
   lineHeight: 1.3,
+  textAlign: 'center',
 });
 
 export const WeaponBadge = styled(Chip)({
@@ -48,21 +96,13 @@ export const WeaponBadge = styled(Chip)({
   background: 'rgba(180, 50, 50, 0.1)',
   border: '1px solid rgba(180, 50, 50, 0.25)',
   borderRadius: 3,
-  alignSelf: 'flex-start',
+  alignSelf: 'center',
   '& .MuiChip-label': { padding: '0 5px' },
 });
 
 export const WeightBadge = styled('div')({
-  fontSize: '0.7rem',
-  color: 'rgba(255, 255, 255, 0.35)',
-  borderRadius: 20,
-  padding: '1px 9px',
-  flexShrink: 0,
+  fontSize: '0.68rem',
+  color: 'rgba(255, 255, 255, 0.58)',
+  textAlign: 'center',
   whiteSpace: 'nowrap',
-});
-
-export const Actions = styled('div')({
-  display: 'flex',
-  flexShrink: 0,
-  marginLeft: 2,
 });
