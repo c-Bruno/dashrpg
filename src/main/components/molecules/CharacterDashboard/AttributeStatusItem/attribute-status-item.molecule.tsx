@@ -39,6 +39,7 @@ const AttributeStatusItem = ({ character, setCharacter }: AttributeStatusItemPro
       {character.attributes?.map((item) => (
         <Grid key={item.attribute_id} size={2}>
           <RollableAttribute
+            character={{ id: character.id!, name: character.name }}
             data={{
               name: item.attribute.name,
               value: item.value,

@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Grid } from '@mui/material';
 import { rollDiceHelper } from 'common/helpers';
 import { RollDiceResult } from 'common/helpers/roll-dice.helper';
 import { useAudio } from 'common/hooks';
+import { socket } from 'common/libs';
 import { Dice } from 'main/components/atoms';
 import { ModalTemplate } from 'main/components/templates';
 
@@ -13,15 +14,23 @@ interface DiceRollModalProps {
   amount: string;
   attribute?: string;
   attributeValue?: number;
+  /** Quando informado, o resultado da rolagem é emitido via socket para
+   *  que o mestre e demais jogadores possam acompanhar em tempo real. */
+  character?: { id: number; name: string } | null;
   handleClose: () => void;
 }
 
-const DiceRollModal = ({ amount, attribute, attributeValue, handleClose }: DiceRollModalProps) => {
+const DiceRollModal = ({ amount, attribute, attributeValue, character, handleClose }: DiceRollModalProps) => {
   const [showGrids, setShowGrids] = useState(false);
   const [stopRotation, setStopRotation] = useState(false);
   const { play } = useAudio('/sounds/DiceRollingOnTable.mp3');
+  const hasEmitted = useRef(false);
 
-  const [diceResult, setDiceResult] = useState<RollDiceResult>({ number: '', description: '', color: 'primary' });
+  // Calcula o resultado uma única vez, antes de qualquer efeito colateral
+  const diceResult = useMemo<RollDiceResult>(
+    () => rollDiceHelper.rollDamage(amount, attributeValue),
+    [amount, attributeValue],
+  );
 
   useEffect(() => {
     play();
@@ -29,7 +38,17 @@ const DiceRollModal = ({ amount, attribute, attributeValue, handleClose }: DiceR
   }, []);
 
   useEffect(() => {
-    setDiceResult(rollDiceHelper.rollDamage(amount, attributeValue));
+    // Emite o resultado via socket uma única vez
+    if (character && !hasEmitted.current) {
+      hasEmitted.current = true;
+
+      socket.emit('dice_roll', {
+        character_id: character.id,
+        character_name: character.name,
+        attribute: attribute ?? null,
+        roll: { number: diceResult.number, description: diceResult.description ?? null, color: diceResult.color },
+      });
+    }
 
     const timer = setTimeout(() => {
       setStopRotation(true);
@@ -37,6 +56,7 @@ const DiceRollModal = ({ amount, attribute, attributeValue, handleClose }: DiceR
     }, 1000);
 
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -20,7 +20,13 @@ io.on('connect', socket => {
     });
 
     socket.on('dice_roll', data => {
-        return io.to(`dice_character_${data.character_id}`).emit('dice_roll', data);
+        // Broadcast para todas as conexões (exceto o emissor) para que
+        // o mestre e os demais jogadores vejam a rolagem em tempo real
+        return socket.broadcast.emit('dice_roll', {
+            ...data,
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            timestamp: Date.now(),
+        });
     });
 });
 

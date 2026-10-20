@@ -11,6 +11,7 @@ import { CoverTitle, PageHeader } from 'main/components/atoms';
 import {
   AttributeStatusItem,
   ChangePictureModal,
+  DiceRollFeed,
   InfoModal,
   InventoryModal,
   CombatModal,
@@ -224,6 +225,9 @@ const Sheet = ({ rawCharacter }: SheetProps) => {
           </WrappedCard>
         </Grid>
       </Grid>
+
+      {/* Feed de rolagens dos jogadores */}
+      <DiceRollFeed />
     </Container>
   );
 };

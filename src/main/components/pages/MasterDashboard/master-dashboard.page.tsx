@@ -4,7 +4,7 @@ import { Button, Container, Grid } from '@mui/material';
 import { EntityTypeEnum } from 'common/enums';
 import { useModal } from 'common/hooks';
 import { CoverTitle, PageHeader } from 'main/components/atoms';
-import { SkillModal, AttributeModal, CreatureList } from 'main/components/molecules';
+import { SkillModal, AttributeModal, CreatureList, DiceRollFeed } from 'main/components/molecules';
 import { AttributesBySkill, AvailableItemsList, AvailableCharacters, AvailableDices } from 'main/components/organisms';
 import { WrappedCard } from 'main/components/templates';
 import { useDashboardStore } from 'main/store';
@@ -102,6 +102,9 @@ const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttribute
           </Grid>
         )}
       </Grid>
+
+      {/* Feed de rolagens dos jogadores */}
+      <DiceRollFeed />
     </Container>
   );
 };

@@ -14,6 +14,7 @@ export { default as AttributeStatusItem } from './CharacterDashboard/AttributeSt
 export { default as CreatureList } from './MasterDashboard/CreatureList/creature-list.molecule';
 export { default as CharacterSnapshotCard } from './MasterDashboard/CharacterSnapshotCard/character-snapshot-card.molecule';
 export { default as SkillAttributeList } from './MasterDashboard/SkillAttributeList/skill-attribute-list.molecule';
+export { default as DiceRollFeed } from './MasterDashboard/DiceRollFeed/dice-roll-feed.molecule';
 
 // Modals
 export { default as AttributeModal } from './Modals/Attribute/attribute-modal.molecule';

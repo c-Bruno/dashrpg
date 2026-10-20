@@ -36,6 +36,7 @@ const Skills = ({ character, setCharacter }) => {
         <Grid key={index} size={2}>
           <RollableAttribute
             image='/assets/expertiseRoll.png'
+            character={{ id: character.id, name: character.name }}
             data={{
               name: each.skill.name,
               value: each.value,

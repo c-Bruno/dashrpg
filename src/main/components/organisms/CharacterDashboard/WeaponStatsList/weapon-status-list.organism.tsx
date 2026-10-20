@@ -24,6 +24,7 @@ interface WeaponStatusListProps {
   character: {
     combat?: CombatItem[];
     id?: number;
+    name: string;
     [key: string]: any;
   };
   handleCharacter: (newCharacter: any) => void;
@@ -36,7 +37,9 @@ const removeCombatWithCascade = (prev: any, id: number, linkedInventoryId?: numb
 };
 
 const WeaponStatusList = ({ character, handleCharacter }: WeaponStatusListProps) => {
-  const diceRollModal = useModal(({ close, custom }) => <DiceRollModal amount={custom.amount} handleClose={close} />);
+  const diceRollModal = useModal(({ close, custom }) => (
+    <DiceRollModal amount={custom.amount} character={{ id: character.id!, name: character.name }} handleClose={close} />
+  ));
 
   const infoModal = useModal(({ close, custom }) => (
     <InfoModal

@@ -1,10 +1,11 @@
 import dicesConstant from 'common/constants/dices.constant';
-import { DiceLabelColor, DiceOutcome } from 'common/enums/roll-dice.enum';
+import { ColorVariant } from 'common/enums';
+import { DiceOutcome } from 'common/enums/roll-dice.enum';
 
 type DiceResult = {
   number: string;
   description?: string;
-  color: DiceLabelColor;
+  color: ColorVariant;
 };
 
 export type RollDiceResult = {
@@ -61,19 +62,19 @@ export const calcDice = (roll: number, damageAmount: string, attributeValue?: nu
   return DiceOutcome.Normal;
 };
 
-export const getDiceColor = (outcome: DiceOutcome): DiceLabelColor => {
+export const getDiceColor = (outcome: DiceOutcome | string): ColorVariant => {
   switch (outcome) {
     case DiceOutcome.ExtremeSuccess:
-      return DiceLabelColor.Success;
+      return ColorVariant.SUCCESS;
     case DiceOutcome.GoodSuccess:
-      return DiceLabelColor.Info;
+      return ColorVariant.INFO;
     case DiceOutcome.Success:
-      return DiceLabelColor.Primary;
+      return ColorVariant.PRIMARY;
     case DiceOutcome.Failure:
-      return DiceLabelColor.Warning;
+      return ColorVariant.WARNING;
     case DiceOutcome.ExtremeFailure:
-      return DiceLabelColor.Error;
+      return ColorVariant.ERROR;
     default:
-      return DiceLabelColor.Primary;
+      return ColorVariant.PRIMARY;
   }
 };

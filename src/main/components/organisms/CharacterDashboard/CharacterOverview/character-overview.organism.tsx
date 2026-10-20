@@ -14,8 +14,9 @@ const CharacterOverview = ({ character, changePictureModal, setCharacter }) => {
 
   const handleImageClick = () => changePictureModal.appear();
 
-  // This modal is used for rolling a d100 when the dice icon is clicked in the character overview section.
-  const diceRollModal = useModal(({ close }: any) => <DiceRollModal amount='1d100' handleClose={close} />);
+  const diceRollModal = useModal(({ close }: any) => (
+    <DiceRollModal amount='1d100' character={{ id: character.id, name: character.name }} handleClose={close} />
+  ));
 
   return (
     <S.CenteredGrid container spacing={3}>
