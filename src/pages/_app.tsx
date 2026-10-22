@@ -5,7 +5,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { ModalProvider } from 'main/contexts/ModalContext';
 import type { AppProps } from 'next/app';
 
-import theme from '../themes/Default.theme';
+import darkFantasyTheme from '../themes/dark-fantasy.theme';
 import '../themes/global.scss';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
@@ -18,7 +18,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={darkFantasyTheme}>
       <ModalProvider>
         <CssBaseline />
         <Component {...pageProps} />

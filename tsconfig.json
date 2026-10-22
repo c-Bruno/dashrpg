@@ -9,6 +9,15 @@
       ],
       "core/*": [
         "./src/core/*"
+      ],
+      "design-system/*": [
+        "./src/design-system/*"
+      ],
+      "features/*": [
+        "./src/features/*"
+      ],
+      "themes/*": [
+        "./src/themes/*"
       ]
     },
     "target": "ES2017",

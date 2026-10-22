@@ -49,6 +49,20 @@
 | 🎲 **Dice Roller** | Built-in dice rolling system with history per character |
 | 🗂️ **Inventory & Combat** | Full inventory and combat item management |
 
+### Master dashboard presentation
+
+The `/dashboard` screen uses a compact pixel-fantasy header, a character sidebar,
+and a responsive sheet with health/sanity, attributes, skills, inventory, and combat.
+On smaller screens the character list scrolls horizontally and the sheet panels stack.
+Select a character to load its real sheet; health and sanity remain editable by
+clicking their bars or focusing them and pressing Enter/Space.
+
+Dashboard-specific components and visual tokens live in
+`src/features/master-dashboard/components`; data loading remains in the page,
+selection hook, and Zustand store. Pixelify Sans and Rajdhani are loaded alongside
+the existing Google Fonts, with monospace/sans-serif fallbacks. The header shortcuts
+open the existing dice page and the selected character's sheet.
+
 ---
 
 ## 🛠️ Technologies
@@ -173,4 +187,3 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 <p align="center">Made with ❤️ for RPG players</p>
-

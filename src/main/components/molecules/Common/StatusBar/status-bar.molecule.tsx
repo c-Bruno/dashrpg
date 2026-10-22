@@ -1,9 +1,11 @@
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { toast } from 'react-toastify';
 
 import { StatusBarEnum } from 'common/enums';
 import { ProgressBarHelper } from 'common/helpers';
 import { useFetchMutation, useModal } from 'common/hooks';
 import { socket } from 'common/libs';
+import type { Character } from 'common/types';
 import { CharacterService } from 'core/services';
 import { StatusBarModal } from 'main/components/molecules';
 
@@ -16,7 +18,9 @@ type StatusBarProps = {
   total?: number;
   current?: number;
   variant?: StatusBarEnum;
-  setCharacter?: any;
+  setCharacter?: Dispatch<SetStateAction<Character | null>>;
+  compact?: boolean;
+  icon?: ReactNode;
 };
 
 /**
@@ -30,6 +34,8 @@ const StatusBar = ({
   current,
   withIcon = false,
   setCharacter,
+  compact = false,
+  icon,
 }: StatusBarProps) => {
   const isHP = variant === StatusBarEnum.Life; // Determine if this is the HP bar or the Sanity bar based on the variant
   const { barColor, trackColor, gradient, icon: Icon, label } = COLOR_MAP[variant];
@@ -37,7 +43,7 @@ const StatusBar = ({
   const { trigger } = useFetchMutation(CharacterService.updateCharacter, {
     onSuccess: (_data, params) => {
       const { ...updateData } = params;
-      setCharacter((prev) => (prev ? { ...prev, ...updateData } : prev));
+      setCharacter?.((prev) => (prev ? { ...prev, ...updateData } : prev));
 
       socket.emit(isHP ? 'update_hit_points' : 'update_sanity_points', {
         character_id: params.character_id,
@@ -73,9 +79,32 @@ const StatusBar = ({
   ));
 
   return (
-    <S.StatusBox onClick={characterId ? () => updateStatusbarModal.appear() : undefined}>
-      {withIcon && Icon && <Icon sx={{ color: barColor, flexShrink: 0 }} />}
-      <S.StatusBarLabel>{label}</S.StatusBarLabel>
+    <S.StatusBox
+      compact={compact}
+      withIcon={withIcon}
+      role={characterId ? 'button' : undefined}
+      tabIndex={characterId ? 0 : undefined}
+      aria-label={characterId ? `Editar ${label}: ${current}/${total}` : undefined}
+      onKeyDown={
+        characterId
+          ? (event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                updateStatusbarModal.appear();
+              }
+            }
+          : undefined
+      }
+      onClick={characterId ? () => updateStatusbarModal.appear() : undefined}>
+      {withIcon &&
+        (icon ? (
+          <span data-slot='icon' style={{ color: barColor }}>
+            {icon}
+          </span>
+        ) : (
+          Icon && <Icon data-slot='icon' sx={{ color: barColor, flexShrink: 0 }} />
+        ))}
+      <S.StatusBarLabel data-slot='label'>{label}</S.StatusBarLabel>
 
       <S.StatusBar
         variant='determinate'
@@ -83,8 +112,10 @@ const StatusBar = ({
         barColor={barColor}
         trackColor={trackColor}
         gradient={gradient}
+        compact={compact}
+        aria-label={label}
       />
-      <S.StatusBarLabel>
+      <S.StatusBarLabel data-slot='value'>
         {current}/{total}
       </S.StatusBarLabel>
     </S.StatusBox>

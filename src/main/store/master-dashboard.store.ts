@@ -7,6 +7,11 @@ type useDashboardStoreType = {
   skills: Skill[];
   config: any;
 
+  // Personagem selecionado na sidebar
+  selectedCharacterId: number | null;
+  selectedCharacterData: Character | null;
+  isFetchingCharacter: boolean;
+
   setCharacters: (c: Character[]) => void;
   addCharacter: (c: Character) => void;
   removeCharacter: (id: number) => void;
@@ -19,6 +24,12 @@ type useDashboardStoreType = {
   removeSkill: (id: number) => void;
 
   setConfig: (c: any) => void;
+
+  // Ações de seleção
+  selectCharacter: (id: number | null) => void;
+  setSelectedCharacterData: (data: Character | null) => void;
+  setFetchingCharacter: (loading: boolean) => void;
+  updateSelectedCharacter: (updates: Partial<Character>) => void;
 };
 
 const useDashboardStore = create<useDashboardStoreType>((set) => ({
@@ -27,6 +38,10 @@ const useDashboardStore = create<useDashboardStoreType>((set) => ({
   skills: [],
   config: { DICE_ON_SCREEN_TIMEOUT_IN_MS: null, TIME_BETWEEN_DICES_IN_MS: null },
 
+  selectedCharacterId: null,
+  selectedCharacterData: null,
+  isFetchingCharacter: false,
+
   // Characters in the master dashboard
   setCharacters: (data) => set({ characters: data }),
   addCharacter: (newCharacter) =>
@@ -34,9 +49,16 @@ const useDashboardStore = create<useDashboardStoreType>((set) => ({
       characters: [...state.characters, newCharacter],
     })),
   removeCharacter: (id) =>
-    set((state) => ({
-      characters: state.characters.filter((c) => c.id !== id),
-    })),
+    set((state) => {
+      const removesSelectedCharacter = state.selectedCharacterId === id || state.selectedCharacterData?.id === id;
+
+      return {
+        characters: state.characters.filter((c) => c.id !== id),
+        ...(removesSelectedCharacter
+          ? { selectedCharacterId: null, selectedCharacterData: null, isFetchingCharacter: false }
+          : {}),
+      };
+    }),
 
   // Attributes config in the master dashboard
   setAttributes: (data) => set({ attributes: data }),
@@ -57,6 +79,21 @@ const useDashboardStore = create<useDashboardStoreType>((set) => ({
     })),
 
   setConfig: (data) => set({ config: data }),
+
+  // Personagem selecionado na sidebar
+  selectCharacter: (id) =>
+    set({
+      selectedCharacterId: id,
+      selectedCharacterData: id === null ? null : undefined, // limpa dados se desselecionar
+    }),
+  setSelectedCharacterData: (data) => set({ selectedCharacterData: data, isFetchingCharacter: false }),
+  setFetchingCharacter: (loading) => set({ isFetchingCharacter: loading }),
+  updateSelectedCharacter: (updates) =>
+    set((state) => ({
+      selectedCharacterData: state.selectedCharacterData
+        ? { ...state.selectedCharacterData, ...updates }
+        : state.selectedCharacterData,
+    })),
 }));
 
 export default useDashboardStore;

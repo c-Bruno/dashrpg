@@ -3,7 +3,10 @@
     "paths": {
       "common/*": ["./src/common/*"],
       "main/*": ["./src/main/*"],
-      "core/*": ["./src/core/*"]
+      "core/*": ["./src/core/*"],
+      "design-system/*": ["./src/design-system/*"],
+      "features/*": ["./src/features/*"],
+      "themes/*": ["./src/themes/*"]
     }
   }
 }

@@ -18,7 +18,6 @@ export { default as DiceRollFeed } from './MasterDashboard/DiceRollFeed/dice-rol
 
 // Modals
 export { default as AttributeModal } from './Modals/Attribute/attribute-modal.molecule';
-export { default as CreateCharacterModal } from './Modals/CreateCharacter/create-character.molecule';
 export { default as CombatModal } from './Modals/Combat/combat-modal.molecule';
 export { default as ChangePictureModal } from './Modals/ChangePicture/change-picture.molecule';
 export { default as DiceRollModal } from './Modals/DiceRoll/dice-roll-modal.molecule';

@@ -2,7 +2,7 @@ import { DialogContentText } from '@mui/material';
 import { useFetchMutation } from 'common/hooks';
 import { api } from 'common/libs';
 import { RemoveItemRequest, RemoveItemResponse } from 'core/services/Master/dashboard.interface';
-import { ModalTemplate } from 'main/components/templates';
+import { ConfirmationDialog, ModalDialog } from 'design-system/ui';
 import { useDashboardStore } from 'main/store';
 
 interface InfoModalProps {
@@ -25,15 +25,26 @@ const InfoModal = ({ data, title, text, showConfirm, handleClose, onConfirmation
 
   const handleConfirm = () => {
     if (onConfirmation) onConfirmation?.(data);
-    else trigger({ type: data.type, id: data.id });
+    else void trigger({ type: data.type, id: data.id });
 
     handleClose();
   };
 
+  if (showConfirm) {
+    return (
+      <ConfirmationDialog
+        title={title}
+        message={text || '*** Este item não possui informações adicionais ***'}
+        onClose={handleClose}
+        onConfirm={handleConfirm}
+      />
+    );
+  }
+
   return (
-    <ModalTemplate title={title} onClose={handleClose} onConfirm={showConfirm ? handleConfirm : undefined}>
+    <ModalDialog title={title} onClose={handleClose} closeLabel='Fechar'>
       <DialogContentText>{text || '*** Este item não possui informações adicionais ***'}</DialogContentText>
-    </ModalTemplate>
+    </ModalDialog>
   );
 };
 

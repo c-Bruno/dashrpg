@@ -8,11 +8,20 @@ import * as S from './dice-roll-feed.styles';
 
 const MAX_VISIBLE_ROLLS = 8;
 
-const DiceRollFeed = () => {
+interface DiceRollFeedProps {
+  characterIds?: number[];
+}
+
+const DiceRollFeed = ({ characterIds }: DiceRollFeedProps) => {
   const { rollHistory } = useDiceRollSocket();
   const [dismissedRolls, setDismissedRolls] = useState<Set<string>>(new Set());
+  const visibleCharacterIds = characterIds ? new Set(characterIds) : null;
 
-  const visibleRolls = rollHistory.filter((roll) => !dismissedRolls.has(roll.id)).slice(0, MAX_VISIBLE_ROLLS);
+  const visibleRolls = rollHistory
+    .filter(
+      (roll) => !dismissedRolls.has(roll.id) && (!visibleCharacterIds || visibleCharacterIds.has(roll.character_id)),
+    )
+    .slice(0, MAX_VISIBLE_ROLLS);
 
   const dismissRoll = (id: string) => {
     setDismissedRolls((prev) => new Set(prev).add(id));

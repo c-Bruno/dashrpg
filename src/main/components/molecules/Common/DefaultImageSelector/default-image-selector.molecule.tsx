@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Box } from '@mui/material';
-import { IMAGE_PLACEHOLDERS } from 'common/constants';
+import { CHARACTER_PORTRAITS } from 'common/constants';
 import { RoundedImage, SectionDivider } from 'main/components/atoms';
 
 interface DefaultImageSelectorProps {
@@ -20,12 +20,12 @@ const DefaultImageSelector = ({ onSelect }: DefaultImageSelectorProps) => {
     <Box sx={{ mt: 3 }}>
       <SectionDivider label='Ou escolha uma imagem padrão' />
       <Box sx={{ mt: 2.5, mb: 2.5, display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-        {IMAGE_PLACEHOLDERS.map(({ standard_character_picture_url, injured_character_picture_url }) => (
+        {CHARACTER_PORTRAITS.map(({ id, standardImageUrl, injuredImageUrl }) => (
           <RoundedImage
-            key={standard_character_picture_url}
-            src={standard_character_picture_url}
-            selected={selectedUrl === standard_character_picture_url}
-            onClick={() => handleSelect(standard_character_picture_url, injured_character_picture_url)}
+            key={id}
+            src={standardImageUrl}
+            selected={selectedUrl === standardImageUrl}
+            onClick={() => handleSelect(standardImageUrl, injuredImageUrl)}
           />
         ))}
       </Box>

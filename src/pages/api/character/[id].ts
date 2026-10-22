@@ -6,7 +6,7 @@ import type { NextApiHandler } from 'next';
  *
  * DELETE — Removes a character and all its related data (rolls, attributes,
  *           skills) atomically via a Prisma transaction.
- * GET    — Returns a single character with fully populated attributes and skills.
+ * GET    — Returns a single character with fully populated attributes, skills, and inventory.
  * PUT    — Updates scalar fields of a character by id.
  */
 const handler: NextApiHandler = async (req, res) => {
@@ -28,12 +28,14 @@ const handler: NextApiHandler = async (req, res) => {
     } else if (req.method === 'GET') {
       const id = Number(req.query.id);
 
-      // Include nested attribute and skill definitions for the character sheet view
+      // Include nested relations required by the master dashboard character sheet
       const character = await prisma.character.findUnique({
         where: { id },
         include: {
           attributes: { include: { attribute: true } },
           skills: { include: { skill: true } },
+          inventory: { include: { inventory: true } },
+          combat: { include: { combat: true } },
         },
       });
 

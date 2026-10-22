@@ -8,6 +8,5 @@ export { default as WeaponStatusList } from './CharacterDashboard/WeaponStatsLis
 
 // Master dashboard
 export { default as AttributesBySkill } from './MasterDashboard/AttributesBySkill/attributes-by-skill.organism';
-export { default as AvailableCharacters } from './MasterDashboard/AvailableCharacters/avaliable-characters.organism';
 export { default as AvailableDices } from './MasterDashboard/AvailableDices/available-dices.organism';
 export { default as AvailableItemsList } from './MasterDashboard/AvailableItemsList/avaliable-items-list.organism';

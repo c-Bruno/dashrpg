@@ -4,7 +4,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import { DEFAULT_TYPE, TYPE_CONFIG } from './weapon-row.styles';
 import * as S from './weapon-row.styles';
 
-export interface WeaponRowData {
+interface WeaponRowData {
   id: number;
   weapon: string;
   type?: string;
