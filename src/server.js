@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const app = require('express')();
-const server = require('http').Server(app);
+const server = require('node:http').Server(app);
 const io = require('socket.io')(server);
 const next = require('next');
 
@@ -20,13 +20,27 @@ io.on('connect', socket => {
     });
 
     socket.on('dice_roll', data => {
-        return io.to(`dice_character_${data.character_id}`).emit('dice_roll', data);
+        // Broadcast para todas as conexões (exceto o emissor) para que
+        // o mestre e os demais jogadores vejam a rolagem em tempo real
+        return socket.broadcast.emit('dice_roll', {
+            ...data,
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            timestamp: Date.now(),
+        });
     });
 });
 
 nextApp.prepare().then(() => {
-    app.all('*', (req, res) => {
+    // Express v5 no longer accepts '*' wildcard - use catch-all middleware
+    app.use(async (req, res) => {
         return nextHandler(req, res);
+    });
+
+    // Express v5 handles promise rejections automatically
+    // but we add explicit error handler for clarity
+    app.use((err, req, res, next) => {
+        console.error('[Server] Error:', err);
+        res.status(500).json({ error: 'Internal server error' });
     });
 
     server.listen(process.env.PORT || 3000, err => {
@@ -36,4 +50,7 @@ nextApp.prepare().then(() => {
 
         console.log('[Server] Successfully started on port', process.env.PORT || 3000);
     });
-})
+}).catch(err => {
+    console.error('[Server] Failed to start:', err);
+    process.exit(1);
+});

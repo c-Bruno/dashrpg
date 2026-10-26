@@ -1,0 +1,14 @@
+# Imagem de desenvolvimento local — Node 24 completo com todas as ferramentas
+FROM node:24.15.0-slim
+
+WORKDIR /app
+
+COPY package.json yarn.lock ./
+RUN yarn install
+
+# O código-fonte é montado via volume no docker run / docker-compose
+# Exemplo de uso:
+#   docker build -f Dockerfile.dev -t dashrpg-dev .
+#   docker run -p 3000:3000 -v $(pwd):/app -v /app/node_modules dashrpg-dev
+
+CMD ["yarn", "dev"]
