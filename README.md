@@ -60,8 +60,14 @@ clicking their bars or focusing them and pressing Enter/Space.
 Dashboard-specific components and visual tokens live in
 `src/features/master-dashboard/components`; data loading remains in the page,
 selection hook, and Zustand store. Pixelify Sans and Rajdhani are loaded alongside
-the existing Google Fonts, with monospace/sans-serif fallbacks. The header shortcuts
-open the existing dice page and the selected character's sheet.
+the existing Google Fonts, with monospace/sans-serif fallbacks. The header shortcut
+opens the selected character's existing sheet page.
+
+Health/sanity editing is shared by the dashboard and player sheet through
+`src/features/character-status`. The feature owns the modal, API mutation,
+state-update callback, and socket notification; `src/design-system/ui/StatusBar`
+only renders the bar and optional interaction handlers. Failed saves keep the
+modal open with its values intact and display an error notification.
 
 ---
 

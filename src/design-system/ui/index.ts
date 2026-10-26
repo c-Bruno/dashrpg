@@ -7,5 +7,8 @@ export { default as ModalDialog } from './modal-dialog/modal-dialog';
 export { default as NumberStepper } from './number-stepper/number-stepper';
 export { default as SectionPanel } from './section-panel/section-panel';
 export { default as StatItem } from './stat-item/stat-item';
+export { default as StatusBar } from './StatusBar/status-bar';
+export { statusBarConfig } from './StatusBar/status-bar.config';
 
+export type { StatusBarConfig } from './StatusBar/status-bar.config';
 export type { ImagePickerOption } from './image-picker/image-picker';

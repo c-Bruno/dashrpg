@@ -1,16 +1,28 @@
+import type { Dispatch, SetStateAction } from 'react';
+
 import { FormControlLabel, Switch } from '@mui/material';
 import { StatusBarEnum } from 'common/enums';
 import { characterPicture } from 'common/helpers';
 import { useModal } from 'common/hooks';
+import type { Character } from 'common/types';
+import { CharacterStatusBar } from 'features/character-status';
 import { Dice, RoundedImage } from 'main/components/atoms';
-import { DiceRollModal, StatusBar } from 'main/components/molecules';
+import { DiceRollModal } from 'main/components/molecules';
 
 import * as S from './character-overview.styles';
 
-const CharacterOverview = ({ character, changePictureModal, setCharacter }) => {
+interface CharacterOverviewProps {
+  character: Character;
+  changePictureModal: { appear: () => void };
+  setCharacter: Dispatch<SetStateAction<Character | null>>;
+}
+
+const CharacterOverview = ({ character, changePictureModal, setCharacter }: CharacterOverviewProps) => {
   const characterPictureURL = characterPicture.getCharacterPictureURL(character);
 
-  const { id, current_hit_points, max_hit_points, current_sanity_points, max_sanity_points } = character;
+  const handleCharacterUpdate = (updates: Partial<Character>) => {
+    setCharacter((previous) => (previous ? { ...previous, ...updates } : previous));
+  };
 
   const handleImageClick = () => changePictureModal.appear();
 
@@ -22,13 +34,11 @@ const CharacterOverview = ({ character, changePictureModal, setCharacter }) => {
     <S.CenteredGrid container spacing={3}>
       <RoundedImage src={characterPictureURL} width={140} height={140} onClick={handleImageClick} hoverEffect />
 
-      <StatusBar total={max_hit_points} current={current_hit_points} characterId={id} setCharacter={setCharacter} />
-      <StatusBar
-        total={max_sanity_points}
-        current={current_sanity_points}
+      <CharacterStatusBar character={character} onCharacterUpdate={handleCharacterUpdate} />
+      <CharacterStatusBar
+        character={character}
         variant={StatusBarEnum.Sanity}
-        characterId={id}
-        setCharacter={setCharacter}
+        onCharacterUpdate={handleCharacterUpdate}
       />
 
       <FormControlLabel control={<Switch color='secondary' />} label='Traumatizado' />

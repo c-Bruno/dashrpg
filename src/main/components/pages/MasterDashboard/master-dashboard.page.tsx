@@ -7,7 +7,8 @@ import { api } from 'common/libs';
 import type { Attribute, Character, Config, Skill } from 'common/types';
 import type { RemoveItemResponse } from 'core/services/Master/dashboard.interface';
 import { ConfirmationDialog, DashboardIcon } from 'design-system/ui';
-import { CharacterSheet, CharacterSidebar, EmptyStatePanel } from 'features/master-dashboard/components';
+import { CharacterSheet, CharacterSidebar, EmptyStatePanel } from 'features/master/characters/components';
+import { MasterNavigation } from 'features/master/navigation/components';
 import { CoverTitle } from 'main/components/atoms';
 import { DiceRollFeed } from 'main/components/molecules';
 import { useDashboardStore } from 'main/store';
@@ -89,6 +90,7 @@ const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttribute
           <DashboardIcon name='swords' size={32} />
           Dashboard do Mestre
         </h1>
+        <MasterNavigation />
         <nav aria-label='Atalhos do mestre'>
           {selectedCharacterData?.id != null && (
             <>
@@ -120,7 +122,7 @@ const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttribute
             onSelectCharacter={handleSelectCharacter}
             onCharacterCreated={handleCharacterCreated}
           />
-          <S.Main>
+          <S.Main id='visao-geral'>
             {selectedCharacterData && (
               <CharacterSheet character={selectedCharacterData} onCharacterUpdate={handleCharacterUpdate} />
             )}
@@ -128,7 +130,7 @@ const Dashboard = ({ configs, initialSkills, initialCharacters, initialAttribute
           </S.Main>
         </S.Layout>
       ) : (
-        <S.Main sx={{ padding: '24px', textAlign: 'center' }}>
+        <S.Main id='visao-geral' sx={{ padding: '24px', textAlign: 'center' }}>
           <Button variant='contained' onClick={runInitialSetup} fullWidth>
             REALIZAR CONFIGURAÇÃO INICIAL
           </Button>

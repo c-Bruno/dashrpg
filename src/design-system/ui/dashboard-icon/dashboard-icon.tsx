@@ -71,6 +71,20 @@ const artwork = {
   sheet: <path fillRule='evenodd' d='M4 1h12v3h4v19H4zm2 2v18h12V6h-4V3zm2 6h8v2H8zm0 4h8v2H8zm0 4h6v2H8z' />,
   trash: <path fillRule='evenodd' d='M9 1h6v2h-6zM4 4h16v2H4zm3 4h10l-1 13H8zm3 2v9h1v-9zm3 0v9h1v-9z' />,
   warning: <path d='M10 1h4v2h2v3h2v3h2v3h2v6H2v-6h2V9h2V6h2V3h2zm1 6v6h2V7zm0 8v2h2v-2z' />,
+  home: <path fillRule='evenodd' d='M2 10 12 1l10 9h-3v11h-6v-7h-3v7H4V10zm4 0v9h2v-7h7v7h2v-9l-5-5z' />,
+  group: (
+    <path
+      fillRule='evenodd'
+      d='M8 2h5v2h2v5h-2v2h-5V9H6V4h2zm1 2v3h3V4zm7 1h3v2h2v5h-2v2h-4v-2h2V7h-1zm-8 7h6v2h4v2h2v5H2v-5h2v-2h4zm0 2v2H6v3h10v-3h-3v-2z'
+    />
+  ),
+  book: <path fillRule='evenodd' d='M3 2h7v2h4V2h7v20h-7v-2h-4v2H3zm2 2v15h3v-2h8v2h3V4h-3v2H8V4zm5 2v11h2V6z' />,
+  content: (
+    <path
+      fillRule='evenodd'
+      d='M5 2h10v2h3v3h3v15H5v-3H2V5h3zm2 2v13h12V9h-5V4zm8 1v3h3zm-9 1H4v11h2zm4 1h4v2h-4zm0 4h8v2h-8zm0 4h8v2h-8z'
+    />
+  ),
 } satisfies Record<string, ReactNode>;
 
 export type DashboardIconName = keyof typeof artwork;
