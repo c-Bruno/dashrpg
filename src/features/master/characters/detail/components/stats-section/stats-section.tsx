@@ -1,7 +1,7 @@
 import { StatusBarEnum } from 'common/enums';
 import { characterPicture } from 'common/helpers';
 import { Character } from 'common/types';
-import { Avatar, DashboardIcon } from 'design-system/ui';
+import { Avatar, RuleIcon } from 'design-system/ui';
 import { CharacterStatusBar } from 'features/character-status';
 
 import * as S from './stats-section.styles';
@@ -31,7 +31,7 @@ const StatsSection = ({ character }: StatsSectionProps) => {
             .filter((detail) => detail.label)
             .map((detail) => (
               <S.IdentityDetail key={detail.kind} data-kind={detail.kind}>
-                <DashboardIcon name={detail.icon} size={18} />
+                <RuleIcon iconKey={detail.icon} size={18} />
                 {detail.label}
               </S.IdentityDetail>
             ))}
@@ -39,11 +39,11 @@ const StatsSection = ({ character }: StatsSectionProps) => {
       </S.IdentitySection>
 
       <S.StatsSection>
-        <CharacterStatusBar character={character} icon={<DashboardIcon name='heart' />} withIcon compact />
+        <CharacterStatusBar character={character} icon={<RuleIcon iconKey='heart' size={24} />} withIcon compact />
         <CharacterStatusBar
           character={character}
           variant={StatusBarEnum.Sanity}
-          icon={<DashboardIcon name='brain' />}
+          icon={<RuleIcon iconKey='brain' size={24} />}
           withIcon
           compact
         />

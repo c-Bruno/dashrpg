@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { DashboardIcon } from 'design-system/ui';
-import { DashboardIconName } from 'design-system/ui/dashboard-icon/dashboard-icon';
+import { RuleIcon } from 'design-system/ui';
+import type { RuleIconName } from 'design-system/ui';
 
 import * as S from './template-panel.styles';
 
 type TemplatePanelProps = {
-  icon: DashboardIconName;
+  icon: RuleIconName;
   title: string;
   listLength?: number;
   onCreate: () => void;
@@ -17,11 +17,11 @@ const TemplatePanel = ({ icon, title, listLength, onCreate, children }: Template
   return (
     <S.Panel aria-labelledby='rules-title'>
       <S.PanelHeader>
-        <DashboardIcon name={icon} />
+        <RuleIcon iconKey={icon} size={24} />
         <h3 id='rules-title'>{title.charAt(0).toUpperCase() + title.slice(1) + 's'}</h3>
 
         <S.AddButton type='button' onClick={onCreate}>
-          <DashboardIcon name='plus' size={16} />
+          <RuleIcon iconKey='plus' size={16} />
           Novo {title}
         </S.AddButton>
       </S.PanelHeader>

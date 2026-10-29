@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 import { Button } from '@mui/material';
-import { useCharacterSelection, useModal } from 'common/hooks';
+import { useModal } from 'common/hooks';
 import { api } from 'common/libs';
 import type { Attribute, Character, Config, Skill } from 'common/types';
 import type { RemoveItemResponse } from 'core/services/Master/dashboard.interface';
-import { ConfirmationDialog, DashboardIcon } from 'design-system/ui';
-import { CharacterSidebar, EmptyStatePanel } from 'features/master/characters/creation/components';
-import { CharacterSheet } from 'features/master/characters/detail/components';
+import { ConfirmationDialog, RuleIcon } from 'design-system/ui';
+import { CharacterSidebar } from 'features/master/characters/creation/components';
+import { CharacterSheet, EmptyStatePanel } from 'features/master/characters/detail/components';
 import { MasterHeader } from 'features/master/navigation/components';
 import { CoverTitle } from 'main/components/atoms';
 import { DiceRollFeed } from 'main/components/molecules';
@@ -26,9 +26,8 @@ interface CharactersScreenProps {
 }
 
 const CharactersScreen = ({ configs, initialSkills, initialCharacters, initialAttributes }: CharactersScreenProps) => {
-  const { characters, setCharacters, setAttributes, setSkills, setConfig, removeCharacter } = useDashboardStore();
-
-  const { selectedCharacterData, fetchCharacterDetails } = useCharacterSelection();
+  const { characters, setCharacters, setAttributes, setSkills, setConfig, removeCharacter, selectedCharacterData } =
+    useDashboardStore();
 
   // Inicializa dados da store com SSR
   useEffect(() => {
@@ -44,10 +43,6 @@ const CharactersScreen = ({ configs, initialSkills, initialCharacters, initialAt
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialCharacters, initialAttributes, initialSkills, configs]);
-
-  const handleSelectCharacter = (id: number) => {
-    void fetchCharacterDetails(id);
-  };
 
   const deleteCharacterModal = useModal(({ close, custom }) => (
     <ConfirmationDialog
@@ -87,7 +82,7 @@ const CharactersScreen = ({ configs, initialSkills, initialCharacters, initialAt
                   target='_blank'
                   aria-label='Abrir ficha do personagem'
                   title='Abrir ficha do personagem'>
-                  <DashboardIcon name='sheet' size={22} />
+                  <RuleIcon iconKey='sheet' size={22} />
                 </Link>
                 <Button
                   aria-label='Excluir personagem'
@@ -95,7 +90,7 @@ const CharactersScreen = ({ configs, initialSkills, initialCharacters, initialAt
                   onClick={() => {
                     deleteCharacterModal.appear({ characterId: selectedCharacterData.id });
                   }}>
-                  <DashboardIcon name='trash' size={22} />
+                  <RuleIcon iconKey='trash' size={22} />
                 </Button>
               </>
             )}
@@ -105,7 +100,7 @@ const CharactersScreen = ({ configs, initialSkills, initialCharacters, initialAt
 
       {configs.length > 0 ? (
         <S.Layout>
-          <CharacterSidebar onSelectCharacter={handleSelectCharacter} />
+          <CharacterSidebar />
           <S.Main>
             {selectedCharacterData && <CharacterSheet />}
             {!selectedCharacterData && <EmptyStatePanel />}

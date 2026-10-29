@@ -1,5 +1,5 @@
 import type { Attribute } from 'common/types';
-import { DashboardIcon, RuleIcon } from 'design-system/ui';
+import { RuleIcon } from 'design-system/ui';
 
 import TemplatePanel from '../template-panel/template-panel';
 import * as S from './attribute-panel.styles';
@@ -12,7 +12,7 @@ interface AttributePanelProps {
 }
 
 const AttributePanel = ({ attributes, onCreate, onEdit, onDelete }: AttributePanelProps) => (
-  <TemplatePanel icon='strength' title='atributo' listLength={attributes.length} onCreate={onCreate}>
+  <TemplatePanel icon='strength-outline' title='atributo' listLength={attributes.length} onCreate={onCreate}>
     <S.AttributeList>
       {attributes.map((attribute) => (
         <S.AttributeRow key={attribute.id}>
@@ -30,14 +30,14 @@ const AttributePanel = ({ attributes, onCreate, onEdit, onDelete }: AttributePan
               aria-label={`Editar ${attribute.name}`}
               title={`Editar ${attribute.name}`}
               onClick={() => onEdit(attribute)}>
-              <DashboardIcon name='edit' size={17} />
+              <RuleIcon iconKey='edit' size={17} />
             </button>
             <button
               type='button'
               aria-label={`Excluir ${attribute.name}`}
               title={`Excluir ${attribute.name}`}
               onClick={() => onDelete(attribute)}>
-              <DashboardIcon name='trash' size={17} />
+              <RuleIcon iconKey='trash' size={17} />
             </button>
           </S.RowActions>
         </S.AttributeRow>

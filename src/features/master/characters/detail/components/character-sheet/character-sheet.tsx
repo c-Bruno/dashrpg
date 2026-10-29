@@ -14,7 +14,7 @@ const CharacterSheet = () => {
       </S.OverviewCard>
 
       <S.ModuleGrid>
-        <SectionPanel title='Atributos' icon='strength'>
+        <SectionPanel title='Atributos' icon='strength-outline'>
           {character?.attributes?.map(({ attribute_id, attribute: { name, icon_key }, value }) => (
             <CharacterModuleRow key={attribute_id} name={name} value={value} valueTone='accent' icon={icon_key} />
           ))}

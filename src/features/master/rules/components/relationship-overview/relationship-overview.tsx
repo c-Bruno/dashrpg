@@ -1,5 +1,5 @@
 import type { Attribute, Skill } from 'common/types';
-import { DashboardIcon, RuleIcon } from 'design-system/ui';
+import { RuleIcon } from 'design-system/ui';
 
 import * as S from './relationship-overview.styles';
 
@@ -11,7 +11,7 @@ interface RelationshipOverviewProps {
 const RelationshipOverview = ({ attributes, skills }: RelationshipOverviewProps) => (
   <S.SummaryPanel aria-labelledby='rules-relationships-title'>
     <S.SummaryHeader>
-      <DashboardIcon name='link' />
+      <RuleIcon iconKey='link' size={24} />
       <div>
         <h3 id='rules-relationships-title'>Visão geral dos vínculos</h3>
         <p>Veja quais atributos estão associados a cada perícia.</p>

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useModal } from 'common/hooks';
 import { api } from 'common/libs';
 import type { Attribute, Skill } from 'common/types';
-import { ConfirmationDialog, DashboardIcon } from 'design-system/ui';
+import { ConfirmationDialog, RuleIcon } from 'design-system/ui';
 import { MasterHeader } from 'features/master/navigation/components';
 import { RuleEntityModal } from 'features/master/rules/components';
 import { CoverTitle } from 'main/components/atoms';
@@ -97,7 +97,7 @@ const RulesScreen = ({ attributes: initialAttributes, skills: initialSkills }: R
       <MasterHeader />
       <S.Content>
         <S.Intro>
-          <DashboardIcon name='book' size={38} />
+          <RuleIcon iconKey='book' size={38} />
           <div>
             <h2>Regras da campanha</h2>
             <p>Configure os atributos e as perícias utilizados nas fichas.</p>

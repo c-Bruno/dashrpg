@@ -6,7 +6,7 @@ import { CHARACTER_PORTRAITS } from 'common/constants';
 import { useFetchMutation } from 'common/hooks';
 import { api } from 'common/libs';
 import type { Character } from 'common/types';
-import { DashboardIcon, ImagePicker, ModalDialog, NumberStepper } from 'design-system/ui';
+import { RuleIcon, ImagePicker, ModalDialog, NumberStepper } from 'design-system/ui';
 import { useDashboardStore } from 'main/store';
 
 import * as S from './add-character-modal.styles';
@@ -67,7 +67,7 @@ const AddCharacterModal = ({ handleClose }: AddCharacterModalProps) => {
   return (
     <ModalDialog
       title='Criar aventureiro'
-      titleIcon={<DashboardIcon name='person' size={28} />}
+      titleIcon={<RuleIcon iconKey='person' size={28} />}
       onClose={handleClose}
       onConfirm={handleCreate}
       disableConfirm={!name.trim() || isLoading}
@@ -107,7 +107,7 @@ const AddCharacterModal = ({ handleClose }: AddCharacterModalProps) => {
             description='Quantidade de pontos de vida do personagem.'
             icon={
               <span style={{ color: '#f04452' }}>
-                <DashboardIcon name='heart' size={24} />
+                <RuleIcon iconKey='heart' size={24} />
               </span>
             }
             value={initialHitPoints}
@@ -118,7 +118,7 @@ const AddCharacterModal = ({ handleClose }: AddCharacterModalProps) => {
             description='Quantidade de pontos de sanidade do personagem.'
             icon={
               <span style={{ color: '#8c93f7' }}>
-                <DashboardIcon name='brain' size={24} />
+                <RuleIcon iconKey='brain' size={24} />
               </span>
             }
             value={initialSanityPoints}

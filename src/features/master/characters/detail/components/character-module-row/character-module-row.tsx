@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { DashboardIcon, RuleIcon } from 'design-system/ui';
+import { RuleIcon } from 'design-system/ui';
 
 import * as S from './character-module-row.styles';
 
@@ -36,7 +36,7 @@ const CharacterModuleRow = ({
 
     {value !== undefined && (
       <S.Value data-tone={valueTone ?? 'default'}>
-        {variant === 'combat' && <DashboardIcon name='dice' size={28} />}
+        {variant === 'combat' && <RuleIcon iconKey='dice' size={28} />}
         {value}
       </S.Value>
     )}

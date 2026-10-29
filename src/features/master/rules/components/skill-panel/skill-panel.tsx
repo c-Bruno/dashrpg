@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import type { Attribute, Skill } from 'common/types';
-import { DashboardIcon, RuleIcon } from 'design-system/ui';
+import { RuleIcon } from 'design-system/ui';
 import { TemplatePanel } from 'features/master/rules/components';
 
 import * as S from './skill-panel.styles';
@@ -46,7 +46,7 @@ const SkillPanel = ({ attributes, skills, onCreate, onEdit, onDelete }: SkillPan
           ))}
         </select>
         <S.SearchField>
-          <DashboardIcon name='search' size={18} />
+          <RuleIcon iconKey='search' size={18} />
           <input
             type='search'
             aria-label='Buscar perícia'
@@ -90,14 +90,14 @@ const SkillPanel = ({ attributes, skills, onCreate, onEdit, onDelete }: SkillPan
                   aria-label={`Editar ${skill.name}`}
                   title={`Editar ${skill.name}`}
                   onClick={() => onEdit(skill)}>
-                  <DashboardIcon name='edit' size={17} />
+                  <RuleIcon iconKey='edit' size={17} />
                 </button>
                 <button
                   type='button'
                   aria-label={`Excluir ${skill.name}`}
                   title={`Excluir ${skill.name}`}
                   onClick={() => onDelete(skill)}>
-                  <DashboardIcon name='trash' size={17} />
+                  <RuleIcon iconKey='trash' size={17} />
                 </button>
               </S.RowActions>
             </S.SkillRow>

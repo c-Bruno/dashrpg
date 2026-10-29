@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { DashboardIcon } from 'design-system/ui';
+import { RuleIcon } from 'design-system/ui';
 
 import MasterNavigation from '../master-navigation/master-navigation';
 import * as S from './master-header.styles';
@@ -12,7 +12,7 @@ interface MasterHeaderProps {
 const MasterHeader = ({ actions }: MasterHeaderProps) => (
   <S.Header>
     <h1>
-      <DashboardIcon name='swords' size={32} />
+      <RuleIcon iconKey='swords' size={32} />
       Dashboard do Mestre
     </h1>
     <MasterNavigation />

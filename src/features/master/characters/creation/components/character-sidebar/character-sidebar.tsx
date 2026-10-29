@@ -1,17 +1,20 @@
+import { Character } from '@prisma/client';
 import { characterPicture, ProgressBarHelper } from 'common/helpers';
-import { useModal } from 'common/hooks';
+import { useFetchMutation, useModal } from 'common/hooks';
+import { api } from 'common/libs';
 import { Avatar, Button, StatItem } from 'design-system/ui';
 import { AddCharacterModal } from 'features/master/characters//creation/components';
 import { useDashboardStore } from 'main/store';
 
 import * as S from './character-sidebar.styles';
 
-interface CharacterSidebarProps {
-  onSelectCharacter: (id: number) => void;
-}
+const CharacterSidebar = () => {
+  const { characters, selectedCharacterId, setSelectedCharacterData } = useDashboardStore();
 
-const CharacterSidebar = ({ onSelectCharacter }: CharacterSidebarProps) => {
-  const { characters, selectedCharacterId } = useDashboardStore();
+  const { trigger } = useFetchMutation((characterId: number) => api.get<Character>(`/character/${characterId}`), {
+    onSuccess: (character: any) => setSelectedCharacterData(character),
+    onError: () => setSelectedCharacterData(null),
+  });
 
   const createCharacterModal = useModal(({ close }) => (
     <AddCharacterModal
@@ -46,7 +49,7 @@ const CharacterSidebar = ({ onSelectCharacter }: CharacterSidebarProps) => {
               isSelected={isSelected}
               aria-pressed={isSelected}
               title={isDead ? `${character.name} (morto)` : character.name}
-              onClick={() => onSelectCharacter(character.id)}>
+              onClick={() => trigger(character.id)}>
               <Avatar src={characterPicture.getCharacterPictureURL(character)} size={70} />
               <StatItem label={character.name} description={character.occupation} />
             </S.SidebarItem>

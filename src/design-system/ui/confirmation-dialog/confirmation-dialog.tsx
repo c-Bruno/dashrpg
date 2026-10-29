@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import DashboardIcon from '../dashboard-icon/dashboard-icon';
 import ModalDialog from '../modal-dialog/modal-dialog';
+import RuleIcon from '../rule-icon/rule-icon';
 import * as S from './confirmation-dialog.styles';
 
 interface ConfirmationDialogProps {
@@ -37,7 +37,7 @@ const ConfirmationDialog = ({
   return (
     <ModalDialog
       title={title}
-      titleIcon={<DashboardIcon name='warning' size={28} />}
+      titleIcon={<RuleIcon iconKey='warning' size={28} />}
       onClose={onClose}
       onConfirm={handleConfirm}
       disableClose={isConfirming}

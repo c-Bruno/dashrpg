@@ -4,7 +4,7 @@ import { Alert, IconButton } from '@mui/material';
 import { useFetchMutation } from 'common/hooks';
 import { api } from 'common/libs';
 import type { Attribute, Skill } from 'common/types';
-import { DashboardIcon, RuleIcon } from 'design-system/ui';
+import { RuleIcon } from 'design-system/ui';
 import { iconOptions } from 'features/master/rules/constants';
 
 import * as S from './rule-entity-modal.styles';
@@ -73,7 +73,7 @@ const RuleEntityModal = ({ kind, entity, skills, onClose, onSaved }: RuleEntityM
           <RuleIcon iconKey={iconKey} size={26} />
           <S.DialogHeading id='rule-entity-dialog-title'>{modalTitle}</S.DialogHeading>
           <IconButton type='button' aria-label='Fechar modal' onClick={onClose} disabled={isSaving}>
-            <DashboardIcon name='close' size={18} />
+            <RuleIcon iconKey='close' size={18} />
           </IconButton>
         </S.DialogHeader>
         <S.DialogBody>

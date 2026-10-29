@@ -54,23 +54,3 @@ export const NavigationLink = styled(Link, {
   '@media (max-width: 900px)': { padding: '0 12px', gap: 7, fontSize: '0.88rem' },
   '@media (max-width: 700px)': { minHeight: 44 },
 }));
-
-export const UpcomingSection = styled('span')({
-  ...tabStyles,
-  gap: 8,
-  color: '#777f88',
-  cursor: 'not-allowed',
-  '& svg': { color: '#887653', opacity: 0.75 },
-  '@media (max-width: 900px)': { padding: '0 10px', gap: 6, fontSize: '0.88rem' },
-  '@media (max-width: 700px)': { minHeight: 44 },
-});
-
-export const UpcomingLabel = styled('span')({
-  padding: '3px 5px',
-  border: '1px solid #514638',
-  borderRadius: 2,
-  color: '#9b8c75',
-  fontSize: '0.6rem',
-  lineHeight: 1,
-  textTransform: 'uppercase',
-});
