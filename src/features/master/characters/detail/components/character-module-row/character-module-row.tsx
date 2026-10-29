@@ -1,7 +1,5 @@
-import type { ReactNode } from 'react';
-
 import { Box } from '@mui/material';
-import { DashboardIcon } from 'design-system/ui';
+import { DashboardIcon, RuleIcon } from 'design-system/ui';
 
 import * as S from './character-module-row.styles';
 
@@ -12,13 +10,24 @@ interface CharacterModuleRowProps {
   value?: string | number;
   detail?: string;
   valueTone?: ValueTone;
-  icon?: ReactNode;
+  icon?: string;
   variant?: 'list' | 'framed' | 'combat';
 }
 
-const CharacterModuleRow = ({ name, value, detail, valueTone, icon, variant = 'list' }: CharacterModuleRowProps) => (
+const CharacterModuleRow = ({
+  name = 'Item sem nome',
+  value = '--',
+  detail,
+  valueTone,
+  icon,
+  variant = 'list',
+}: CharacterModuleRowProps) => (
   <S.Row data-variant={variant}>
-    {icon && <S.Icon>{icon}</S.Icon>}
+    {icon && (
+      <S.Icon>
+        <RuleIcon iconKey={icon} />
+      </S.Icon>
+    )}
 
     <Box sx={{ minWidth: 0, flex: 1 }}>
       <S.Name>{name}</S.Name>

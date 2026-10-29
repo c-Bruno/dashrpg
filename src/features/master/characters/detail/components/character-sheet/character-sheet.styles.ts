@@ -15,36 +15,6 @@ export const OverviewCard = styled(Box)({
   overflow: 'hidden',
 });
 
-export const OverviewRow = styled(Box)({
-  display: 'grid',
-  gridTemplateColumns: '250px minmax(0, 1fr) minmax(300px, 40%)',
-  alignItems: 'center',
-  gap: 30,
-  minHeight: 214,
-  padding: '20px 18px 20px 14px',
-
-  '@container character-overview (max-width: 850px)': {
-    gridTemplateColumns: 'minmax(112px, 144px) minmax(0, 1fr)',
-    gap: 18,
-    minHeight: 0,
-    padding: 16,
-  },
-
-  '@container character-overview (max-width: 480px)': {
-    gridTemplateColumns: '76px minmax(0, 1fr)',
-    gap: 14,
-    padding: 12,
-  },
-});
-
-export const IdentitySection = styled(Box)({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  gap: 8,
-  minWidth: 0,
-});
-
 export const SheetName = styled('h2')({
   margin: 0,
   color: '#f0dfb6',
@@ -84,32 +54,7 @@ export const IdentityDetail = styled('span')({
   '&[data-kind="gender"] svg': { color: '#d74c8e' },
 });
 
-export const StatsSection = styled(Box)({
-  ...framedPanel,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  gap: 18,
-  minWidth: 0,
-  padding: '20px 18px',
-  minHeight: 134,
-  '& [data-slot="icon"] svg': { color: '#e53949' },
-  '& > :last-child [data-slot="icon"] svg': { color: '#7e8ddc' },
-  '& > :first-of-type .MuiLinearProgress-root': { backgroundColor: '#382028' },
-  '& > :first-of-type .MuiLinearProgress-bar': { background: 'linear-gradient(90deg, #b51e30, #e83949)' },
-  '& > :last-child .MuiLinearProgress-root': { backgroundColor: '#202a35' },
-  '& > :last-child .MuiLinearProgress-bar': { background: 'linear-gradient(90deg, #4c5fa7, #7994e2)' },
 
-  '@container character-overview (max-width: 850px)': {
-    gridColumn: '1 / -1',
-    padding: '15px 16px',
-  },
-
-  '@container character-overview (max-width: 480px)': {
-    padding: '13px 10px',
-    gap: 13,
-  },
-});
 
 export const ModuleGrid = styled(Box)({
   display: 'grid',

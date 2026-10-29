@@ -1,29 +1,23 @@
 import { characterPicture, ProgressBarHelper } from 'common/helpers';
 import { useModal } from 'common/hooks';
-import type { Character } from 'common/types';
 import { Avatar, Button, StatItem } from 'design-system/ui';
 import { AddCharacterModal } from 'features/master/characters//creation/components';
+import { useDashboardStore } from 'main/store';
 
 import * as S from './character-sidebar.styles';
 
 interface CharacterSidebarProps {
-  characters: Character[];
-  selectedCharacterId: number | null;
   onSelectCharacter: (id: number) => void;
-  onCharacterCreated: () => void;
 }
 
-const CharacterSidebar = ({
-  characters,
-  selectedCharacterId,
-  onSelectCharacter,
-  onCharacterCreated,
-}: CharacterSidebarProps) => {
+const CharacterSidebar = ({ onSelectCharacter }: CharacterSidebarProps) => {
+  const { characters, selectedCharacterId } = useDashboardStore();
+
   const createCharacterModal = useModal(({ close }) => (
     <AddCharacterModal
       handleClose={() => {
         close();
-        setTimeout(() => onCharacterCreated?.(), 100);
+        setTimeout(() => window.location.reload(), 100);
       }}
     />
   ));

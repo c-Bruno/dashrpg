@@ -1,46 +1,23 @@
-import type { ComponentProps } from 'react';
-
 import { StatusBarEnum } from 'common/enums';
 import { ProgressBarHelper } from 'common/helpers';
 import { useFetchMutation, useModal } from 'common/hooks';
 import { socket } from 'common/libs';
-import type { Character } from 'common/types';
 import { CharacterService } from 'core/services';
 import { StatusBar, statusBarConfig } from 'design-system/ui';
+import { useDashboardStore } from 'main/store';
 
+import { CharacterStatusBarProps, CharacterStatusEditorProps, StatusUpdates } from '../types/character-status.types';
 import StatusBarModal from './status-bar-modal';
 
-type StatusUpdates = Pick<
-  Character,
-  'current_hit_points' | 'max_hit_points' | 'current_sanity_points' | 'max_sanity_points'
->;
-
-type CharacterStatusBarProps = Pick<ComponentProps<typeof StatusBar>, 'compact' | 'withIcon' | 'icon'> & {
-  character: Character;
-  variant?: StatusBarEnum;
-  onCharacterUpdate: (updates: StatusUpdates) => void;
-};
-
-type CharacterStatusEditorProps = Pick<CharacterStatusBarProps, 'onCharacterUpdate'> & {
-  characterId: number;
-  variant: StatusBarEnum;
-  data: { current: number; max: number };
-  handleClose: () => void;
-};
-
-const CharacterStatusEditor = ({
-  characterId,
-  variant,
-  data,
-  onCharacterUpdate,
-  handleClose,
-}: CharacterStatusEditorProps) => {
+const CharacterStatusEditor = ({ characterId, variant, data, handleClose }: CharacterStatusEditorProps) => {
+  const { updateSelectedCharacter } = useDashboardStore();
   const isLife = variant === StatusBarEnum.Life;
+
   const { trigger, errors } = useFetchMutation(
     (updates: StatusUpdates) => CharacterService.updateCharacter({ character_id: characterId, ...updates }),
     {
       onSuccess: (_data, updates) => {
-        onCharacterUpdate(updates);
+        updateSelectedCharacter(updates);
         socket.emit(isLife ? 'update_hit_points' : 'update_sanity_points', {
           character_id: characterId,
           current: isLife ? updates.current_hit_points : updates.current_sanity_points,
@@ -71,7 +48,6 @@ const CharacterStatusEditor = ({
 const CharacterStatusBar = ({
   character,
   variant = StatusBarEnum.Life,
-  onCharacterUpdate,
   icon,
   ...visualProps
 }: CharacterStatusBarProps) => {
@@ -81,13 +57,7 @@ const CharacterStatusBar = ({
   const { icon: Icon, ...config } = statusBarConfig(variant);
 
   const editModal = useModal(({ close }: { close: () => void }) => (
-    <CharacterStatusEditor
-      characterId={character.id}
-      variant={variant}
-      data={{ current, max }}
-      handleClose={close}
-      onCharacterUpdate={onCharacterUpdate}
-    />
+    <CharacterStatusEditor characterId={character.id} variant={variant} data={{ current, max }} handleClose={close} />
   ));
 
   return (

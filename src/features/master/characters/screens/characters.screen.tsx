@@ -28,8 +28,7 @@ interface CharactersScreenProps {
 const CharactersScreen = ({ configs, initialSkills, initialCharacters, initialAttributes }: CharactersScreenProps) => {
   const { characters, setCharacters, setAttributes, setSkills, setConfig, removeCharacter } = useDashboardStore();
 
-  const { selectedCharacterId, selectedCharacterData, fetchCharacterDetails, updateSelectedCharacter } =
-    useCharacterSelection();
+  const { selectedCharacterData, fetchCharacterDetails } = useCharacterSelection();
 
   // Inicializa dados da store com SSR
   useEffect(() => {
@@ -48,14 +47,6 @@ const CharactersScreen = ({ configs, initialSkills, initialCharacters, initialAt
 
   const handleSelectCharacter = (id: number) => {
     void fetchCharacterDetails(id);
-  };
-
-  const handleCharacterUpdate = (updates: Partial<Character>) => {
-    updateSelectedCharacter(updates);
-  };
-
-  const handleCharacterCreated = () => {
-    window.location.reload();
   };
 
   const deleteCharacterModal = useModal(({ close, custom }) => (
@@ -114,16 +105,9 @@ const CharactersScreen = ({ configs, initialSkills, initialCharacters, initialAt
 
       {configs.length > 0 ? (
         <S.Layout>
-          <CharacterSidebar
-            characters={characters}
-            selectedCharacterId={selectedCharacterId}
-            onSelectCharacter={handleSelectCharacter}
-            onCharacterCreated={handleCharacterCreated}
-          />
+          <CharacterSidebar onSelectCharacter={handleSelectCharacter} />
           <S.Main>
-            {selectedCharacterData && (
-              <CharacterSheet character={selectedCharacterData} onCharacterUpdate={handleCharacterUpdate} />
-            )}
+            {selectedCharacterData && <CharacterSheet />}
             {!selectedCharacterData && <EmptyStatePanel />}
           </S.Main>
         </S.Layout>

@@ -4,9 +4,7 @@ import DashboardIcon from '../dashboard-icon/dashboard-icon';
 import artwork from './rule-icon-artwork';
 
 const RuleIcon = ({ iconKey, size = 22 }: { iconKey: string; size?: number }) => {
-  if (!Object.hasOwn(artwork, iconKey)) {
-    return <DashboardIcon name={iconNames[iconKey] ?? 'sparkles'} size={size} />;
-  }
+  if (!Object.hasOwn(artwork, iconKey)) return <DashboardIcon name={iconNames[iconKey] ?? 'sparkles'} size={size} />;
 
   return (
     <svg

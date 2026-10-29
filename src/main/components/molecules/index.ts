@@ -5,7 +5,7 @@ export { default as EditableDataRow } from './Common/EditableDataRow/editable-da
 export { default as InventoryRow } from './Common/InventoryRow/inventory-row.molecule';
 export { default as WeaponRow } from './Common/WeaponRow/weapon-row.molecule';
 export { default as RollableAttribute } from './Common/RollableAttribute/rollable-attribute.molecule';
-export { default as StatusBar } from '../../../design-system/ui/StatusBar/status-bar';
+export { default as StatusBar } from '../../../design-system/ui/status-bar/status-bar';
 
 // Character dashboard
 export { default as AttributeStatusItem } from './CharacterDashboard/AttributeStatusItem/attribute-status-item.molecule';
@@ -16,11 +16,9 @@ export { default as SkillAttributeList } from './MasterDashboard/SkillAttributeL
 export { default as DiceRollFeed } from './MasterDashboard/DiceRollFeed/dice-roll-feed.molecule';
 
 // Modals
-export { default as AttributeModal } from './Modals/Attribute/attribute-modal.molecule';
 export { default as CombatModal } from './Modals/Combat/combat-modal.molecule';
 export { default as ChangePictureModal } from './Modals/ChangePicture/change-picture.molecule';
 export { default as DiceRollModal } from './Modals/DiceRoll/dice-roll-modal.molecule';
 export { default as InfoModal } from './Modals/Info/info-modal.molecule';
 export { default as InventoryModal } from './Modals/Inventory/inventory-modal.molecule';
 export { StatusBarModal } from 'features/character-status';
-export { default as SkillModal } from './Modals/Skills/skill-modal.molecule';
