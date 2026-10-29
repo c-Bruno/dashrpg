@@ -84,6 +84,7 @@ model Attribute {
   name String
   description String?
   skill_id Int?
+  icon_key String @default("strength")
 
   characters CharacterAttributes[]
   
@@ -140,6 +141,7 @@ model Skill {
   id Int @id @default(autoincrement())
   name String
   description String?
+  icon_key String @default("sparkles")
 
   characters CharacterSkills[]
 

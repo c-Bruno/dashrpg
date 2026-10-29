@@ -1,27 +1,12 @@
-import { useEffect } from 'react';
+import type { GetServerSideProps } from 'next';
 
-import Head from 'next/head';
-import { useRouter } from 'next/router';
+export const getServerSideProps: GetServerSideProps = async () => ({
+  redirect: {
+    destination: '/dashboard/characters',
+    permanent: false,
+  },
+});
 
-/**
- * Root page — immediately redirects to /dashboard.
- * Kept minimal: the real entry-point is the dashboard.
- */
-const Home = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace('/dashboard');
-  }, [router]);
-
-  return (
-    <>
-      <Head>
-        <title>DashRPG</title>
-      </Head>
-      <p>Carregando...</p>
-    </>
-  );
-};
+const Home = () => null;
 
 export default Home;

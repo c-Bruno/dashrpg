@@ -14,13 +14,14 @@ const handler: NextApiHandler = async (req, res) => {
       const id = Number(req.query.id);
 
       // Remove junction rows before the parent to satisfy FK constraints
-      const deleteFromCharacterSkills = prisma.characterSkills.deleteMany({
-        where: { skill_id: id },
-      });
-
-      const deleteSkill = prisma.skill.delete({ where: { id } });
-
-      await prisma.$transaction([deleteFromCharacterSkills, deleteSkill]);
+      await prisma.$transaction([
+        prisma.attribute.updateMany({
+          where: { skill_id: id },
+          data: { skill_id: null },
+        }),
+        prisma.characterSkills.deleteMany({ where: { skill_id: id } }),
+        prisma.skill.delete({ where: { id } }),
+      ]);
 
       return res.status(200).json({ success: true, callback: 'removeSkill', id });
     } else if (req.method === 'PUT') {

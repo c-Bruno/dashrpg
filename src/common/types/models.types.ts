@@ -62,6 +62,7 @@ export interface Attribute {
   name: string;
   description?: string;
   skill_id?: number;
+  icon_key: string;
 }
 
 export interface Inventory {
@@ -85,6 +86,7 @@ export interface Skill {
   id: number;
   name: string;
   description?: string;
+  icon_key: string;
 }
 
 export interface Roll {

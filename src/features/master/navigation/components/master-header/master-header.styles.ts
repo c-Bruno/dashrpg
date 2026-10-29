@@ -1,0 +1,65 @@
+import { styled } from '@mui/material';
+import { headingFont } from 'themes/dashboard-visuals.styles';
+
+export const Header = styled('header')({
+  position: 'sticky',
+  top: 0,
+  zIndex: 2,
+  display: 'flex',
+  alignItems: 'center',
+  gap: 0,
+  minHeight: 52,
+  padding: '0 12px',
+  borderBottom: '1px solid #443a30',
+  background: 'rgba(10, 15, 22, 0.94)',
+  '& h1': {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    flexShrink: 0,
+    margin: 0,
+    padding: '0 18px 0 4px',
+    color: '#d8b779',
+    fontFamily: headingFont,
+    fontSize: '0.82rem',
+    fontWeight: 600,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase',
+    whiteSpace: 'nowrap',
+    '& svg': { color: '#d5a356' },
+  },
+  '@media (max-width: 600px)': {
+    flexWrap: 'wrap',
+    padding: '0 8px',
+    '& h1': { height: 48, gap: 8, padding: '0 8px 0 2px', fontSize: '0.72rem', letterSpacing: '0.04em' },
+  },
+  '@media (max-width: 420px)': {
+    '& h1': { fontSize: '0.68rem' },
+  },
+});
+
+export const Actions = styled('nav')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  gap: 8,
+  flexShrink: 0,
+  marginLeft: 'auto',
+  paddingLeft: 8,
+  '& a, & button': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 34,
+    height: 36,
+    padding: 0,
+    border: 0,
+    borderRadius: 3,
+    color: '#ce8c3e',
+    background: 'transparent',
+    '&:hover': { background: 'rgba(206,140,62,0.12)' },
+    '&:focus-visible': { outline: '2px solid #e8b860', outlineOffset: 1 },
+  },
+  '&:empty': { display: 'none' },
+  '@media (max-width: 600px)': { height: 48, paddingRight: 4 },
+});

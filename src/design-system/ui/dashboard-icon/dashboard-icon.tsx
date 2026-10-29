@@ -69,6 +69,7 @@ const artwork = {
     />
   ),
   sheet: <path fillRule='evenodd' d='M4 1h12v3h4v19H4zm2 2v18h12V6h-4V3zm2 6h8v2H8zm0 4h8v2H8zm0 4h6v2H8z' />,
+  close: <path d='m5 3 7 7 7-7 2 2-7 7 7 7-2 2-7-7-7 7-2-2 7-7-7-7z' />,
   trash: <path fillRule='evenodd' d='M9 1h6v2h-6zM4 4h16v2H4zm3 4h10l-1 13H8zm3 2v9h1v-9zm3 0v9h1v-9z' />,
   warning: <path d='M10 1h4v2h2v3h2v3h2v3h2v6H2v-6h2V9h2V6h2V3h2zm1 6v6h2V7zm0 8v2h2v-2z' />,
   home: <path fillRule='evenodd' d='M2 10 12 1l10 9h-3v11h-6v-7h-3v7H4V10zm4 0v9h2v-7h7v7h2v-9l-5-5z' />,
@@ -83,6 +84,20 @@ const artwork = {
     <path
       fillRule='evenodd'
       d='M5 2h10v2h3v3h3v15H5v-3H2V5h3zm2 2v13h12V9h-5V4zm8 1v3h3zm-9 1H4v11h2zm4 1h4v2h-4zm0 4h8v2h-8zm0 4h8v2h-8z'
+    />
+  ),
+  plus: <path d='M10 2h4v8h8v4h-8v8h-4v-8H2v-4h8z' />,
+  search: (
+    <path
+      fillRule='evenodd'
+      d='M9 2h6v2h3v3h2v6h-2v3h-3v2h-6v-2H6v-3H4V7h2V4h3zm1 3v2H8v6h2v2h4v-2h2V7h-2V5zm7 11 2-2 4 4v3h-3z'
+    />
+  ),
+  edit: <path d='m3 16 12-12 5 5L8 21H3zm12-9L7 15l2 2 8-8zM2 22h20v1H2z' />,
+  link: (
+    <path
+      fillRule='evenodd'
+      d='M8 2h6v2h2v2h-3V5H9v2H7v4h2v2H6v-2H4V6h2V4h2zm8 5h4v2h2v6h-2v2h-2v2h-6v-2h-2v-2h3v1h4v-2h2v-4h-2v-2h-2zM7 16h3v2H7v2H4v-2H2v-5h2v-2h3v3H6v3z'
     />
   ),
 } satisfies Record<string, ReactNode>;
